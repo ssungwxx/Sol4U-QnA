@@ -25,10 +25,10 @@ npm runserve
 
 - master : 최종 완료 시 업로드
 - release : 테스트완료 된 코드 배포
-- develope : 테스트용 코드 배포
+- develop : 테스트용 코드 배포
 - 기타 : 각 기능별 테스트 및 작업용
 
-배포 순서 : 기타 브런치 작업 -> develope 브런치로 merge 후 테스트 사이트에서 확인 및 수정 -> release 브랜치에 merge -> 2주 스프린트 완료 후 master 브랜치로 push
+배포 순서 : 기타 브런치 작업 -> develop 브런치로 merge 후 테스트 사이트에서 확인 및 수정 -> release 브랜치에 merge -> 2주 스프린트 완료 후 master 브랜치로 push
 
 ### Git 규칙
 
@@ -49,37 +49,3 @@ npm runserve
 ```
 
 
-
-
-
-#### 아키텍트 구성도
-
-
-
-![1571098460990](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\1571098460990.png)
-
-
-
-
-
-
-
-![1571098377573](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\1571098377573.png)
-
-
-
----
-
-
-
-### 일정 계획..
-
-![1571098411163](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\1571098411163.png)
-
-
-
----
-
-### 요구사항 정의
-
-![1571098436778](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\1571098436778.png)
