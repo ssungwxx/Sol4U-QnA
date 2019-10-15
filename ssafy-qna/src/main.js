@@ -1,17 +1,28 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
+import './plugins/axios'
+import App from './App.vue'
 import router from './router'
-import vuetify from './plugins/vuetify';
+import store from './store'
+import vuetify from './plugins/vuetify'
+import axios from './plugins/axios'
+import firebase from 'firebase'
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
+let config = {
+  apiKey: "AAAArx-2b2o:APA91bF9-deVNiDvvlT2XYKZqiXNGYmzqHD6zs45AM3st8ZSbBiQu83zp24zefOe_d8Ng2RkOBmDmCR3jVegbbSQq3VjFLuTmiokfv6kQlP9U_1H7RfGQvUG9Tp308HSAeX9-DVGsFTU",
+  authDomain: "https://ssafyfinal.firebaseapp.com/",
+  databaseURL: "https://ssafyfinal.firebaseio.com",
+  projectId: "ssafyfinal",
+  storageBucket: "ssafyfinal.appspot.com",
+  messagingSenderId: "752151326570"
+};
+
+firebase.initializeApp(config);
+
 new Vue({
-  el: '#app',
   router,
-  components: { App },
+  store,
   vuetify,
-  template: '<App/>'
-})
+  render: h => h(App)
+}).$mount('#app')
