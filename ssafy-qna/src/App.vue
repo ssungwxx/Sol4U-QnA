@@ -1,36 +1,34 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
+    <Home />
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import Home from './views/Home';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    Home,
   },
   data: () => ({
-    //
+    
   }),
 };
+
+var agent = navigator.userAgent.toLowerCase();
+if ( agent.indexOf('chrome') != -1) {
+     // chrome일 경우
+}else{
+     // chrome이 아닐 경우
+     alert('해당 홈페이지는 Chrome에 최적화 되어 있습니다.');
+}
+
 </script>
+
+<style>
+body::-webkit-scrollbar {
+    display: none;
+}
+</style>
