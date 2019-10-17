@@ -1,13 +1,16 @@
 <template>
     <v-app>
-  <div class = "backgroundImage">
-    <div class = "link_space">
-      <div class = "input_link">
-        
-      </div>
-    </div>
-  </div>
-  </v-app>
+        <div class = "backgroundImage">
+            <div class = "link_space">
+                <div class = "input_link">
+                    <v-text-field
+                    v-model="code"
+                    label="Code">
+                    </v-text-field>
+                </div>
+            </div>
+        </div>
+    </v-app>
 </template>
 
 <script>
@@ -36,11 +39,16 @@ export default ({
   }
 
   .input_link{
+    text-align:center;
     width:400px;
     height:80px;
     background-color:white;
     border-radius: 10px;
     opacity:0.6;
     display: inline-block;
+    padding-left:30px;
+    padding-right:30px;
+    padding-top:10px;
   }
+
 </style>
