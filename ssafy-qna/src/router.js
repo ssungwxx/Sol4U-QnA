@@ -14,7 +14,7 @@ export default new Router({
       component: Home
     },
     {
-      path: '/qna',
+      path: '/qna/:code?',
       name: 'QnA',
       component: QnA
     }
