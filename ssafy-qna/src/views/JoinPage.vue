@@ -8,6 +8,11 @@
                     label="Code">
                     </v-text-field>
                 </div>
+                <br>
+                <router-link to="/qna">  <!-- 여기에 vuex에 Guest아이디로 넘겨주는 기능 추가하면됨 -->
+                <v-btn class="ma-2" style="width:180px" outlined color="indigo">Guest</v-btn>
+                </router-link>
+                <v-btn class="ma-2" style="width:180px" color="normal">Log-in</v-btn>
             </div>
         </div>
     </v-app>
