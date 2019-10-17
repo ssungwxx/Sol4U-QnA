@@ -37,5 +37,28 @@ export default {
           "errorCode : " + errorCode + "\n errorMessage : " + errorMessage
         );
       });
+  },
+  loginWithAnonymous() {
+    return firebase
+      .auth(function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // 로그인
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+          } else {
+            // 로그아웃
+          }
+        });
+      })
+      .signInAnonymously()
+      .then()
+      .catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(
+          "errorCode : " + errorCode + "\n errorMessage : " + errorMessage
+        );
+      });
   }
 };
