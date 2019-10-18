@@ -6,7 +6,6 @@
                 <p class="code_banner">
                     {{code}}
                 </p>
-
                 <v-layout>
                     <router-link to="/" class="RouterLink">
                             <p class="RouterLink_p">Join Page</p>

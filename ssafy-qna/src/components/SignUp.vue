@@ -46,49 +46,49 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       show: false,
       valid: true,
       dialog: false,
-      id: "",
+      id: '',
       idRules: [
-        v => !!v || "ID is required",
+        v => !!v || 'ID is required',
         v =>
           (v && v.length <= 15 && v.length >= 6) ||
-          "ID must be at least 6 and less than 15 characters"
+          'ID must be at least 6 and less than 15 characters'
       ],
-      pw: "",
+      pw: '',
       pwRules: [
-        v => !!v || "Password is required",
+        v => !!v || 'Password is required',
         v =>
           (v && v.length <= 15 && v.length >= 8) ||
-          "Password must be at least 8 and less than 15 characters"
+          'Password must be at least 8 and less than 15 characters'
       ]
-    };
+    }
   },
   methods: {
-    submit() {
+    submit () {
       if (this.$refs.form.validate()) {
-        alert("Sign up success!");
-        this.reset();
-        this.dialog = false;
+        alert('Sign up success!')
+        this.reset()
+        this.dialog = false
       }
     },
-    reset() {
-      this.$refs.form.reset();
+    reset () {
+      this.$refs.form.reset()
     },
-    close() {
-      this.dialog = false;
-      this.reset();
+    close () {
+      this.dialog = false
+      this.reset()
     }
   },
   watch: {
-    dialog: function() {
-      if (this.$refs.form != undefined) {
-        this.reset();
+    dialog: function () {
+      if (this.$refs.form !== undefined) {
+        this.reset()
       }
     }
   }
-};
+}
 </script>
