@@ -13,18 +13,16 @@
   </div>
 </template>
 
-
-
 <script>
 
 export default {
-	name: 'ImgBanner',
-	props: {
-		imgSrc: {type: String},
-		text: {type: String}
-	},
-	methods: {
-	},
+  name: 'ImgBanner',
+  props: {
+    imgSrc: { type: String },
+    text: { type: String }
+  },
+  methods: {
+  }
 }
 </script>
 <style>

@@ -13,7 +13,7 @@ export default {
 }
 
 var agent = navigator.userAgent.toLowerCase();
-if ( agent.indexOf('chrome') != -1) {
+if ( agent.indexOf('chrome') !== -1) {
      // chrome일 경우
 }else{
      // chrome이 아닐 경우
