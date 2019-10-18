@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Join from './views/JoinPage.vue'
+import Home from './views/Home.vue'
+import QnA from './views/QnAPage.vue'
 
 Vue.use(Router)
 
@@ -9,8 +10,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Join',
-      component: Join
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/qna/:code?',
+      name: 'QnA',
+      component: QnA
     }
   ]
 })
