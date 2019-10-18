@@ -85,7 +85,7 @@ export default {
   },
   watch: {
     dialog: function() {
-      if (this.$refs.form != undefined) {
+      if (this.$refs.form !== undefined) {
         this.reset();
       }
     }
