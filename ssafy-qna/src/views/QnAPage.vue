@@ -21,19 +21,32 @@
           <br />심심해서 효과넣었어요
         </v-layout>
       </v-flex>
-      <v-flex sm9 class></v-flex>
+      <v-flex sm9 class>
+        <v-card>
+          <v-container grid-list-lg fluid>
+            <v-layout row wrap>
+              <QnACard />
+              <QnACard />
+            </v-layout>
+          </v-container>
+        </v-card>
+      </v-flex>
     </v-layout>
   </v-app>
 </template>
 
 <script>
 import Vue from "vue";
+import QnACard from "../components/QnACard";
 
 export default Vue.extend({
   computed: {
     code: function() {
       return this.$route.params.code;
     }
+  },
+  components: {
+    QnACard
   }
 });
 </script>
