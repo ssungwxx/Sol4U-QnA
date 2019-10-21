@@ -24,6 +24,9 @@
           <div style="font-size:10px; color:white;">ㅎ</div><br>
 
         </v-layout>
+        <v-layout>
+          
+        </v-layout>
       </v-flex>
       <v-flex sm9 class>
         <v-card>
