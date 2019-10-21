@@ -1,22 +1,22 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
-import QnA from './views/QnAPage.vue'
+import Vue from "vue";
+import Router from "vue-router";
+import Home from "./views/Home.vue";
+import QnA from "./views/QnAPage.vue";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  mode: "history",
   routes: [
     {
-      path: '/',
-      name: 'Home',
+      path: "/",
+      name: "Home",
       component: Home
     },
     {
-      path: '/qna/:code?',
-      name: 'QnA',
+      path: "/qna/:code?",
+      name: "QnA",
       component: QnA
     }
   ]
-})
+});
