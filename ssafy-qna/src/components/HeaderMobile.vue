@@ -8,8 +8,8 @@
                 width="100%"
             >
 
-                <v-app-bar>
-                    <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="margin-right:20px;"></v-app-bar-nav-icon>
+                <v-app-bar class="bar_design">
+                    <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="margin-right:20px;" color="white"></v-app-bar-nav-icon>
                     SSAFY__{{code}}
                 </v-app-bar>
 
@@ -60,5 +60,10 @@
 }
 .RouterLink_p{
     font-size:20px;
+}
+.bar_design{
+    background-image: url('../assets/lol.png');
+    color: white;
+    
 }
 </style>
