@@ -14,7 +14,7 @@
                 </v-app-bar>
 
                 <v-navigation-drawer
-                v-model="drawer"
+                v-model="drawer" 
                 absolute
                 right
                 temporary
@@ -23,7 +23,7 @@
                 >
                 <v-list nav dense>
                     <router-link to="/" class="RouterLink">
-                        <p class="RouterLink_p">Join Page</p>
+                        <p class="RouterLink_p">DashBoard</p>
                     </router-link>
                 </v-list>
                 </v-navigation-drawer>

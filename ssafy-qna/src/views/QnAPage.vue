@@ -6,16 +6,26 @@
 
     <v-layout>
       <v-flex sm3 class="banner_background">
-        <p class="banner">SSAFY</p>
         <p class="code_banner">{{code}}</p>
         <v-layout>
           <router-link to="/" class="RouterLink">
-            <p class="RouterLink_p">Join Page</p>
+            <p class="RouterLink_p">계기반</p>
           </router-link>
         </v-layout>
+        <v-layout>
+          <a href="https://lab.ssafy.com/s1-final/s1p1351008" class="GithubAddress"><div style="color:yellow; font-family: 'Do Hyeon', sans-serif;">우리의 개발 주소</div></a>
+        </v-layout>
         <v-layout style=" font-size: 30px; text-align:center">
-          <br />창규야
-          <br />일하자
+          <div style="font-size:150px; color:red;">ㅎ</div><br>
+          <div style="font-size:110px; color:purple;">ㅎ</div><br>
+          <div style="font-size:60px; color:yellow;">ㅎ</div><br>
+          <div style="font-size:40px; color:blue;">ㅎ</div><br>
+          <div style="font-size:20px; color:Green;">ㅎ</div><br>
+          <div style="font-size:10px; color:white;">ㅎ</div><br>
+
+        </v-layout>
+        <v-layout>
+          
         </v-layout>
       </v-flex>
       <v-flex sm9 class>
@@ -69,6 +79,7 @@ export default Vue.extend({
 
 <style>
 @import url("https://fonts.googleapis.com/css?family=Lexend+Deca|Saira+Extra+Condensed&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 .banner {
   font-size: 160px;
   color: white;
@@ -76,10 +87,11 @@ export default Vue.extend({
   margin-top: -110px;
 }
 .code_banner {
-  font-size: 7vw;
+  font-size: 8vw;
   margin-left: 20px;
   font-weight: bold;
   font-family: "Saira Extra Condensed", sans-serif;
+  color: red;
 }
 .RouterLink {
   width: 100%;
@@ -90,11 +102,13 @@ export default Vue.extend({
   font-family: "Lexend Deca", sans-serif;
 }
 .RouterLink_p {
-  color: black;
+  color: blue;
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 80px;
 }
 .banner_background {
   display: block;
-  background-color: #bfbfbf;
+  background-image: url('../assets/hahat.jpg')  
 }
 .banner_mobile {
   display: none;
@@ -145,5 +159,9 @@ export default Vue.extend({
   height: 2%;
   margin-top: -1%;
   margin-bottom: 3%;
+}
+.GithubAddress{
+  font-size:30px;
+  text-decoration:none;
 }
 </style>
