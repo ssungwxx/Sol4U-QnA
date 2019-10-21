@@ -17,7 +17,8 @@ const config = {
 firebase.initializeApp(config);
 
 const firestore = firebase.firestore();
-const database = firebase.database();
+const fireauth = firebase.auth();
+const db = firebase.firestore();
 
 export default {
   // Login Function
@@ -62,8 +63,81 @@ export default {
         );
       });
   },
+  logout() {
+    return fireauth
+      .signOut()
+      .then(function() {
+        alert("로그아웃 되었습니다.");
+      })
+      .catch(function(error) {
+        return error;
+      });
+  },
 
-  // Realtime Database Function
-  createChatServer() {},
-  connectChatServer() {}
+  // Cloud Firebase Database Function
+  createChannel(channelCode) {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      const now_timestamp = new Date();
+
+      const channel = {
+        channel_code: channelCode,
+        channel_owner: {
+          user_name: user.displayName,
+          user_email_verified: user.emailVerified,
+          user_email: user.email
+        },
+        messages: [],
+        created_at: {
+          timestamp: now_timestamp,
+          string:
+            now_timestamp.getFullYear() +
+            "년 " +
+            (now_timestamp.getMonth() + 1) +
+            "월 " +
+            now_timestamp.getDate() +
+            "일"
+        }
+      };
+      firestore.collection("QnAChannels").add(channel);
+    } else {
+      console.log("!!");
+    }
+  },
+  addQuestion(channelCode, userId, value) {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      const now_timestamp = new Date();
+
+      const Question = {
+        user_id: userId,
+        question: value,
+        created_at: {
+          timestamp: now_timestamp,
+          string:
+            now_timestamp.getFullYear() +
+            "년 " +
+            (now_timestamp.getMonth() + 1) +
+            "월 " +
+            now_timestamp.getDate() +
+            "일"
+        },
+        hitCount: 0
+      };
+
+      firestore
+        .collection("QnAChannels")
+        .doc(channelCode)
+        .update({
+          messages: firebase.firestore.FieldValue.arrayUnion(Question)
+        });
+    } else {
+      console.log("addQuestion Error");
+    }
+  },
+  enterTheChannel(channelCode) {
+    const channels = firestore.collection("QnAChannels");
+  }
 };

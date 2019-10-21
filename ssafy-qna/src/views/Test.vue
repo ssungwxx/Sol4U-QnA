@@ -15,11 +15,15 @@ export default {
     }),
     methods: {
         async createChannel() {
-            await FirebaseService.createChannel("11", "1123");
+            await FirebaseService.createChannel("1123");
             console.log("방 만들자");
         },
-        async addQuestion(msg) {
-            await FirebaseService.addQuestion(msg);
+        async addQuestion() {
+            await FirebaseService.addQuestion(
+                "rCHxUbuqhk8LHPlXms8n",
+                "11",
+                this.msg
+            );
             console.log(this.msg);
             this.msg = "";
         }
