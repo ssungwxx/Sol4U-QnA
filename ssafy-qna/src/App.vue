@@ -1,6 +1,8 @@
 <template>
   <v-app>
-    <router-view />
+    <transition name="fade" mode="out-in">
+      <router-view />
+    </transition>
   </v-app>
 </template>
 
@@ -9,7 +11,13 @@ export default {
   name: "App",
   data: () => ({
     //
-  })
+  }),
+  watch: {
+    $route (to, from) {
+      this.PageFrom = from.name + ' page'
+      this.PageTo = to.name + ' page'
+    }
+  }
 };
 
 var agent = navigator.userAgent.toLowerCase();
@@ -19,6 +27,17 @@ if (agent.indexOf("chrome") === -1) {
 </script>
 
 <style>
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
+}
 body::-webkit-scrollbar {
   display: none;
 }
