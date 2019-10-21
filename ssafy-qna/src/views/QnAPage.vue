@@ -10,7 +10,7 @@
         <p class="code_banner">{{code}}</p>
         <v-layout>
           <router-link to="/" class="RouterLink">
-            <p class="RouterLink_p">Join Page</p>
+            <p class="RouterLink_p">Dashboard</p>
           </router-link>
         </v-layout>
         <v-layout style=" font-size: 30px; text-align:center">
