@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import ImageBanner from '../components/ImageBanner'
-import SignUp from '../components/SignUp'
+import ImageBanner from "../components/ImageBanner";
+import SignUp from "../components/SignUp";
 
 export default {
   components: {
@@ -33,9 +33,9 @@ export default {
     SignUp
   },
   data: () => ({
-    code: ''
+    code: ""
   })
-}
+};
 </script>
 
 <style>
