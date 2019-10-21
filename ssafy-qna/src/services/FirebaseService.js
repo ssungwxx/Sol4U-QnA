@@ -41,26 +41,17 @@ export default {
       });
   },
   loginWithAnonymous() {
-    return firebase
-      .auth(function() {
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            // 로그인
-            var isAnonymous = user.isAnonymous;
-            var uid = user.uid;
-          } else {
-            // 로그아웃
-          }
-        });
-      })
+    firebase
+      .auth()
       .signInAnonymously()
-      .then()
+      .then(function() {
+        alert("익명 로그인 되었습니다.");
+      })
       .catch(function(error) {
+        // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(
-          "errorCode : " + errorCode + "\n errorMessage : " + errorMessage
-        );
+        // ...
       });
   },
   logout() {
