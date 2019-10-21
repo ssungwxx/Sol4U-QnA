@@ -1,57 +1,156 @@
 <template>
-    <v-container grid-list-md text-center>
-        <v-layout justify-center wrap>
-            <v-dialog v-model="dialog" max-width="500">
-                <v-card>
-                    <v-card-title>code</v-card-title>         
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-text-field v-model="code"
-                        :counter="4"
-                        :rules="codeRules"
-                        label="Code"
-                        required
-                        ></v-text-field>
+  <v-app>
+    <v-layout class="banner_mobile">
+      <HeaderMobile :code="code" />
+    </v-layout>
 
-                        <v-text-field v-model="title"
-                        :counter="10"
-                        :rules="titleRules"
-                        label="title"
-                        required
-                        ></v-text-field>
+    <v-layout>
+      <v-flex sm3 class="banner_background">
+        <p class="banner">SSAFY</p>
 
-                        <v-text-field v-model="start"
-                        :counter="4"
-                        :rules="codeRules"
-                        label="Code"
-                        required
-                        ></v-text-field>
-
-                        <v-text-field v-model="end"
-                        :counter="4"
-                        :rules="codeRules"
-                        label="Code"
-                        required
-                        ></v-text-field>
-                    </v-form>
-
-                </v-card>
-            </v-dialog>
+        <v-layout>
+          <router-link to="/" class="RouterLink">
+            <p class="RouterLink_p">Join Page</p>
+          </router-link>
         </v-layout>
-    </v-container>
+        <v-layout style=" font-size: 30px; text-align:center">
+          <br />창규야
+          <br />일하자
+        </v-layout>
+      </v-flex>
+      <v-flex sm9 class>
+        <v-container grid-list-lg fluid>
+            <v-layout row wrap>
+            <h1 class="head" >Create New Channel</h1>
+            </v-layout>
+        </v-container>
+        
+          <v-container grid-list-lg fluid>
+            <v-layout row wrap>
+              <v-flex xs12 ma-5>
+                  <v-card>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-col cols="12" sm="12">
+                            <label>Code</label>
+                            <v-text-field v-model="code"
+                            :counter="4"
+                            :rules="codeRules"
+                            solo
+                            label="Code"
+                            required
+                            clearable
+                            ></v-text-field>
+                        </v-col>
+                        
+                        <v-col cols="12" sm="12">
+                            <label>title</label>
+                            <v-text-field v-model="title"
+                            :counter="10"
+                            :rules="titleRules"
+                            solo
+                            label="title"
+                            required
+                            clearable
+                            ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="12">
+                            <label>Description</label>
+                            <v-textarea v-model="description"
+                            :counter="200"
+                            :rules="descriptionRules"
+                            solo
+                            label="discription"
+                            required
+                            clearable
+                            ></v-textarea>
+                        </v-col>
+
+
+                        
+                        <v-col cols="12" sm="6" >
+                            <label>End</label>
+                            <v-text-field v-model="end"
+                            :counter="4"
+                            :rules="codeRules"
+                            solo
+                            label="Code"
+                            required
+                            ></v-text-field>
+                        </v-col>
+
+                        <v-card-actions>
+                            <v-btn color="white">Submit</v-btn>
+                        </v-card-actions>
+                    </v-form>
+                  </v-card>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        
+      </v-flex>
+    </v-layout>
+  </v-app>
 </template>
 
-
 <script>
-export default {
-    data(){
-        return {
-        valid: true,
-        dialog: false,
-        
-        };
-    },
-    methods: {
-        
+import Vue from "vue";
+import QnACard from "../components/QnACard";
+import HeaderMobile from "../components/HeaderMobile";
+export default Vue.extend({
+  computed: {
+    code: function() {
+      return this.$route.params.code;
     }
-}
+  },
+  components: {
+    HeaderMobile
+  }
+});
 </script>
+
+<style>
+@import url("https://fonts.googleapis.com/css?family=Lexend+Deca|Saira+Extra+Condensed&display=swap");
+.banner {
+  font-size: 160px;
+  color: white;
+  font-weight: bolder;
+  margin-top: -110px;
+}
+.code_banner {
+  font-size: 7vw;
+  margin-left: 20px;
+  font-weight: bold;
+  font-family: "Saira Extra Condensed", sans-serif;
+}
+.RouterLink {
+  width: 100%;
+  font-size: 35px;
+  color: black;
+  text-decoration: None;
+  text-align: center;
+  font-family: "Lexend Deca", sans-serif;
+}
+.RouterLink_p {
+  color: black;
+}
+.banner_background {
+  display: block;
+  background-color: #bfbfbf;
+}
+.banner_mobile {
+  display: none;
+  height: 50px;
+  background-color: #bfbfbf;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .banner_background {
+    display: none;
+  }
+  .banner_mobile {
+    display: block;
+  }
+}
+</style>
