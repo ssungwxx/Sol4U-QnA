@@ -1,5 +1,8 @@
 <template>
   <v-app>
+    <v-layout class = "banner_mobile">
+        <HeaderMobile :code = code />
+    </v-layout>
     <v-layout>
       <v-flex sm3 class="banner_background">
         <p class="banner">SSAFY</p>
@@ -38,7 +41,7 @@
 <script>
 import Vue from "vue";
 import QnACard from "../components/QnACard";
-
+import HeaderMobile from '../components/HeaderMobile'
 export default Vue.extend({
   computed: {
     code: function() {
@@ -46,7 +49,8 @@ export default Vue.extend({
     }
   },
   components: {
-    QnACard
+    QnACard,
+    HeaderMobile
   }
 });
 </script>
@@ -77,32 +81,23 @@ export default Vue.extend({
   color: black;
 }
 .banner_background {
-  -webkit-animation-name: movingPara;
-  -webkit-animation-duration: 10s;
-  animation-name: movingPara;
-  animation-duration: 10s;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
+  display:block;
+  background-color: #bfbfbf;
+}
+.banner_mobile{
+  display:none;
+  height: 50px;
+  background-color: #bfbfbf;
+  text-align:center;
+  padding-top:5px;
 }
 
-@-webkit-keyframes movingPara {
-  0% {
-    background-color: #3399ff;
+@media(max-width:600px){
+  .banner_background{
+    display:none;
   }
-  20% {
-    background-color: #ff99ff;
-  }
-  40% {
-    background-color: #ff9999;
-  }
-  50% {
-    background-color: #ffb366;
-  }
-  80% {
-    background-color: #adad85;
-  }
-  100% {
-    background-color: #3399ff;
+  .banner_mobile{
+    display:block;
   }
 }
 </style>
