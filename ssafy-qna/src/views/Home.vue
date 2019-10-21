@@ -25,7 +25,7 @@
             color="indigo"
             @click="loginWithAnonymous"
           >
-            <v-icon color="indigo">fa-user-secret</v-icon>&nbsp;Guest Login
+            <v-icon color="indigo">fa-user-secret</v-icon>&nbsp;Login as Guest
           </v-btn>
         </v-col>
       </v-row>
