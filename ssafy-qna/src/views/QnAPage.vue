@@ -1,5 +1,9 @@
 <template>
   <v-app>
+    <v-layout class="banner_mobile">
+      <HeaderMobile :code="code" />
+    </v-layout>
+
     <v-layout>
       <v-flex sm3 class="banner_background">
         <p class="banner">SSAFY</p>
@@ -10,30 +14,36 @@
           </router-link>
         </v-layout>
         <v-layout style=" font-size: 30px; text-align:center">
-          <br />여기에 뭘 넣어야
-          <br />할지 모르겠네요
-          <br />하핫 ☞
-          <br />콩이보고싶다
-          <br />하지만 콩이는 나를
-          <br />싫어한다
-          <br />다함께 삼성으로
-          <br />이번에 상타서 수상경력에 한개 더
-          <br />심심해서 효과넣었어요
+          <br />창규야
+          <br />일하자
         </v-layout>
       </v-flex>
-      <v-flex sm9 class></v-flex>
+      <v-flex sm9 class>
+        <v-card>
+          <v-container grid-list-lg fluid>
+            <v-layout row wrap>
+              <QnACard />
+            </v-layout>
+          </v-container>
+        </v-card>
+      </v-flex>
     </v-layout>
   </v-app>
 </template>
 
 <script>
 import Vue from "vue";
-
+import QnACard from "../components/QnACard";
+import HeaderMobile from "../components/HeaderMobile";
 export default Vue.extend({
   computed: {
     code: function() {
       return this.$route.params.code;
     }
+  },
+  components: {
+    QnACard,
+    HeaderMobile
   }
 });
 </script>
@@ -64,32 +74,22 @@ export default Vue.extend({
   color: black;
 }
 .banner_background {
-  -webkit-animation-name: movingPara;
-  -webkit-animation-duration: 10s;
-  animation-name: movingPara;
-  animation-duration: 10s;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
+  display: block;
+  background-color: #bfbfbf;
+}
+.banner_mobile {
+  display: none;
+  height: 50px;
+  background-color: #bfbfbf;
+  text-align: center;
 }
 
-@-webkit-keyframes movingPara {
-  0% {
-    background-color: #3399ff;
+@media (max-width: 600px) {
+  .banner_background {
+    display: none;
   }
-  20% {
-    background-color: #ff99ff;
-  }
-  40% {
-    background-color: #ff9999;
-  }
-  50% {
-    background-color: #ffb366;
-  }
-  80% {
-    background-color: #adad85;
-  }
-  100% {
-    background-color: #3399ff;
+  .banner_mobile {
+    display: block;
   }
 }
 </style>

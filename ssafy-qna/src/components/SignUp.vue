@@ -1,6 +1,8 @@
 <template>
   <v-row>
-    <v-btn color="primary" dark @click.stop="dialog = true">Sign Up</v-btn>
+    <v-btn color="primary" dark @click.stop="dialog = true">
+      <v-icon>fa-google</v-icon>Sign Up
+    </v-btn>
 
     <v-dialog v-model="dialog" max-width="500">
       <v-card>
