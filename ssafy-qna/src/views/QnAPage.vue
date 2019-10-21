@@ -19,13 +19,28 @@
         </v-layout>
       </v-flex>
       <v-flex sm9 class>
-        <v-card>
-          <v-container grid-list-lg fluid>
-            <v-layout row wrap>
-              <QnACard />
-            </v-layout>
-          </v-container>
-        </v-card>
+        <!-- title -->
+        <div id="pageTitle">Channel "{{code}}"</div>
+        <!-- page on qna page -->
+        <div id="pageBody">
+          <!-- header on qna page -->
+          <!-- add qna point -->
+          <div id="pageHeader">
+            <p id="channelNumber">@{{code}}</p>
+            <p id="channelTitle">{{qnaTitle}}</p>
+            <p id="channelDes">{{qnaDes}}</p>
+            <div>
+              <v-textarea outlined name="input-7-4" label="질문을 입력하세요."></v-textarea>
+            </div>
+          </div>
+          <v-card flat>
+            <v-container grid-list-lg fluid>
+              <v-layout row wrap>
+                <QnACard />
+              </v-layout>
+            </v-container>
+          </v-card>
+        </div>
       </v-flex>
     </v-layout>
   </v-app>
@@ -44,7 +59,11 @@ export default Vue.extend({
   components: {
     QnACard,
     HeaderMobile
-  }
+  },
+  data: () => ({
+    qnaTitle: "Title 입력하는 곳",
+    qnaDes: "설명을 입력하는 곳"
+  })
 });
 </script>
 
@@ -91,5 +110,40 @@ export default Vue.extend({
   .banner_mobile {
     display: block;
   }
+}
+
+#pageTitle {
+  height: 9%;
+  background-color: #ffffff;
+  padding: 2%;
+  font-size: 1.1em;
+}
+
+#pageHeader {
+  height: 15%;
+}
+
+#pageBody {
+  padding: 3% 5%;
+}
+
+#channelNumber {
+  font-size: 2em;
+  color: black;
+  height: 5%;
+}
+
+#channelTitle {
+  font-size: 1.5em;
+  color: navy;
+  margin-top: -1%;
+}
+
+#channelDes {
+  font-size: 1em;
+  color: mediumslateblue;
+  height: 2%;
+  margin-top: -1%;
+  margin-bottom: 3%;
 }
 </style>
