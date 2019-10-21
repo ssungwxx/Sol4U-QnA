@@ -10,7 +10,10 @@
     <div id="contentField">
       <v-row id="rowField">
         <v-col sm="3" cols="12">
-          <v-text-field v-model="code" label="Code Number" id="inputCode"></v-text-field>
+          <v-text-field v-model="code" label="Code Number" id="inputCode" :submit="JoinChannel"/>
+          <router-link :to="'/channel/create'">
+            <v-btn class="ma-2" style="width:180px" outlined color="normal">create</v-btn>
+          </router-link>
           <SignUp></SignUp>
           <router-link :to="'/qna/'+code">
             <!-- 여기에 vuex에 Guest아이디로 넘겨주는 기능 추가하면됨 -->
@@ -26,6 +29,7 @@
 <script>
 import ImageBanner from "../components/ImageBanner";
 import SignUp from "../components/SignUp";
+
 
 export default {
   components: {
