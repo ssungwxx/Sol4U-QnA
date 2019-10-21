@@ -14,7 +14,7 @@ export default {
 
 var agent = navigator.userAgent.toLowerCase();
 if (agent.indexOf("chrome") === -1) {
-  alert("해당 홈페이지는 Chrome에 최적화 되어 있습니다.");
+  // alert("해당 홈페이지는 Chrome에 최적화 되어 있습니다.");
 }
 </script>
 

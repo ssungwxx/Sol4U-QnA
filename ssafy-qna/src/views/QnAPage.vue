@@ -3,6 +3,7 @@
     <v-layout class = "banner_mobile">
         <HeaderMobile :code = code />
     </v-layout>
+    
     <v-layout>
       <v-flex sm3 class="banner_background">
         <p class="banner">SSAFY</p>
@@ -89,7 +90,6 @@ export default Vue.extend({
   height: 50px;
   background-color: #bfbfbf;
   text-align:center;
-  padding-top:5px;
 }
 
 @media(max-width:600px){

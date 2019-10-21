@@ -1,19 +1,34 @@
 <template>
     <v-layout>
-        <v-flex xs2/>
-        <v-flex xs10>
-            <div>
-                <p class="banner_mobile_font">
-                Sol4U__{{code}}
-                </p>
-            </div>
-        </v-flex>
-        <v-flex xs2  style="background-color:red;">
+        <v-flex>
             <!-- =========================================================== -->
+            <v-card
+                class="mx-auto overflow-hidden"
+                :height = size
+                width="100%"
+            >
 
+                <v-app-bar>
+                    <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="margin-right:20px;"></v-app-bar-nav-icon>
+                    SSAFY__{{code}}
+                </v-app-bar>
 
+                <v-navigation-drawer
+                v-model="drawer"
+                absolute
+                right
+                temporary
+                width = "150"
+                style="padding-top:150px;"
+                >
+                <v-list nav dense>
+                    <router-link to="/" class="RouterLink">
+                        <p class="RouterLink_p">Join Page</p>
+                    </router-link>
+                </v-list>
+                </v-navigation-drawer>
 
-
+            </v-card>
             <!-- =========================================================== -->
         </v-flex>
     </v-layout>
@@ -23,7 +38,18 @@
     import Vue from 'vue'
 
     export default Vue.extend({
-        props: ['code']
+        props: ['code'],
+        data: () => ({
+            drawer: false,
+            group: null,
+            size: window.outerHeight
+        }),
+
+        watch: {
+            group () {
+                this.drawer = false
+            },
+        }
     })
 </script>
 
@@ -31,5 +57,8 @@
 
 .banner_mobile_font{
   font-size:26px;
+}
+.RouterLink_p{
+    font-size:20px;
 }
 </style>
