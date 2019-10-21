@@ -1,8 +1,8 @@
 <template>
-  <v-flex xs12>
+  <v-flex xs12 round ma-3>
     <v-card class="mx-auto">
       <v-card-text>
-        <p class="display-1 text--primary">여기에 질문에 대한 Text가 들어간다.</p>
+        <p class="textQnA">여기에 질문에 대한 Text가 들어간다.</p>
         <p class="writeTimeText">
           <v-icon small>access_time</v-icon>&nbsp;누가 언제 썼는지
         </p>
@@ -26,7 +26,7 @@
 
         <div id="QnACardReply">
           <!-- 답변에 대한 공간 -->
-          <div class="text--primary">이쯤에 답글이 들어가는건 어떨까</div>
+          <div class="textReply">이쯤에 답글이 들어가는건 어떨까</div>
           <p class="writeTimeText">
             <v-icon small>access_time</v-icon>&nbsp;누가 언제 썼는지
           </p>
@@ -59,13 +59,13 @@ export default {
       } else {
         this.likeBool = true;
         this.likeCnt += 1;
-        if (this.likeCnt >= 1 && this.likeCnt < 10) {
+        if (this.likeCnt >= 1 && this.likeCnt < 7) {
           document.getElementById("likeIcon").style.color = "#cd7f32";
           document.getElementById("likeCount").style.fontSize = "0.9em";
-        } else if (this.likeCnt >= 10 && this.likeCnt < 20) {
+        } else if (this.likeCnt >= 7 && this.likeCnt < 15) {
           document.getElementById("likeIcon").style.color = "#c0c0c0";
           document.getElementById("likeCount").style.fontSize = "1.0em";
-        } else if (this.likeCnt >= 20) {
+        } else if (this.likeCnt >= 15) {
           document.getElementById("likeIcon").style.color = "#ffd700";
           document.getElementById("likeCount").style.fontSize = "1.2em";
         }
@@ -97,7 +97,18 @@ export default {
 }
 
 .writeTimeText {
-  text-justify: auto;
+  justify-content: center;
   font-size: 0.9em;
+}
+
+.textQnA {
+  font-size: 2em;
+  color: midnightblue;
+}
+
+.textReply {
+  font-size: 1.3em;
+  margin-bottom: 1%;
+  color: cadetblue;
 }
 </style>
