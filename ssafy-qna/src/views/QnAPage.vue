@@ -1,12 +1,12 @@
 <template>
   <v-app>
-  <v-layout class="banner_mobile">
-          <HeaderMobile :code="code" :maxheight="maxheight"/>
-        </v-layout>
+    <v-layout class="banner_mobile">
+      <HeaderMobile :code="code" :maxheight="maxheight" />
+    </v-layout>
     <v-layout>
       <v-flex sm3 class="banner_background">
         <div style="display:inline-block; margin-top:2vw; margin-bottom:10vw;">
-          <v-img src = "../assets/Icon.png" style="height:5vw; width:5vw;" />
+          <v-img src="../assets/Icon.png" style="height:5vw; width:5vw;" />
         </div>
         <span class="code_banner">SSAFY</span>
         <v-layout>
@@ -19,15 +19,10 @@
             <div class="RouterLink_p">Gitlab</div>
           </a>
         </v-layout>
-        <v-layout class="banner_search">
-
-        </v-layout>
+        <v-layout class="banner_search"></v-layout>
       </v-flex>
 
-
-
       <v-flex sm9 id="content_background">
-        
         <!-- title -->
         <div id="pageTitle">Channel "{{code}}"</div>
         <!-- page on qna page -->
@@ -38,7 +33,7 @@
             <p id="channelNumber">@{{code}}</p>
             <p id="channelTitle">{{qnaTitle}}</p>
             <p id="channelDes">{{qnaDes}}</p>
-            asd
+
             <div>
               <v-textarea outlined name="input-7-4" label="질문을 입력하세요."></v-textarea>
             </div>
@@ -75,18 +70,17 @@ export default Vue.extend({
     qnaDes: "설명을 입력하는 곳",
     maxheight: 0
   }),
-  mounted () {
-    this.heightm()
+  mounted() {
+    this.heightm();
   },
   methods: {
-    heightm () {
-      const offsety = document.documentElement.offsetHeight
-      const outy = window.outerHeight
+    heightm() {
+      const offsety = document.documentElement.offsetHeight;
+      const outy = window.outerHeight;
       if (offsety > outy) {
-        this.maxheight = offsety
-      }
-      else{
-        this.maxheight = outy
+        this.maxheight = offsety;
+      } else {
+        this.maxheight = outy;
       }
     }
   }
@@ -95,9 +89,9 @@ export default Vue.extend({
 
 <style>
 @import url("https://fonts.googleapis.com/css?family=Lexend+Deca|Saira+Extra+Condensed&display=swap");
-@import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Raleway:700&display=swap');
-.banner_search{
+@import url("https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Raleway:700&display=swap");
+.banner_search {
   text-align: center;
   margin-top: 7vw;
 }
@@ -111,7 +105,7 @@ export default Vue.extend({
   font-size: 5vw;
   margin-left: 20px;
   font-weight: bold;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   color: #e6e6e6;
 }
 .RouterLink {
@@ -120,17 +114,17 @@ export default Vue.extend({
   text-decoration: None;
   text-align: left;
   font-family: "Lexend Deca", sans-serif;
-  margin-left:2vw;
+  margin-left: 2vw;
 }
 .RouterLink_p {
   color: white;
-  font-family: 'Do Hyeon', sans-serif;
+  font-family: "Do Hyeon", sans-serif;
   font-size: 3vw;
 }
 .banner_background {
   display: block;
   background-color: #666666;
-  text-align:center;
+  text-align: center;
 }
 .banner_mobile {
   display: none;
@@ -138,8 +132,8 @@ export default Vue.extend({
   background-color: #bfbfbf;
   text-align: center;
 }
-#content_background{
-  height:100%;
+#content_background {
+  height: 100%;
 }
 #pageTitle {
   height: 9%;
@@ -175,13 +169,13 @@ export default Vue.extend({
   margin-top: -1%;
   margin-bottom: 3%;
 }
-.GithubAddress{
+.GithubAddress {
   width: 100%;
   color: black;
   text-decoration: None;
   text-align: left;
   font-family: "Lexend Deca", sans-serif;
-  margin-left:2vw;
+  margin-left: 2vw;
 }
 @media (max-width: 600px) {
   .banner_background {
