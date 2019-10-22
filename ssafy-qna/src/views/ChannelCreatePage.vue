@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-layout class="banner_mobile">
-      <HeaderMobile :code="code" />
+      <HeaderMobile/>
     </v-layout>
 
     <v-layout>
@@ -32,8 +32,8 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-col cols="12" sm="12">
                             <label>Code</label>
-                            <v-text-field v-model="code"
-                            :counter="4"
+                            <v-text-field v-model.number="code" type="number"
+                            :counter=10
                             :rules="codeRules"
                             solo
                             label="Code"
@@ -43,9 +43,9 @@
                         </v-col>
                         
                         <v-col cols="12" sm="12">
-                            <label>title</label>
+                            <label>Title</label>
                             <v-text-field v-model="title"
-                            :counter="10"
+                            :counter="20"
                             :rules="titleRules"
                             solo
                             label="title"
@@ -69,18 +69,16 @@
 
                         
                         <v-col cols="12" sm="6" >
-                            <label>End</label>
-                            <v-text-field v-model="end"
-                            :counter="4"
-                            :rules="codeRules"
-                            solo
-                            label="Code"
-                            required
-                            ></v-text-field>
+                            <label>Using time</label>
+                            <v-select
+                              :items="items"
+                              label="using time"
+                              solo
+                            ></v-select>
                         </v-col>
 
                         <v-card-actions>
-                            <v-btn color="white">Submit</v-btn>
+                            <v-btn class="ma-2" outlined color="indigo" >Submit</v-btn>
                         </v-card-actions>
                     </v-form>
                   </v-card>
@@ -95,18 +93,50 @@
 
 <script>
 import Vue from "vue";
-import QnACard from "../components/QnACard";
 import HeaderMobile from "../components/HeaderMobile";
-export default Vue.extend({
-  computed: {
-    code: function() {
-      return this.$route.params.code;
-    }
-  },
+export default {
   components: {
     HeaderMobile
+  },
+  data(){
+    return{
+      valid: true,
+      code: "",
+      codeRules: [
+        v => !!v || "Code is required"
+      ],
+      titleRules:[
+        v => !!v || "title is required",
+        v =>
+        (v && v.length >=4)|| "title is too short",
+        v =>
+        (v && v.length <=30)|| "title is to long"
+      ],
+      descriptionRules:[
+         v =>
+        (v && v.length >=10)|| "description is too short",
+      ],
+      items: ['+ 1hours', '+ 2hours', '+ 3hours', '+ 4hours'],
+      
+    };
+  },
+  methods:{
+    submit() {
+      if (this.$refs.form.validate()) {
+        alert(" success!");
+        this.reset();
+        
+      }
+    }
+  },
+  watch: {
+    dialog: function() {
+      if (this.$refs.form !== undefined) {
+        this.reset();
+      }
+    }
   }
-});
+}
 </script>
 
 <style>
