@@ -66,7 +66,7 @@ export default {
   },
 
   // Cloud Firebase Database Function
-  createChannel(channelCode) {
+  createChannel(channelCode, channelName, channelDescription, closeTime) {
     var user = firebase.auth().currentUser;
 
     if (user) {
@@ -74,12 +74,16 @@ export default {
 
       const channel = {
         channel_code: channelCode,
+        channel_name: channelName,
+        channel_description: channelDescription,
+        is_live: true,
         channel_owner: {
           user_name: user.displayName,
           user_email_verified: user.emailVerified,
           user_email: user.email
         },
-        messages: [],
+        channel_entry: [],
+        question: [],
         created_at: {
           timestamp: now_timestamp,
           string:
@@ -89,6 +93,16 @@ export default {
             "월 " +
             now_timestamp.getDate() +
             "일"
+        },
+        closed_at: {
+          timestamp: closeTime,
+          string:
+            closeTime.getFullYear() +
+            "년 " +
+            (closeTime.getMonth() + 1) +
+            "월 " +
+            closeTime.getDate() +
+            "일"
         }
       };
       firestore.collection("QnAChannels").add(channel);
@@ -96,6 +110,55 @@ export default {
       console.log("!!");
     }
   },
+
+  async getDocByChannelCode(channelCode) {
+    const flag = await this.checkChannelIsLive(channelCode);
+
+    const QnAChannel = db.collection("QnAChannels");
+
+    let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
+      .get()
+      .then(snapshot => {
+        return snapshot;
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+
+    let docId;
+
+    snapshots.forEach(doc => {
+      if (doc.data().is_live) {
+        docId = doc.id;
+      }
+    });
+
+    return docId;
+  },
+
+  async checkChannelIsLive(channelCode) {
+    const QnAChannel = db.collection("QnAChannels");
+
+    let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
+      .get()
+      .then(snapshot => {
+        return snapshot;
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+
+    let flag = false;
+
+    snapshots.forEach(doc => {
+      if (doc.data().is_live) {
+        flag = true;
+      }
+    });
+
+    return flag;
+  },
+
   addQuestion(channelCode, userId, value) {
     var user = firebase.auth().currentUser;
 
