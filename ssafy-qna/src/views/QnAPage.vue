@@ -80,7 +80,14 @@ export default Vue.extend({
   },
   methods: {
     heightm () {
-      this.maxheight = document.documentElement.offsetHeight
+      const offsety = document.documentElement.offsetHeight
+      const outy = window.outerHeight
+      if (offsety > outy) {
+        this.maxheight = offsety
+      }
+      else{
+        this.maxheight = outy
+      }
     }
   }
 });
