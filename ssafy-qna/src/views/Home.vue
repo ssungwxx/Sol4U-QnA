@@ -1,6 +1,7 @@
 <template>
     <div id="containerHome">
-        <ImageBanner imgSrc="https://picsum.photos/1600/900" id="imgBanner">
+        <!-- <ImageBanner imgSrc="https://picsum.photos/1600/900" id="imgBanner"> -->
+        <ImageBanner id="imgBanner">
             <div
                 style="line-height:1.2em; color: white;"
                 slot="text"
