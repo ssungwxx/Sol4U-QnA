@@ -1,21 +1,17 @@
 <template>
-    <div id="containerHome">
-        <!-- <ImageBanner imgSrc="https://picsum.photos/1600/900" id="imgBanner"> -->
-        <ImageBanner id="imgBanner">
-            <div
-                style="line-height:1.2em; color: white;"
-                slot="text"
-                class="font-weight-bold fontBanner"
-            >
-                Sol4U
-                <br />SSAFY QnA Service
-            </div>
-        </ImageBanner>
+  <div id="containerHome">
+    <!-- <ImageBanner imgSrc="https://picsum.photos/1600/900" id="imgBanner"> -->
+    <ImageBanner id="imgBanner">
+      <div style="line-height:1.2em; color: white;" slot="text" class="font-weight-bold fontBanner">
+        Sol4U
+        <br />SSAFY QnA Service
+      </div>
+    </ImageBanner>
 
     <div id="contentField">
       <v-row id="rowField">
         <v-col sm="3" cols="12">
-          <v-text-field v-model="code" label="Code Number" id="inputCode" ></v-text-field>
+          <v-text-field v-model="code" label="Code Number" id="inputCode"></v-text-field>
           <router-link :to="'/qna/'+code">
             <!-- 여기에 vuex에 Guest아이디로 넘겨주는 기능 추가하면됨 -->
             <v-btn
@@ -49,7 +45,6 @@
 import ImageBanner from "../components/ImageBanner";
 import SignUp from "../components/SignUp";
 import FirebaseService from "../services/FirebaseService";
-
 
 export default {
   components: {
@@ -94,7 +89,7 @@ export default {
 }
 
 #containerHome {
-  position: fixed;
+  /* position: fixed; */
   height: 100vh;
   width: 100vw;
 }
