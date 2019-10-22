@@ -90,6 +90,7 @@ export default {
 }
 
 #likeCount {
+  font-family: "Lexend Deca", sans-serif;
   margin-top: 12px;
   margin-left: -5px;
   color: blueviolet;
@@ -97,16 +98,19 @@ export default {
 }
 
 .writeTimeText {
+  font-family: "Lexend Deca", sans-serif;
   justify-content: center;
   font-size: 0.9em;
 }
 
 .textQnA {
+  font-family: "Lexend Deca", sans-serif;
   font-size: 2em;
   color: midnightblue;
 }
 
 .textReply {
+  font-family: "Lexend Deca", sans-serif;
   font-size: 1.3em;
   margin-bottom: 1%;
   color: cadetblue;

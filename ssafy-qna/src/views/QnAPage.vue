@@ -37,6 +37,9 @@
             <div>
               <v-textarea outlined name="input-7-4" label="질문을 입력하세요."></v-textarea>
             </div>
+
+            <v-btn color="success" id="btnQuestion">text</v-btn>
+            <v-spacer style="clear: both;"></v-spacer>
           </div>
           <v-card flat>
             <v-container grid-list-lg fluid>
@@ -152,6 +155,7 @@ export default Vue.extend({
 
 #channelNumber {
   font-size: 2em;
+  font-family: "Lexend Deca", sans-serif;
   color: black;
   height: 5%;
 }
@@ -160,15 +164,24 @@ export default Vue.extend({
   font-size: 1.5em;
   color: navy;
   margin-top: -1%;
+  font-family: "Lexend Deca", sans-serif;
 }
 
 #channelDes {
   font-size: 1em;
+  font-family: "Lexend Deca", sans-serif;
   color: mediumslateblue;
   height: 2%;
   margin-top: -1%;
   margin-bottom: 3%;
 }
+
+#btnQuestion {
+  float: right;
+  margin-bottom: 2%;
+  font-family: "Lexend Deca", sans-serif;
+}
+
 .GithubAddress {
   width: 100%;
   color: black;
