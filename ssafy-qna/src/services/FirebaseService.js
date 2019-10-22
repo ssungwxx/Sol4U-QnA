@@ -66,7 +66,9 @@ export default {
   },
 
   // Cloud Firebase Database Function
-  createChannel(channelCode) {
+
+  // 질문 채널 생성
+  createChannel(channelCode, channelName, channelDescription, closeTime) {
     var user = firebase.auth().currentUser;
 
     if (user) {
@@ -74,12 +76,15 @@ export default {
 
       const channel = {
         channel_code: channelCode,
+        channel_name: channelName,
+        channel_description: channelDescription,
+        is_live: true,
         channel_owner: {
           user_name: user.displayName,
           user_email_verified: user.emailVerified,
           user_email: user.email
         },
-        messages: [],
+        channel_entry: [],
         created_at: {
           timestamp: now_timestamp,
           string:
@@ -89,22 +94,93 @@ export default {
             "월 " +
             now_timestamp.getDate() +
             "일"
+        },
+        closed_at: {
+          timestamp: closeTime,
+          string:
+            closeTime.getFullYear() +
+            "년 " +
+            (closeTime.getMonth() + 1) +
+            "월 " +
+            closeTime.getDate() +
+            "일"
         }
       };
+
       firestore.collection("QnAChannels").add(channel);
     } else {
-      console.log("!!");
+      console.log("유저 로그인 필쑤");
     }
   },
-  addQuestion(channelCode, userId, value) {
+
+  // 채널 코드를 통해 Doc 번호 가져오기
+  async getDocByChannelCode(channelCode) {
+    const flag = await this.checkChannelIsLive(channelCode);
+
+    if (flag) {
+      const QnAChannel = db.collection("QnAChannels");
+
+      let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
+        .get()
+        .then(snapshot => {
+          return snapshot;
+        })
+        .catch(err => {
+          console.log("Error getting documents", err);
+        });
+
+      let docId;
+
+      snapshots.forEach(doc => {
+        if (doc.data().is_live) {
+          docId = doc.id;
+        }
+      });
+
+      return docId;
+    } else {
+      return false;
+    }
+  },
+
+  // 해당되는 질문채널 살아있는지 확인
+  async checkChannelIsLive(channelCode) {
+    const QnAChannel = db.collection("QnAChannels");
+
+    let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
+      .get()
+      .then(snapshot => {
+        return snapshot;
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+
+    let flag = false;
+
+    snapshots.forEach(doc => {
+      if (doc.data().is_live) {
+        flag = true;
+      }
+    });
+
+    return flag;
+  },
+
+  // 특정 질문 채널에 질문 추가
+  addQuestion(docId, content) {
     var user = firebase.auth().currentUser;
 
     if (user) {
       const now_timestamp = new Date();
 
       const Question = {
-        user_id: userId,
-        question: value,
+        question: content,
+        questioner: {
+          user_name: user.displayName,
+          user_email_verified: user.emailVerified,
+          user_email: user.email
+        },
         created_at: {
           timestamp: now_timestamp,
           string:
@@ -120,15 +196,75 @@ export default {
 
       firestore
         .collection("QnAChannels")
-        .doc(channelCode)
-        .update({
-          messages: firebase.firestore.FieldValue.arrayUnion(Question)
-        });
+        .doc(docId)
+        .collection("Questions")
+        .add(Question);
     } else {
       console.log("addQuestion Error");
     }
   },
-  enterTheChannel(channelCode) {
-    const channels = firestore.collection("QnAChannels");
-  }
+
+  // 특정 문서의 모든 질문 가져오기
+  async getQuestionsByDocId(docId) {
+    const QnAChannel = db
+      .collection("QnAChannels")
+      .doc(docId)
+      .collection("Questions");
+
+    let questionsObject = [];
+
+    await QnAChannel.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          let data = doc.data();
+          data.questionDocId = doc.id;
+          questionsObject.push(data);
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+
+    console.log(questionsObject);
+    return questionsObject;
+  },
+
+  // 특정 질문의 하트 수(hit) 증가 시키기
+  increaseQustionHit(docId, questionDocId) {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      firestore
+        .collection("QnAChannels")
+        .doc(docId)
+        .collection("Questions")
+        .doc(questionDocId)
+        .update({
+          hitCount: firebase.firestore.FieldValue.increment(1)
+        });
+      console.log("!!");
+    } else {
+      console.log("Login please");
+    }
+  },
+  // 특정 질문의 하트 수(hit) 감소 시키기
+  decreaseQustionHit(docId, questionDocId) {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      firestore
+        .collection("QnAChannels")
+        .doc(docId)
+        .collection("Questions")
+        .doc("46v4XxqxB2juRa070Nr8")
+        .update({
+          hitCount: firebase.firestore.FieldValue.increment(-1)
+        });
+      console.log("!!");
+    } else {
+      console.log("Login please");
+    }
+  },
+  // 특정 댓글의 서브컬렉션 docId 얻기
+  getQuestionDocId(docId) {}
 };
