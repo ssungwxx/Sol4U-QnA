@@ -85,7 +85,6 @@ export default {
           user_email: user.email
         },
         channel_entry: [],
-        questions: [],
         created_at: {
           timestamp: now_timestamp,
           string:
@@ -107,6 +106,7 @@ export default {
             "일"
         }
       };
+
       firestore.collection("QnAChannels").add(channel);
     } else {
       console.log("유저 로그인 필쑤");
@@ -168,7 +168,7 @@ export default {
   },
 
   // 특정 질문 채널에 질문 추가
-  addQuestion(docCode, content) {
+  addQuestion(docId, content) {
     var user = firebase.auth().currentUser;
 
     if (user) {
@@ -196,10 +196,9 @@ export default {
 
       firestore
         .collection("QnAChannels")
-        .doc(docCode)
-        .update({
-          questions: firebase.firestore.FieldValue.arrayUnion(Question)
-        });
+        .doc(docId)
+        .collection("Questions")
+        .add(Question);
     } else {
       console.log("addQuestion Error");
     }
@@ -207,23 +206,43 @@ export default {
 
   // 특정 문서의 모든 질문 가져오기
   async getQuestionsByDocId(docId) {
-    const QnAChannel = db.collection("QnAChannels").doc(docId);
+    const QnAChannel = db
+      .collection("QnAChannels")
+      .doc(docId)
+      .collection("Questions");
 
     let questionsObject = [];
-    let questions = [];
 
     await QnAChannel.get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log("No such document!");
-        } else {
-          questionsObject = doc.data().questions;
-        }
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          questionsObject.push(doc.data());
+        });
       })
       .catch(err => {
-        console.log("Error getting document", err);
+        console.log("Error getting documents", err);
       });
 
+    console.log(questionsObject);
     return questionsObject;
+  },
+
+  // 특정 질문의 하트 수(hit) 증가 시키기
+  increaseQustionHit(docId, questionDocId) {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      firestore
+        .collection("QnAChannels")
+        .doc(docId)
+        .collection("Questions")
+        .doc("46v4XxqxB2juRa070Nr8")
+        .update({
+          hitCount: firebase.firestore.FieldValue.increment(1)
+        });
+      console.log("!!");
+    } else {
+      console.log("Login please");
+    }
   }
 };
