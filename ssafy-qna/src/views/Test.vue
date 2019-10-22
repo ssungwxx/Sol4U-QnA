@@ -44,7 +44,7 @@ export default {
             });
         },
         increaseQustionHit() {
-            FirebaseService.increaseQustionHit("YBrlA3mK73iZyUHXqQb3", 0);
+            FirebaseService.decreaseQustionHit("YBrlA3mK73iZyUHXqQb3", 0);
         }
     }
 };

@@ -216,7 +216,9 @@ export default {
     await QnAChannel.get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          questionsObject.push(doc.data());
+          let data = doc.data();
+          data.questionDocId = doc.id;
+          questionsObject.push(data);
         });
       })
       .catch(err => {
@@ -236,7 +238,7 @@ export default {
         .collection("QnAChannels")
         .doc(docId)
         .collection("Questions")
-        .doc("46v4XxqxB2juRa070Nr8")
+        .doc(questionDocId)
         .update({
           hitCount: firebase.firestore.FieldValue.increment(1)
         });
@@ -244,5 +246,25 @@ export default {
     } else {
       console.log("Login please");
     }
-  }
+  },
+  // 특정 질문의 하트 수(hit) 감소 시키기
+  decreaseQustionHit(docId, questionDocId) {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      firestore
+        .collection("QnAChannels")
+        .doc(docId)
+        .collection("Questions")
+        .doc("46v4XxqxB2juRa070Nr8")
+        .update({
+          hitCount: firebase.firestore.FieldValue.increment(-1)
+        });
+      console.log("!!");
+    } else {
+      console.log("Login please");
+    }
+  },
+  // 특정 댓글의 서브컬렉션 docId 얻기
+  getQuestionDocId(docId) {}
 };
