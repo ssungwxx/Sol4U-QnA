@@ -1,45 +1,85 @@
 <template>
   <v-app>
+    <v-layout class="banner_mobile">
+      <HeaderMobile :code="code" />
+    </v-layout>
+
     <v-layout>
       <v-flex sm3 class="banner_background">
-        <p class="banner">SSAFY</p>
         <p class="code_banner">{{code}}</p>
         <v-layout>
           <router-link to="/" class="RouterLink">
-            <p class="RouterLink_p">Join Page</p>
+            <p class="RouterLink_p">계기반</p>
           </router-link>
         </v-layout>
+        <v-layout>
+          <a href="https://lab.ssafy.com/s1-final/s1p1351008" class="GithubAddress"><div style="color:yellow; font-family: 'Do Hyeon', sans-serif;">우리의 개발 주소</div></a>
+        </v-layout>
         <v-layout style=" font-size: 30px; text-align:center">
-          <br />여기에 뭘 넣어야
-          <br />할지 모르겠네요
-          <br />하핫 ☞
-          <br />콩이보고싶다
-          <br />하지만 콩이는 나를
-          <br />싫어한다
-          <br />다함께 삼성으로
-          <br />이번에 상타서 수상경력에 한개 더
-          <br />심심해서 효과넣었어요
+          <div style="font-size:150px; color:red;">ㅎ</div><br>
+          <div style="font-size:110px; color:purple;">ㅎ</div><br>
+          <div style="font-size:60px; color:yellow;">ㅎ</div><br>
+          <div style="font-size:40px; color:blue;">ㅎ</div><br>
+          <div style="font-size:20px; color:Green;">ㅎ</div><br>
+          <div style="font-size:10px; color:white;">ㅎ</div><br>
+
+        </v-layout>
+        <v-layout>
+          
         </v-layout>
       </v-flex>
-      <v-flex sm9 class></v-flex>
+      <v-flex sm9 class>
+        <!-- title -->
+        <div id="pageTitle">Channel "{{code}}"</div>
+        <!-- page on qna page -->
+        <div id="pageBody">
+          <!-- header on qna page -->
+          <!-- add qna point -->
+          <div id="pageHeader">
+            <p id="channelNumber">@{{code}}</p>
+            <p id="channelTitle">{{qnaTitle}}</p>
+            <p id="channelDes">{{qnaDes}}</p>
+            <div>
+              <v-textarea outlined name="input-7-4" label="질문을 입력하세요."></v-textarea>
+            </div>
+          </div>
+          <v-card flat>
+            <v-container grid-list-lg fluid>
+              <v-layout row wrap>
+                <QnACard />
+              </v-layout>
+            </v-container>
+          </v-card>
+        </div>
+      </v-flex>
     </v-layout>
   </v-app>
 </template>
 
 <script>
 import Vue from "vue";
-
+import QnACard from "../components/QnACard";
+import HeaderMobile from "../components/HeaderMobile";
 export default Vue.extend({
   computed: {
     code: function() {
       return this.$route.params.code;
     }
-  }
+  },
+  components: {
+    QnACard,
+    HeaderMobile
+  },
+  data: () => ({
+    qnaTitle: "Title 입력하는 곳",
+    qnaDes: "설명을 입력하는 곳"
+  })
 });
 </script>
 
 <style>
 @import url("https://fonts.googleapis.com/css?family=Lexend+Deca|Saira+Extra+Condensed&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 .banner {
   font-size: 160px;
   color: white;
@@ -47,10 +87,11 @@ export default Vue.extend({
   margin-top: -110px;
 }
 .code_banner {
-  font-size: 7vw;
+  font-size: 8vw;
   margin-left: 20px;
   font-weight: bold;
   font-family: "Saira Extra Condensed", sans-serif;
+  color: red;
 }
 .RouterLink {
   width: 100%;
@@ -61,35 +102,66 @@ export default Vue.extend({
   font-family: "Lexend Deca", sans-serif;
 }
 .RouterLink_p {
-  color: black;
+  color: blue;
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 80px;
 }
 .banner_background {
-  -webkit-animation-name: movingPara;
-  -webkit-animation-duration: 10s;
-  animation-name: movingPara;
-  animation-duration: 10s;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
+  display: block;
+  background-image: url('../assets/hahat.jpg')  
+}
+.banner_mobile {
+  display: none;
+  height: 50px;
+  background-color: #bfbfbf;
+  text-align: center;
 }
 
-@-webkit-keyframes movingPara {
-  0% {
-    background-color: #3399ff;
+@media (max-width: 600px) {
+  .banner_background {
+    display: none;
   }
-  20% {
-    background-color: #ff99ff;
+  .banner_mobile {
+    display: block;
   }
-  40% {
-    background-color: #ff9999;
-  }
-  50% {
-    background-color: #ffb366;
-  }
-  80% {
-    background-color: #adad85;
-  }
-  100% {
-    background-color: #3399ff;
-  }
+}
+
+#pageTitle {
+  height: 9%;
+  background-color: #ffffff;
+  padding: 2%;
+  font-size: 1.1em;
+}
+
+#pageHeader {
+  height: 15%;
+}
+
+#pageBody {
+  padding: 3% 5%;
+}
+
+#channelNumber {
+  font-size: 2em;
+  color: black;
+  height: 5%;
+}
+
+#channelTitle {
+  font-size: 1.5em;
+  color: navy;
+  margin-top: -1%;
+}
+
+#channelDes {
+  font-size: 1em;
+  color: mediumslateblue;
+  height: 2%;
+  margin-top: -1%;
+  margin-bottom: 3%;
+}
+.GithubAddress{
+  font-size:30px;
+  text-decoration:none;
 }
 </style>
