@@ -4,8 +4,9 @@
             <!-- =========================================================== -->
             <v-card
                 class="mx-auto overflow-hidden"
-                :height = size
+                :height = maxheight
                 width="100%"
+                color="rgba(0,0,0,0)"
             >
 
                 <v-app-bar class="bar_design">
@@ -38,11 +39,10 @@
     import Vue from 'vue'
 
     export default Vue.extend({
-        props: ['code'],
+        props: ['code', 'maxheight'],
         data: () => ({
             drawer: false,
-            group: null,
-            size: window.outerHeight
+            group: null
         }),
 
         watch: {
@@ -64,6 +64,5 @@
 .bar_design{
     background-image: url('../assets/lol.png');
     color: white;
-    
 }
 </style>
