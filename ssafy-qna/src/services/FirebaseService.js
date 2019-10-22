@@ -66,6 +66,8 @@ export default {
   },
 
   // Cloud Firebase Database Function
+
+  // 질문 채널 생성
   createChannel(channelCode, channelName, channelDescription, closeTime) {
     var user = firebase.auth().currentUser;
 
@@ -107,35 +109,41 @@ export default {
       };
       firestore.collection("QnAChannels").add(channel);
     } else {
-      console.log("!!");
+      console.log("유저 로그인 필쑤");
     }
   },
 
+  // 채널 코드를 통해 질문 채널 가져오기
   async getDocByChannelCode(channelCode) {
     const flag = await this.checkChannelIsLive(channelCode);
 
-    const QnAChannel = db.collection("QnAChannels");
+    if (flag) {
+      const QnAChannel = db.collection("QnAChannels");
 
-    let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
-      .get()
-      .then(snapshot => {
-        return snapshot;
-      })
-      .catch(err => {
-        console.log("Error getting documents", err);
+      let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
+        .get()
+        .then(snapshot => {
+          return snapshot;
+        })
+        .catch(err => {
+          console.log("Error getting documents", err);
+        });
+
+      let docId;
+
+      snapshots.forEach(doc => {
+        if (doc.data().is_live) {
+          docId = doc.id;
+        }
       });
 
-    let docId;
-
-    snapshots.forEach(doc => {
-      if (doc.data().is_live) {
-        docId = doc.id;
-      }
-    });
-
-    return docId;
+      return docId;
+    } else {
+      return false;
+    }
   },
 
+  // 해당되는 질문채널 살아있는지 확인
   async checkChannelIsLive(channelCode) {
     const QnAChannel = db.collection("QnAChannels");
 
@@ -159,15 +167,20 @@ export default {
     return flag;
   },
 
-  addQuestion(channelCode, userId, value) {
+  // 특정 질문 채널에 질문 추가
+  addQuestion(docCode, content) {
     var user = firebase.auth().currentUser;
 
     if (user) {
       const now_timestamp = new Date();
 
       const Question = {
-        user_id: userId,
-        question: value,
+        question: content,
+        questioner: {
+          user_name: user.displayName,
+          user_email_verified: user.emailVerified,
+          user_email: user.email
+        },
         created_at: {
           timestamp: now_timestamp,
           string:
@@ -183,7 +196,7 @@ export default {
 
       firestore
         .collection("QnAChannels")
-        .doc(channelCode)
+        .doc(docCode)
         .update({
           messages: firebase.firestore.FieldValue.arrayUnion(Question)
         });
