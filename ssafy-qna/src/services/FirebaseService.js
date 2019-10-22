@@ -85,7 +85,7 @@ export default {
           user_email: user.email
         },
         channel_entry: [],
-        question: [],
+        questions: [],
         created_at: {
           timestamp: now_timestamp,
           string:
@@ -113,7 +113,7 @@ export default {
     }
   },
 
-  // 채널 코드를 통해 질문 채널 가져오기
+  // 채널 코드를 통해 Doc 번호 가져오기
   async getDocByChannelCode(channelCode) {
     const flag = await this.checkChannelIsLive(channelCode);
 
@@ -198,13 +198,32 @@ export default {
         .collection("QnAChannels")
         .doc(docCode)
         .update({
-          messages: firebase.firestore.FieldValue.arrayUnion(Question)
+          questions: firebase.firestore.FieldValue.arrayUnion(Question)
         });
     } else {
       console.log("addQuestion Error");
     }
   },
-  enterTheChannel(channelCode) {
-    const channels = firestore.collection("QnAChannels");
+
+  // 특정 문서의 모든 질문 가져오기
+  async getQuestionsByDocId(docId) {
+    const QnAChannel = db.collection("QnAChannels").doc(docId);
+
+    let questionsObject = [];
+    let questions = [];
+
+    await QnAChannel.get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log("No such document!");
+        } else {
+          questionsObject = doc.data().questions;
+        }
+      })
+      .catch(err => {
+        console.log("Error getting document", err);
+      });
+
+    return questionsObject;
   }
 };
