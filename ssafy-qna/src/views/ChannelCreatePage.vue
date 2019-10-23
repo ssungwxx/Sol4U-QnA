@@ -9,6 +9,7 @@
         <HeaderWeb />
       </v-flex>
       <v-flex sm9 class>
+        <div id="pageTitle">Create Channel</div>
         <v-container grid-list-lg fluid>
             <v-layout row wrap>
             <h1 class="head" >Create New Channel</h1>
@@ -165,6 +166,12 @@ export default {
   height: 50px;
   background-color: #bfbfbf;
   text-align: center;
+}
+#pageTitle {
+  height: 9%;
+  background-color: #ffffff;
+  padding: 2%;
+  font-size: 1.1em;
 }
 
 @media (max-width: 600px) {
