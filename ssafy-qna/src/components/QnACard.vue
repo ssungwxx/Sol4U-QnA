@@ -2,12 +2,11 @@
   <v-flex xs12 round ma-3>
     <v-card class="mx-auto">
       <v-card-text>
-        <p class="textQnA">
-          <slot name="qnaMain"></slot>
-        </p>
+        <p class="textQnA">{{getCard[cardId].question}}</p>
         <p class="writeTimeText">
-          <v-icon small>access_time</v-icon>&nbsp;
-          <slot name="qnaMainTime"></slot>
+          <v-icon small>access_time</v-icon>
+          &nbsp;
+          {{getCard[cardId].created_at.timestamp}}
         </p>
         <div id="QnACardLike">
           <!-- 하트 같은 아이콘으로 좋아요 개수 표시 -->
@@ -22,7 +21,7 @@
             <template v-if="likeCount(likeCnt)">
               <v-icon color="#cd7f32" id="likeIcon">favorite</v-icon>
               <!-- 하트 숫자 표시 -->
-              <span id="likeCount">...{{likeCnt}}</span>
+              <span id="likeCount">...{{likeCnt = getCard[cardId].hitCount}}</span>
             </template>
           </v-card-actions>
         </div>
@@ -50,13 +49,20 @@
 <script>
 export default {
   name: "QnACard",
+  props: {
+    cardId: { type: Number }
+  },
   data: () => ({
     // like or not check boolean var
     likeBool: false,
     // like number count var
     likeCnt: 0
   }),
-  props: {},
+  computed: {
+    getCard() {
+      return this.$store.state.cardList;
+    }
+  },
   methods: {
     likeCheck() {
       if (this.likeBool) {
