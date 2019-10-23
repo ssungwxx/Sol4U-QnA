@@ -21,16 +21,28 @@
             <p id="channelDes">{{qnaDes}}</p>
 
             <div>
-              <v-textarea outlined name="input-7-4" label="질문을 입력하세요."></v-textarea>
+              <v-textarea
+                outlined
+                name="input-7-4"
+                label="질문을 입력하세요."
+                id="qnaText"
+                v-model="qnaText"
+              ></v-textarea>
             </div>
 
-            <v-btn color="success" id="btnQuestion">text</v-btn>
+            <v-btn color="success" id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
             <v-spacer style="clear: both;"></v-spacer>
           </div>
           <v-card flat>
             <v-container grid-list-lg fluid>
-              <v-layout row wrap>
-                <QnACard />
+              <v-layout row wrap id="cardMother">
+                <!-- 답글 예시 -->
+                <QnACard>
+                  <span slot="qnaMain">에에?</span>
+                  <span slot="qnaMainTime">time to test</span>
+                  <span slot="qnaReply">답글 에에에??</span>
+                  <span slot="qnaReplyTime">time to reply</span>
+                </QnACard>
               </v-layout>
             </v-container>
           </v-card>
@@ -45,6 +57,7 @@ import Vue from "vue";
 import QnACard from "../components/QnACard";
 import HeaderMobile from "../components/HeaderMobile";
 import HeaderWeb from "../components/HeaderWeb";
+import { log } from "util";
 export default Vue.extend({
   computed: {
     code: function() {
@@ -59,7 +72,8 @@ export default Vue.extend({
   data: () => ({
     qnaTitle: "Title 입력하는 곳",
     qnaDes: "설명을 입력하는 곳",
-    maxheight: 0
+    maxheight: 0,
+    qnaText: ""
   }),
   mounted() {
     this.heightm();
@@ -73,6 +87,12 @@ export default Vue.extend({
       } else {
         this.maxheight = outy;
       }
+    },
+    submitButton() {
+      console.log(this.qnaText);
+      var temp = this.qnaText;
+      this.qnaText = "";
+      var card = document.createElement("");
     }
   }
 });
