@@ -305,7 +305,35 @@ export default {
     var user = firebase.auth().currentUser;
 
     if (user) {
-      const firebase.collection
+      const channel = firestore.collection("QnAChannels").doc(channelDocId);
+
+      let channelData = await channel
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log("No such document!");
+          } else {
+            return doc.data();
+          }
+        })
+        .catch(err => {
+          console.log("joinTheChannel Method Error", err);
+        });
+
+      if (channelData.channel_owner.user_id == user.uid) {
+        alert("채널 소유자 입니다");
+      } else {
+        console.log(channelData.channel_entry);
+        channelData.channel_entry.forEach(entry => {
+          if (entry == user.uid) {
+            alert("이미 채널에 참가한 사용자 입니다.");
+            return;
+          }
+        });
+        channel.update({
+          channel_entry: firebase.firestore.FieldValue.arrayUnion(user.uid)
+        });
+      }
     }
   },
 

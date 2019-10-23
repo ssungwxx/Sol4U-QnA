@@ -7,6 +7,7 @@
         <v-btn small @click="getQuestionsByDocId">get Questions By Doc Id</v-btn>
         <v-btn small @click="qustionHit">qustion Hit</v-btn>
         <v-btn small @click="getAllChannels">get All Channels</v-btn>
+        <v-btn small @click="joinTheChannel">join The Channel</v-btn>
     </div>
 </template>
 
@@ -53,6 +54,9 @@ export default {
         },
         async getAllChannels() {
             await FirebaseService.getAllChannels();
+        },
+        async joinTheChannel() {
+            await FirebaseService.joinTheChannel("YBrlA3mK73iZyUHXqQb3");
         }
     }
 };
