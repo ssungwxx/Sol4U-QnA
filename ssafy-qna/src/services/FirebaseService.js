@@ -18,7 +18,6 @@ firebase.initializeApp(config);
 
 const firestore = firebase.firestore();
 const fireauth = firebase.auth();
-const db = firebase.firestore();
 
 export default {
   // Login Function
@@ -114,7 +113,7 @@ export default {
       const new_channel = await this.getDocByChannelCode(channelCode);
       console.log(new_channel);
 
-      const userTable = db.collection("VerifiedUserTable");
+      const userTable = firestore.collection("VerifiedUserTable");
 
       let snapshots = await userTable
         .where("user_id", "==", user.uid)
@@ -147,7 +146,7 @@ export default {
 
   // 전체 채널 목록
   async getAllChannels() {
-    const QnAChannel = db.collection("QnAChannels");
+    const QnAChannel = firestore.collection("QnAChannels");
 
     let channels = [];
 
@@ -170,7 +169,7 @@ export default {
     const flag = await this.checkChannelIsLive(channelCode);
 
     if (flag) {
-      const QnAChannel = db.collection("QnAChannels");
+      const QnAChannel = firestore.collection("QnAChannels");
 
       let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
         .get()
@@ -197,7 +196,7 @@ export default {
 
   // 해당되는 질문채널 살아있는지 확인
   async checkChannelIsLive(channelCode) {
-    const QnAChannel = db.collection("QnAChannels");
+    const QnAChannel = firestore.collection("QnAChannels");
 
     let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
       .get()
@@ -259,7 +258,7 @@ export default {
 
   // 특정 문서의 모든 질문 가져오기
   async getQuestionsByDocId(docId) {
-    const QnAChannel = db
+    const QnAChannel = firestore
       .collection("QnAChannels")
       .doc(docId)
       .collection("Questions");
@@ -302,10 +301,11 @@ export default {
   },
 
   // 채널 입장
-  joinTheChannel() {
+  async joinTheChannel(channelDocId) {
     var user = firebase.auth().currentUser;
 
     if (user) {
+      const firebase.collection
     }
   },
 
