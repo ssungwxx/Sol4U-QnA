@@ -6,17 +6,7 @@
 
     <v-layout>
       <v-flex sm3 class="banner_background">
-        <p class="banner">SSAFY</p>
-
-        <v-layout>
-          <router-link to="/" class="RouterLink">
-            <p class="RouterLink_p">Join Page</p>
-          </router-link>
-        </v-layout>
-        <v-layout style=" font-size: 30px; text-align:center">
-          <br />창규야
-          <br />일하자
-        </v-layout>
+        <HeaderWeb />
       </v-flex>
       <v-flex sm9 class>
         <v-container grid-list-lg fluid>
@@ -94,9 +84,11 @@
 <script>
 import Vue from "vue";
 import HeaderMobile from "../components/HeaderMobile";
+import HeaderWeb from "../components/HeaderWeb";
 export default {
   components: {
-    HeaderMobile
+    HeaderMobile,
+    HeaderWeb
   },
   data(){
     return{

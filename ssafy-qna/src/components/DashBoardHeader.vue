@@ -5,13 +5,13 @@
         </div>
         <span class="code_banner">SSAFY</span>
         <v-layout>
-          <router-link to="/dashboard" class="RouterLink">
-            <p class="RouterLink_p">DashBoard</p>
+          <router-link to="/" class="RouterLink">
+            <p class="RouterLink_p">Make</p>
           </router-link>
         </v-layout>
         <v-layout>
           <a href="https://lab.ssafy.com/s1-final/s1p1351008" class="GithubAddress">
-            <div class="RouterLink_p">Gitlab</div>
+            <div class="RouterLink_p">Participate</div>
           </a>
         </v-layout>
         <v-layout class="banner_search">
