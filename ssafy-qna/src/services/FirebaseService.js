@@ -330,6 +330,7 @@ export default {
             return;
           }
         });
+
         channel.update({
           channel_entry: firebase.firestore.FieldValue.arrayUnion(user.uid)
         });
@@ -338,10 +339,34 @@ export default {
   },
 
   // 채널 퇴장
-  exitTheChannel() {
+  async exitTheChannel(channelDocId) {
     var user = firebase.auth().currentUser;
 
     if (user) {
+      const channel = firestore.collection("QnAChannels").doc(channelDocId);
+
+      let channelData = await channel
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log("No such document!");
+          } else {
+            return doc.data();
+          }
+        })
+        .catch(err => {
+          console.log("exitTheChannel Method Error", err);
+        });
+
+      channelData.channel_entry.forEach(entry => {
+        if (entry == user.uid) {
+          channel.update({
+            channel_entry: firebase.firestore.FieldValue.arrayRemove(user.uid)
+          });
+        }
+      });
+    } else {
+      alert("잘못된 접근입니다.");
     }
   }
 };

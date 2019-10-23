@@ -8,6 +8,7 @@
         <v-btn small @click="qustionHit">qustion Hit</v-btn>
         <v-btn small @click="getAllChannels">get All Channels</v-btn>
         <v-btn small @click="joinTheChannel">join The Channel</v-btn>
+        <v-btn small @click="exitTheChannel">exit The Channel</v-btn>
     </div>
 </template>
 
@@ -57,6 +58,9 @@ export default {
         },
         async joinTheChannel() {
             await FirebaseService.joinTheChannel("YBrlA3mK73iZyUHXqQb3");
+        },
+        async exitTheChannel() {
+            await FirebaseService.exitTheChannel("YBrlA3mK73iZyUHXqQb3");
         }
     }
 };
