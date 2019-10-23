@@ -68,10 +68,12 @@ export default {
   // Cloud Firebase Database Function
 
   // 질문 채널 생성
-  createChannel(channelCode, channelName, channelDescription, closeTime) {
+  async createChannel(channelCode, channelName, channelDescription, closeTime) {
     var user = firebase.auth().currentUser;
+    const isLive = await this.checkChannelIsLive(channelCode);
 
-    if (user) {
+    console.log(isLive);
+    if (user && !isLive) {
       const now_timestamp = new Date();
 
       const channel = {
@@ -108,8 +110,10 @@ export default {
       };
 
       firestore.collection("QnAChannels").add(channel);
+    } else if (isLive) {
+      alert("채널 코드가 중복되었습니다.");
     } else {
-      console.log("유저 로그인 필쑤");
+      alert("로그인이 필요한 작업입니다.");
     }
   },
 
@@ -229,8 +233,8 @@ export default {
     return questionsObject;
   },
 
-  // 특정 질문의 하트 수(hit) 증가 시키기
-  increaseQustionHit(docId, questionDocId) {
+  // 특정 질문의 하트 수(hit) 증가/감소 (1,-1)
+  qustionHit(docId, questionDocId, num) {
     var user = firebase.auth().currentUser;
 
     if (user) {
@@ -240,31 +244,11 @@ export default {
         .collection("Questions")
         .doc(questionDocId)
         .update({
-          hitCount: firebase.firestore.FieldValue.increment(1)
+          hitCount: firebase.firestore.FieldValue.increment(num)
         });
       console.log("!!");
     } else {
       console.log("Login please");
     }
-  },
-  // 특정 질문의 하트 수(hit) 감소 시키기
-  decreaseQustionHit(docId, questionDocId) {
-    var user = firebase.auth().currentUser;
-
-    if (user) {
-      firestore
-        .collection("QnAChannels")
-        .doc(docId)
-        .collection("Questions")
-        .doc("46v4XxqxB2juRa070Nr8")
-        .update({
-          hitCount: firebase.firestore.FieldValue.increment(-1)
-        });
-      console.log("!!");
-    } else {
-      console.log("Login please");
-    }
-  },
-  // 특정 댓글의 서브컬렉션 docId 얻기
-  getQuestionDocId(docId) {}
+  }
 };

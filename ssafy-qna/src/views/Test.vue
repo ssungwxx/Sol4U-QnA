@@ -1,11 +1,11 @@
 <template>
     <div class="my-2">
         <v-textarea name="msg" label="Default style" v-model="msg"></v-textarea>
-        <v-btn small @click="createChannel">createChannel</v-btn>
-        <v-btn small @click="addQuestion">addQuestion</v-btn>
-        <v-btn small @click="getDocByChannelCode">getDocByChannelCode</v-btn>
-        <v-btn small @click="getQuestionsByDocId">getQuestionsByDocId</v-btn>
-        <v-btn small @click="increaseQustionHit">increaseQustionHit</v-btn>
+        <v-btn small @click="createChannel">creat eChannel</v-btn>
+        <v-btn small @click="addQuestion">add Question</v-btn>
+        <v-btn small @click="getDocByChannelCode">get Doc By Channel Code</v-btn>
+        <v-btn small @click="getQuestionsByDocId">get Questions By Doc Id</v-btn>
+        <v-btn small @click="qustionHit">qustion Hit</v-btn>
     </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
     methods: {
         async createChannel() {
             await FirebaseService.createChannel(
-                "1234",
+                "12341",
                 "Test방",
                 "요약",
                 new Date()
@@ -43,8 +43,12 @@ export default {
                 console.log(element);
             });
         },
-        increaseQustionHit() {
-            FirebaseService.decreaseQustionHit("YBrlA3mK73iZyUHXqQb3", 0);
+        qustionHit() {
+            FirebaseService.qustionHit(
+                "YBrlA3mK73iZyUHXqQb3",
+                "0cu1vt8YT89N0QMxbAOZ",
+                1
+            );
         }
     }
 };
