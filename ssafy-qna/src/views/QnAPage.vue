@@ -77,47 +77,18 @@ export default Vue.extend({
 
 <style>
 @import url("https://fonts.googleapis.com/css?family=Lexend+Deca|Saira+Extra+Condensed&display=swap");
-<<<<<<< HEAD
-@import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Raleway:700&display=swap');
-
-=======
 @import url("https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Raleway:700&display=swap");
 .banner_search {
   text-align: center;
   margin-top: 7vw;
 }
->>>>>>> 931c8901bd13175e5b432f516e20756917c75602
 .banner {
   font-size: 160px;
   color: white;
   font-weight: bolder;
   margin-top: -110px;
 }
-<<<<<<< HEAD
-=======
-.code_banner {
-  font-size: 5vw;
-  margin-left: 20px;
-  font-weight: bold;
-  font-family: "Raleway", sans-serif;
-  color: #e6e6e6;
-}
-.RouterLink {
-  width: 100%;
-  color: black;
-  text-decoration: None;
-  text-align: left;
-  font-family: "Lexend Deca", sans-serif;
-  margin-left: 2vw;
-}
-.RouterLink_p {
-  color: white;
-  font-family: "Do Hyeon", sans-serif;
-  font-size: 3vw;
-}
->>>>>>> 931c8901bd13175e5b432f516e20756917c75602
 .banner_background {
   display: block;
   background-color: #666666;
@@ -166,17 +137,6 @@ export default Vue.extend({
   margin-top: -1%;
   margin-bottom: 3%;
 }
-<<<<<<< HEAD
-=======
-.GithubAddress {
-  width: 100%;
-  color: black;
-  text-decoration: None;
-  text-align: left;
-  font-family: "Lexend Deca", sans-serif;
-  margin-left: 2vw;
-}
->>>>>>> 931c8901bd13175e5b432f516e20756917c75602
 @media (max-width: 600px) {
   .banner_background {
     display: none;
