@@ -306,6 +306,7 @@ export default {
 
     if (user) {
       const channel = firestore.collection("QnAChannels").doc(channelDocId);
+      const userTable = firestore.collection("VerifiedUserTable");
 
       let channelData = await channel
         .get()
@@ -323,7 +324,6 @@ export default {
       if (channelData.channel_owner.user_id == user.uid) {
         alert("채널 소유자 입니다");
       } else {
-        console.log(channelData.channel_entry);
         channelData.channel_entry.forEach(entry => {
           if (entry == user.uid) {
             alert("이미 채널에 참가한 사용자 입니다.");
@@ -333,6 +333,50 @@ export default {
 
         channel.update({
           channel_entry: firebase.firestore.FieldValue.arrayUnion(user.uid)
+        });
+
+        let snapshots = await userTable
+          .where("user_id", "==", user.uid)
+          .get()
+          .then(snapshot => {
+            return snapshot;
+          })
+          .catch(err => {
+            console.log("Error getting documents", err);
+          });
+
+        let userTableDocId;
+
+        snapshots.forEach(doc => {
+          userTableDocId = doc.id;
+        });
+
+        const userTableDoc = userTable.doc(userTableDocId);
+
+        let joinedChannels = await userTableDoc
+          .get()
+          .then(doc => {
+            if (!doc.exists) {
+              console.log("No such document!");
+            } else {
+              return doc.data();
+            }
+          })
+          .catch(err => {
+            console.log("joinTheChannel Method Error", err);
+          });
+
+        joinedChannels.joined_channels.forEach(data => {
+          if (data == channelDocId) {
+            alert("이미 입장한 채널입니다.");
+            return;
+          }
+        });
+
+        userTableDoc.update({
+          joined_channels: firebase.firestore.FieldValue.arrayUnion(
+            channelDocId
+          )
         });
       }
     }
@@ -344,6 +388,7 @@ export default {
 
     if (user) {
       const channel = firestore.collection("QnAChannels").doc(channelDocId);
+      const userTable = firestore.collection("VerifiedUserTable");
 
       let channelData = await channel
         .get()
@@ -362,6 +407,47 @@ export default {
         if (entry == user.uid) {
           channel.update({
             channel_entry: firebase.firestore.FieldValue.arrayRemove(user.uid)
+          });
+        }
+      });
+
+      const snapshots = await userTable
+        .where("user_id", "==", user.uid)
+        .get()
+        .then(snapshot => {
+          return snapshot;
+        })
+        .catch(err => {
+          console.log("Error getting documents", err);
+        });
+
+      let userTableDocId;
+
+      snapshots.forEach(data => {
+        userTableDocId = data.id;
+      });
+
+      const currentUserTable = userTable.doc(userTableDocId);
+
+      let currentUserTableData = await currentUserTable
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log("No such document!");
+          } else {
+            return doc.data();
+          }
+        })
+        .catch(err => {
+          console.log("joinTheChannel Method Error", err);
+        });
+
+      currentUserTableData.joined_channels.forEach(data => {
+        if (data == channelDocId) {
+          currentUserTable.update({
+            joined_channels: firebase.firestore.FieldValue.arrayRemove(
+              channelDocId
+            )
           });
         }
       });
