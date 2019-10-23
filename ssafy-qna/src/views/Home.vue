@@ -25,9 +25,9 @@
             </v-btn>
           </router-link>
 
-          
-          <v-btn class="ma-2" style="width:180px" outlined color="indigo" @click="create">Create</v-btn>
-          
+          <router-link :to="'/channel/create'">
+            <v-btn class="ma-2" style="width:180px" outlined color="indigo" @click="create">Create</v-btn>
+          </router-link>
           <v-btn class="ma-2" style="width:200px" outlined color="red" @click="loginWithGoogle">
             <v-icon color="red">fa-google</v-icon>&nbsp;Login with Google
           </v-btn>
