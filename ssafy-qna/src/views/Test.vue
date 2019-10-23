@@ -6,6 +6,7 @@
         <v-btn small @click="getDocByChannelCode">get Doc By Channel Code</v-btn>
         <v-btn small @click="getQuestionsByDocId">get Questions By Doc Id</v-btn>
         <v-btn small @click="qustionHit">qustion Hit</v-btn>
+        <v-btn small @click="getAllChannels">get All Channels</v-btn>
     </div>
 </template>
 
@@ -49,6 +50,9 @@ export default {
                 "0cu1vt8YT89N0QMxbAOZ",
                 1
             );
+        },
+        async getAllChannels() {
+            await FirebaseService.getAllChannels();
         }
     }
 };

@@ -117,6 +117,26 @@ export default {
     }
   },
 
+  // 전체 채널 목록
+  async getAllChannels() {
+    const QnAChannel = db.collection("QnAChannels");
+
+    let channels = [];
+
+    await QnAChannel.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          channels.push(doc.data());
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+
+    console.log(channels);
+    return channels;
+  },
+
   // 채널 코드를 통해 Doc 번호 가져오기
   async getDocByChannelCode(channelCode) {
     const flag = await this.checkChannelIsLive(channelCode);
