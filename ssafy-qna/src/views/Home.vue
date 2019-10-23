@@ -1,16 +1,12 @@
 <template>
-    <div id="containerHome">
-        <!-- <ImageBanner imgSrc="https://picsum.photos/1600/900" id="imgBanner"> -->
-        <ImageBanner id="imgBanner">
-            <div
-                style="line-height:1.2em; color: white;"
-                slot="text"
-                class="font-weight-bold fontBanner"
-            >
-                Sol4U
-                <br />SSAFY QnA Service
-            </div>
-        </ImageBanner>
+  <div id="containerHome">
+    <!-- <ImageBanner imgSrc="https://picsum.photos/1600/900" id="imgBanner"> -->
+    <ImageBanner id="imgBanner">
+      <div style="line-height:1.2em; color: white;" slot="text" class="font-weight-bold fontBanner">
+        Sol4U
+        <br />SSAFY QnA Service
+      </div>
+    </ImageBanner>
 
     <div id="contentField">
       <v-row id="rowField">
@@ -27,6 +23,10 @@
             >
               <v-icon color="indigo">fa-user-secret</v-icon>&nbsp;Login as Guest
             </v-btn>
+          </router-link>
+
+          <router-link :to="'/channel/create'">
+            <v-btn class="ma-2" style="width:180px" outlined color="indigo">Create</v-btn>
           </router-link>
           <v-btn class="ma-2" style="width:200px" outlined color="red" @click="loginWithGoogle">
             <v-icon color="red">fa-google</v-icon>&nbsp;Login with Google
@@ -89,7 +89,7 @@ export default {
 }
 
 #containerHome {
-  position: fixed;
+  /* position: fixed; */
   height: 100vh;
   width: 100vw;
 }

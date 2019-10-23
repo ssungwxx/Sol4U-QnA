@@ -2,9 +2,12 @@
   <v-flex xs12 round ma-3>
     <v-card class="mx-auto">
       <v-card-text>
-        <p class="textQnA">여기에 질문에 대한 Text가 들어간다.</p>
+        <p class="textQnA">
+          <slot name="qnaMain"></slot>
+        </p>
         <p class="writeTimeText">
-          <v-icon small>access_time</v-icon>&nbsp;누가 언제 썼는지
+          <v-icon small>access_time</v-icon>&nbsp;
+          <slot name="qnaMainTime"></slot>
         </p>
         <div id="QnACardLike">
           <!-- 하트 같은 아이콘으로 좋아요 개수 표시 -->
@@ -26,9 +29,12 @@
 
         <div id="QnACardReply">
           <!-- 답변에 대한 공간 -->
-          <div class="textReply">이쯤에 답글이 들어가는건 어떨까</div>
+          <div class="textReply">
+            <slot name="qnaReply"></slot>
+          </div>
           <p class="writeTimeText">
-            <v-icon small>access_time</v-icon>&nbsp;누가 언제 썼는지
+            <v-icon small>access_time</v-icon>&nbsp;
+            <slot name="qnaReplyTime"></slot>
           </p>
         </div>
       </v-card-text>
@@ -90,6 +96,7 @@ export default {
 }
 
 #likeCount {
+  font-family: "Lexend Deca", sans-serif;
   margin-top: 12px;
   margin-left: -5px;
   color: blueviolet;
@@ -97,16 +104,19 @@ export default {
 }
 
 .writeTimeText {
+  font-family: "Lexend Deca", sans-serif;
   justify-content: center;
   font-size: 0.9em;
 }
 
 .textQnA {
+  font-family: "Lexend Deca", sans-serif;
   font-size: 2em;
   color: midnightblue;
 }
 
 .textReply {
+  font-family: "Lexend Deca", sans-serif;
   font-size: 1.3em;
   margin-bottom: 1%;
   color: cadetblue;
