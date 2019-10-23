@@ -73,7 +73,7 @@ export default {
     const isLive = await this.checkChannelIsLive(channelCode);
 
     console.log(isLive);
-    if (user && !isLive) {
+    if (user.emailVerified && !isLive) {
       const now_timestamp = new Date();
 
       const channel = {
@@ -141,7 +141,7 @@ export default {
     } else if (isLive) {
       alert("채널 코드가 중복되었습니다.");
     } else {
-      alert("로그인이 필요한 작업입니다.");
+      alert("인증된 로그인이 필요한 작업입니다.");
     }
   },
 
