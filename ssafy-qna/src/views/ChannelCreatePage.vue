@@ -3,12 +3,13 @@
     <v-layout class="banner_mobile">
       <HeaderMobile/>
     </v-layout>
-
+    <!-- create-->
     <v-layout>
       <v-flex sm3 class="banner_background">
         <HeaderWeb />
       </v-flex>
       <v-flex sm9 class>
+        <div id="pageTitle">Create Channel</div>
         <v-container grid-list-lg fluid>
             <v-layout row wrap>
             <h1 class="head" >Create New Channel</h1>
@@ -68,7 +69,7 @@
                         </v-col>
 
                         <v-card-actions>
-                            <v-btn class="ma-2" outlined color="indigo" >Submit</v-btn>
+                            <v-btn class="ma-2" outlined color="indigo" @click="createChannel()">Create</v-btn>
                         </v-card-actions>
                     </v-form>
                   </v-card>
@@ -85,6 +86,7 @@
 import Vue from "vue";
 import HeaderMobile from "../components/HeaderMobile";
 import HeaderWeb from "../components/HeaderWeb";
+import FirebaseService from "../services/FirebaseService";
 export default {
   components: {
     HeaderMobile,
@@ -94,6 +96,9 @@ export default {
     return{
       valid: true,
       code: "",
+      title:"",
+      description:"",
+      end:"",
       codeRules: [
         v => !!v || "Code is required"
       ],
@@ -113,18 +118,19 @@ export default {
     };
   },
   methods:{
-    submit() {
+    async createChannel() {
+      
       if (this.$refs.form.validate()) {
+        await FirebaseService.createChannel(this.code, this.title,this.description, new Date());
         alert(" success!");
-        this.reset();
-        
+        this.$refs.from.reset();
       }
     }
   },
   watch: {
     dialog: function() {
       if (this.$refs.form !== undefined) {
-        this.reset();
+        this.$refs.form.reset();
       }
     }
   }
@@ -165,6 +171,12 @@ export default {
   height: 50px;
   background-color: #bfbfbf;
   text-align: center;
+}
+#pageTitle {
+  height: 9%;
+  background-color: #ffffff;
+  padding: 2%;
+  font-size: 1.1em;
 }
 
 @media (max-width: 600px) {

@@ -18,7 +18,6 @@ firebase.initializeApp(config);
 
 const firestore = firebase.firestore();
 const fireauth = firebase.auth();
-const db = firebase.firestore();
 
 export default {
   // Login Function
@@ -68,10 +67,12 @@ export default {
   // Cloud Firebase Database Function
 
   // 질문 채널 생성
-  createChannel(channelCode, channelName, channelDescription, closeTime) {
+  async createChannel(channelCode, channelName, channelDescription, closeTime) {
     var user = firebase.auth().currentUser;
+    const isLive = await this.checkChannelIsLive(channelCode);
 
-    if (user) {
+    console.log(isLive);
+    if (user.emailVerified && !isLive) {
       const now_timestamp = new Date();
 
       const channel = {
@@ -82,7 +83,8 @@ export default {
         channel_owner: {
           user_name: user.displayName,
           user_email_verified: user.emailVerified,
-          user_email: user.email
+          user_email: user.email,
+          user_id: user.uid
         },
         channel_entry: [],
         created_at: {
@@ -107,10 +109,59 @@ export default {
         }
       };
 
-      firestore.collection("QnAChannels").add(channel);
+      await firestore.collection("QnAChannels").add(channel);
+      const new_channel = await this.getDocByChannelCode(channelCode);
+      console.log(new_channel);
+
+      const userTable = firestore.collection("VerifiedUserTable");
+
+      let snapshots = await userTable
+        .where("user_id", "==", user.uid)
+        .get()
+        .then(snapshot => {
+          return snapshot;
+        })
+        .catch(err => {
+          console.log("Error getting documents", err);
+        });
+
+      let docId;
+
+      snapshots.forEach(doc => {
+        docId = doc.id;
+      });
+
+      firestore
+        .collection("VerifiedUserTable")
+        .doc(docId)
+        .update({
+          owned_channels: firebase.firestore.FieldValue.arrayUnion(new_channel)
+        });
+    } else if (isLive) {
+      alert("채널 코드가 중복되었습니다.");
     } else {
-      console.log("유저 로그인 필쑤");
+      alert("인증된 로그인이 필요한 작업입니다.");
     }
+  },
+
+  // 전체 채널 목록
+  async getAllChannels() {
+    const QnAChannel = firestore.collection("QnAChannels");
+
+    let channels = [];
+
+    await QnAChannel.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          channels.push(doc.data());
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+
+    console.log(channels);
+    return channels;
   },
 
   // 채널 코드를 통해 Doc 번호 가져오기
@@ -118,7 +169,7 @@ export default {
     const flag = await this.checkChannelIsLive(channelCode);
 
     if (flag) {
-      const QnAChannel = db.collection("QnAChannels");
+      const QnAChannel = firestore.collection("QnAChannels");
 
       let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
         .get()
@@ -145,7 +196,7 @@ export default {
 
   // 해당되는 질문채널 살아있는지 확인
   async checkChannelIsLive(channelCode) {
-    const QnAChannel = db.collection("QnAChannels");
+    const QnAChannel = firestore.collection("QnAChannels");
 
     let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
       .get()
@@ -179,7 +230,8 @@ export default {
         questioner: {
           user_name: user.displayName,
           user_email_verified: user.emailVerified,
-          user_email: user.email
+          user_email: user.email,
+          user_id: user.uid
         },
         created_at: {
           timestamp: now_timestamp,
@@ -206,7 +258,7 @@ export default {
 
   // 특정 문서의 모든 질문 가져오기
   async getQuestionsByDocId(docId) {
-    const QnAChannel = db
+    const QnAChannel = firestore
       .collection("QnAChannels")
       .doc(docId)
       .collection("Questions");
@@ -229,8 +281,8 @@ export default {
     return questionsObject;
   },
 
-  // 특정 질문의 하트 수(hit) 증가 시키기
-  increaseQustionHit(docId, questionDocId) {
+  // 특정 질문의 하트 수(hit) 증가/감소 (1,-1)
+  qustionHit(docId, questionDocId, num) {
     var user = firebase.auth().currentUser;
 
     if (user) {
@@ -240,31 +292,167 @@ export default {
         .collection("Questions")
         .doc(questionDocId)
         .update({
-          hitCount: firebase.firestore.FieldValue.increment(1)
+          hitCount: firebase.firestore.FieldValue.increment(num)
         });
       console.log("!!");
     } else {
       console.log("Login please");
     }
   },
-  // 특정 질문의 하트 수(hit) 감소 시키기
-  decreaseQustionHit(docId, questionDocId) {
+
+  // 채널 입장
+  async joinTheChannel(channelDocId) {
     var user = firebase.auth().currentUser;
 
     if (user) {
-      firestore
-        .collection("QnAChannels")
-        .doc(docId)
-        .collection("Questions")
-        .doc("46v4XxqxB2juRa070Nr8")
-        .update({
-          hitCount: firebase.firestore.FieldValue.increment(-1)
+      const channel = firestore.collection("QnAChannels").doc(channelDocId);
+      const userTable = firestore.collection("VerifiedUserTable");
+
+      let channelData = await channel
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log("No such document!");
+          } else {
+            return doc.data();
+          }
+        })
+        .catch(err => {
+          console.log("joinTheChannel Method Error", err);
         });
-      console.log("!!");
-    } else {
-      console.log("Login please");
+
+      if (channelData.channel_owner.user_id == user.uid) {
+        alert("채널 소유자 입니다");
+      } else {
+        channelData.channel_entry.forEach(entry => {
+          if (entry == user.uid) {
+            alert("이미 채널에 참가한 사용자 입니다.");
+            return;
+          }
+        });
+
+        channel.update({
+          channel_entry: firebase.firestore.FieldValue.arrayUnion(user.uid)
+        });
+
+        let snapshots = await userTable
+          .where("user_id", "==", user.uid)
+          .get()
+          .then(snapshot => {
+            return snapshot;
+          })
+          .catch(err => {
+            console.log("Error getting documents", err);
+          });
+
+        let userTableDocId;
+
+        snapshots.forEach(doc => {
+          userTableDocId = doc.id;
+        });
+
+        const userTableDoc = userTable.doc(userTableDocId);
+
+        let joinedChannels = await userTableDoc
+          .get()
+          .then(doc => {
+            if (!doc.exists) {
+              console.log("No such document!");
+            } else {
+              return doc.data();
+            }
+          })
+          .catch(err => {
+            console.log("joinTheChannel Method Error", err);
+          });
+
+        joinedChannels.joined_channels.forEach(data => {
+          if (data == channelDocId) {
+            alert("이미 입장한 채널입니다.");
+            return;
+          }
+        });
+
+        userTableDoc.update({
+          joined_channels: firebase.firestore.FieldValue.arrayUnion(
+            channelDocId
+          )
+        });
+      }
     }
   },
-  // 특정 댓글의 서브컬렉션 docId 얻기
-  getQuestionDocId(docId) {}
+
+  // 채널 퇴장
+  async exitTheChannel(channelDocId) {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      const channel = firestore.collection("QnAChannels").doc(channelDocId);
+      const userTable = firestore.collection("VerifiedUserTable");
+
+      let channelData = await channel
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log("No such document!");
+          } else {
+            return doc.data();
+          }
+        })
+        .catch(err => {
+          console.log("exitTheChannel Method Error", err);
+        });
+
+      channelData.channel_entry.forEach(entry => {
+        if (entry == user.uid) {
+          channel.update({
+            channel_entry: firebase.firestore.FieldValue.arrayRemove(user.uid)
+          });
+        }
+      });
+
+      const snapshots = await userTable
+        .where("user_id", "==", user.uid)
+        .get()
+        .then(snapshot => {
+          return snapshot;
+        })
+        .catch(err => {
+          console.log("Error getting documents", err);
+        });
+
+      let userTableDocId;
+
+      snapshots.forEach(data => {
+        userTableDocId = data.id;
+      });
+
+      const currentUserTable = userTable.doc(userTableDocId);
+
+      let currentUserTableData = await currentUserTable
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log("No such document!");
+          } else {
+            return doc.data();
+          }
+        })
+        .catch(err => {
+          console.log("joinTheChannel Method Error", err);
+        });
+
+      currentUserTableData.joined_channels.forEach(data => {
+        if (data == channelDocId) {
+          currentUserTable.update({
+            joined_channels: firebase.firestore.FieldValue.arrayRemove(
+              channelDocId
+            )
+          });
+        }
+      });
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  }
 };

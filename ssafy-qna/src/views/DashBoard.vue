@@ -5,8 +5,37 @@
         </v-layout>
         <v-layout>
             <v-flex sm3 class="banner_background">
-                <DashBoardHeader />
+                <HeaderWeb />
             </v-flex>
+
+            <v-flex sm9 class="content_background">
+                <!-- title -->
+                <div id="pageTitle">Channel list</div>
+
+                <!-- body -->
+                <div id="pageBody">
+                    <div id="pageHeader">
+                        <h1>Channel List</h1>
+                        <p>Channel List You Created.</p>
+                    </div>
+                
+                   <!-- 정렬-->
+
+                    <v-card>
+                        <v-container grid-list-lg fluid>
+                            <v-layout row wrap>
+                                <!-- channel list-->
+                                <ChannelCard />
+                            </v-layout>
+                        </v-container>
+                    </v-card> 
+                </div>
+
+
+            </v-flex>
+
+
+
         </v-layout>
     </v-app>
 </template>
@@ -14,11 +43,13 @@
 <script>
 import Vue from "vue";
 import HeaderMobile from "../components/HeaderMobile";
-import DashBoardHeader from "../components/DashBoardHeader";
+import HeaderWeb from "../components/HeaderWeb";
+import ChannelCard from "../components/ChannelListCard";
 export default {
     components: {
         HeaderMobile,
-        DashBoardHeader
+        HeaderWeb,
+        ChannelCard
     }
 }
 </script>
@@ -45,5 +76,14 @@ export default {
   background-color: #bfbfbf;
   text-align: center;
 }
+.content_background {
+  height: 100%;
+}
 
+#pageTitle {
+  height: 9%;
+  background-color: #ffffff;
+  padding: 2%;
+  font-size: 1.1em;
+}
 </style>
