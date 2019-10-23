@@ -84,7 +84,8 @@ export default {
         channel_owner: {
           user_name: user.displayName,
           user_email_verified: user.emailVerified,
-          user_email: user.email
+          user_email: user.email,
+          user_id: user.uid
         },
         channel_entry: [],
         created_at: {
@@ -109,7 +110,34 @@ export default {
         }
       };
 
-      firestore.collection("QnAChannels").add(channel);
+      await firestore.collection("QnAChannels").add(channel);
+      const new_channel = await this.getDocByChannelCode(channelCode);
+      console.log(new_channel);
+
+      const userTable = db.collection("VerifiedUserTable");
+
+      let snapshots = await userTable
+        .where("user_id", "==", user.uid)
+        .get()
+        .then(snapshot => {
+          return snapshot;
+        })
+        .catch(err => {
+          console.log("Error getting documents", err);
+        });
+
+      let docId;
+
+      snapshots.forEach(doc => {
+        docId = doc.id;
+      });
+
+      firestore
+        .collection("VerifiedUserTable")
+        .doc(docId)
+        .update({
+          owned_channels: firebase.firestore.FieldValue.arrayUnion(new_channel)
+        });
     } else if (isLive) {
       alert("채널 코드가 중복되었습니다.");
     } else {
@@ -203,7 +231,8 @@ export default {
         questioner: {
           user_name: user.displayName,
           user_email_verified: user.emailVerified,
-          user_email: user.email
+          user_email: user.email,
+          user_id: user.uid
         },
         created_at: {
           timestamp: now_timestamp,
@@ -269,6 +298,22 @@ export default {
       console.log("!!");
     } else {
       console.log("Login please");
+    }
+  },
+
+  // 채널 입장
+  joinTheChannel() {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+    }
+  },
+
+  // 채널 퇴장
+  exitTheChannel() {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
     }
   }
 };

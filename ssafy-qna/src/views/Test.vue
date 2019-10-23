@@ -1,7 +1,7 @@
 <template>
     <div class="my-2">
         <v-textarea name="msg" label="Default style" v-model="msg"></v-textarea>
-        <v-btn small @click="createChannel">creat eChannel</v-btn>
+        <v-btn small @click="createChannel">create Channel</v-btn>
         <v-btn small @click="addQuestion">add Question</v-btn>
         <v-btn small @click="getDocByChannelCode">get Doc By Channel Code</v-btn>
         <v-btn small @click="getQuestionsByDocId">get Questions By Doc Id</v-btn>
@@ -20,7 +20,7 @@ export default {
     methods: {
         async createChannel() {
             await FirebaseService.createChannel(
-                "12341",
+                "1231211",
                 "Test방",
                 "요약",
                 new Date()
