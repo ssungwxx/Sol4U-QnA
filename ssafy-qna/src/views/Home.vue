@@ -57,13 +57,19 @@ export default {
       await FirebaseService.loginWithGoogle();
     },
     async loginWithAnonymous() {
-      const docId = await FirebaseService.getDocByChannelCode(this.code);
-      if (docId == false){
-        alert("채널정보가 없습니다. 다시 확인해주세요");
+      if(this.code == ""){
+        alert("DashBoard로 이동합니다")
+        this.$router.push('/dashboard');
       }
       else{
-        this.$router.push('/qna/'+this.code);
-        await FirebaseService.loginWithAnonymous();
+        const docId = await FirebaseService.getDocByChannelCode(this.code);
+        if (docId == false){
+          alert("채널정보가 없습니다. 다시 확인해주세요");
+        }
+        else{
+          this.$router.push('/qna/'+this.code);
+          await FirebaseService.loginWithAnonymous();
+        }
       }
     },
     async logout() {
