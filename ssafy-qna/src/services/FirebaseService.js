@@ -454,5 +454,32 @@ export default {
     } else {
       alert("잘못된 접근입니다.");
     }
-  }
+  },
+
+  // 소유한 채널 삭제 ( 트랙잭션을 사용하여 본래의 컬렉션에서 다른 컬렉션으로 이동시켜 보관 )
+  async deleteChannel(channelDocId) {
+    const user = firebase.auth().currentUser;
+
+    const qnaChannel = firestore.collection("QnAChannels").doc(channelDocId);
+
+    const channelData = await qnaChannel.get().then(doc => {
+      return doc.data();
+    });
+
+    if (user && channelData.channel_owner.user_id == user.uid) {
+      const deletedChannel = firestore.collection("DeletedChannels");
+
+      deletedChannel.add(channelData);
+
+      qnaChannel.delete();
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  },
+
+  // 질문 삭제
+  deleteQuestion() {},
+
+  // 채널 상세 내용 수정
+  changChannelDetail() {}
 };

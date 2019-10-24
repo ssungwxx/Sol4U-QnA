@@ -9,6 +9,7 @@
         <v-btn small @click="getAllChannels">get All Channels</v-btn>
         <v-btn small @click="joinTheChannel">join The Channel</v-btn>
         <v-btn small @click="exitTheChannel">exit The Channel</v-btn>
+        <v-btn small @click="deleteChannel">delete Channel</v-btn>
     </div>
 </template>
 
@@ -61,6 +62,9 @@ export default {
         },
         async exitTheChannel() {
             await FirebaseService.exitTheChannel("7COxqkB4q2O6h3LP5Mw8");
+        },
+        async deleteChannel() {
+            await FirebaseService.deleteChannel("Lm9AmvkazrJq84NoAkXA");
         }
     }
 };
