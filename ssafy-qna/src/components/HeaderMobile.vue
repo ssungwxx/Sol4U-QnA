@@ -49,17 +49,15 @@
                         </v-layout>
                         <v-layout class="banner_search_icon">
                         <v-flex>
-                            <router-link :to="'/qna/'+routercode2" style="text-decoration: None;">
-                            <!-- 여기에 vuex에 Guest아이디로 넘겨주는 기능 추가하면됨 -->
                             <v-btn
                                 class="ma-2"
                                 style="width:100%;"
                                 outlined
                                 color="black"
+                                @click="checkChannel"
                             >
                                 <v-icon color="black">fa-search</v-icon>
                             </v-btn>
-                            </router-link>
                         </v-flex>
                     </v-layout>
                 </v-list>
@@ -73,6 +71,7 @@
 
 <script lang="ts">
     import Vue from 'vue'
+    import FirebaseService from "../services/FirebaseService";
 
     export default Vue.extend({
         props: ['maxheight'],
@@ -87,6 +86,17 @@
                 this.drawer = false
             },
         },
+        methods: {
+        async checkChannel(){
+          const docId = await FirebaseService.getDocByChannelCode(this.routercode2);
+          if (docId == false){
+            alert("채널정보가 없습니다. 다시 확인해주세요");
+          }
+          else{
+            this.$router.push('/qna/'+this.routercode2);
+          }
+        }
+      }
     })
 </script>
 

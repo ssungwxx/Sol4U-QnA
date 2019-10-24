@@ -6,9 +6,9 @@
       </v-flex>
 
       <v-flex sm9 id="content_background">
-    <v-layout class="banner_mobile">
-      <HeaderMobile :maxheight="maxheight" />
-    </v-layout>
+        <v-layout class="banner_mobile">
+          <HeaderMobile :maxheight="maxheight" />
+        </v-layout>
         <!-- title -->
         <div id="pageTitle">Channel "{{code}}"</div>
         <!-- page on qna page -->

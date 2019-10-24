@@ -1,14 +1,15 @@
 <template>
     <v-app>
-        <v-layout class="banner_mobile">
-            <HeaderMobile :maxheight="maxheight"/>
-        </v-layout>
+        
         <v-layout>
             <v-flex sm3 class="banner_background">
                 <HeaderWeb />
             </v-flex>
 
             <v-flex sm9 class="content_background">
+              <v-layout class="banner_mobile">
+                <HeaderMobile :maxheight="maxheight"/>
+              </v-layout>
                 <!-- title -->
                 <div id="pageTitle">Channel list</div>
 
@@ -50,6 +51,23 @@ export default {
         HeaderMobile,
         HeaderWeb,
         ChannelCard
+    },
+    data: () => ({
+      maxheight: 0
+    }),
+    methods:{
+      heightm() {
+        const offsety = document.documentElement.offsetHeight;
+        const outy = window.outerHeight;
+        if (offsety > outy) {
+          this.maxheight = offsety;
+        } else {
+          this.maxheight = outy;
+        }
+      }
+    },
+    mounted() {
+      this.heightm();
     }
 }
 </script>

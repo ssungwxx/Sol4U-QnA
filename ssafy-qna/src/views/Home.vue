@@ -63,8 +63,8 @@ export default {
       }
       else{
         this.$router.push('/qna/'+this.code);
+        await FirebaseService.loginWithAnonymous();
       }
-      await FirebaseService.loginWithAnonymous();
     },
     async logout() {
       await FirebaseService.logout();
