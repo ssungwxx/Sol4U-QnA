@@ -50,8 +50,8 @@ export default {
                 console.log(element);
             });
         },
-        qustionHit() {
-            FirebaseService.qustionHit(
+        async qustionHit() {
+            await FirebaseService.qustionHit(
                 "YBrlA3mK73iZyUHXqQb3",
                 "0cu1vt8YT89N0QMxbAOZ",
                 1
