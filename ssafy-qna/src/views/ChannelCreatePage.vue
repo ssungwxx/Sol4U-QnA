@@ -138,10 +138,7 @@ export default {
       if (this.$refs.form.validate()) {
         await FirebaseService.createChannel(this.code, this.title,this.description, endtime);
         alert(" success!");
-        this.code= "",
-        this.title="",
-        this.description="",
-        this.end=""
+        this.$refs.form.reset();
        
       }
     }
