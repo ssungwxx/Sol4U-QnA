@@ -112,11 +112,11 @@ export default {
             "월 " +
             closeTime.getDate() +
             "일 " +
-            now_timestamp.getHours() +
+            closeTime.getHours() +
             "시 " +
-            now_timestamp.getMinutes() +
+            closeTime.getMinutes() +
             "분 " +
-            now_timestamp.getSeconds() +
+            closeTime.getSeconds() +
             "초"
         }
       };

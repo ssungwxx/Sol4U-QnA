@@ -23,7 +23,7 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-col cols="12" sm="12">
                             <label>Code</label>
-                            <v-text-field v-model.number="code" type="number"
+                            <v-text-field v-model.number="code"
                             :counter=10
                             :rules="codeRules"
                             solo
@@ -61,7 +61,7 @@
                         
                         <v-col cols="12" sm="6" >
                             <label>Using time</label>
-                            <v-select
+                            <v-select v-model="end"
                               :items="items"
                               label="using time"
                               solo
@@ -120,10 +120,29 @@ export default {
   methods:{
     async createChannel() {
       
+      let plustime ="";
+      let endtime = new Date();
+      if(this.end=="+ 1hours"){
+        plustime=1;
+      }else if(this.end=="+ 2hours"){
+        plustime=2;
+      }else if(this.end=="+ +3hours"){
+        plustime=3;
+      }else{
+        plustime=4;
+      }
+
+      endtime.setHours(endtime.getHours()+plustime);
+      console.log(endtime);
+      console.log(endtime.getHours());
       if (this.$refs.form.validate()) {
-        await FirebaseService.createChannel(this.code, this.title,this.description, new Date());
+        await FirebaseService.createChannel(this.code, this.title,this.description, endtime);
         alert(" success!");
-        this.$refs.from.reset();
+        this.code= "",
+        this.title="",
+        this.description="",
+        this.end=""
+       
       }
     }
   },
