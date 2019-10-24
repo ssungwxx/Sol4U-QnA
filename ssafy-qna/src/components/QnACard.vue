@@ -6,22 +6,28 @@
         <p class="writeTimeText">
           <v-icon small>access_time</v-icon>
           &nbsp;
-          {{getCard[cardId].created_at.timestamp}}
+          {{getCard[cardId].created_at.string}}
         </p>
         <div id="QnACardLike">
           <!-- 하트 같은 아이콘으로 좋아요 개수 표시 -->
           <v-card-actions class="QnACardLikeAction">
-            <v-btn v-if="!likeBool" @click="likeCheck()" text icon color="#00000033">
+            <v-btn
+              v-if="!likeBool"
+              @click="likeCheck(getCard[cardId].hitCount)"
+              text
+              icon
+              color="#00000033"
+            >
               <v-icon>favorite_border</v-icon>
             </v-btn>
-            <v-btn v-else @click="likeCheck()" text icon color="#ff0000">
+            <v-btn v-else @click="likeCheck(getCard[cardId].hitCount)" text icon color="#ff0000">
               <v-icon>favorite</v-icon>
             </v-btn>
             <!-- 하트 개수 표시 영역 -->
-            <template v-if="likeCount(likeCnt)">
+            <template v-if="likeCount(getCard[cardId].hitCount)">
               <v-icon color="#cd7f32" id="likeIcon">favorite</v-icon>
               <!-- 하트 숫자 표시 -->
-              <span id="likeCount">...{{likeCnt = getCard[cardId].hitCount}}</span>
+              <span id="likeCount">...{{getCard[cardId].hitCount}}</span>
             </template>
           </v-card-actions>
         </div>
@@ -47,16 +53,17 @@
 </template>
 
 <script>
+import FirebaseService from "../services/FirebaseService";
+
 export default {
   name: "QnACard",
   props: {
-    cardId: { type: Number }
+    cardId: { type: Number },
+    docId: { type: String }
   },
   data: () => ({
     // like or not check boolean var
-    likeBool: false,
-    // like number count var
-    likeCnt: 0
+    likeBool: false
   }),
   computed: {
     getCard() {
@@ -64,23 +71,33 @@ export default {
     }
   },
   methods: {
-    likeCheck() {
+    likeCheck(num) {
       if (this.likeBool) {
         this.likeBool = false;
+        // console.log(this.getCard[this.cardId].questionDocId);
+        FirebaseService.questionHit(
+          this.docId,
+          this.getCard[this.cardId].questionDocId,
+          -1
+        );
         // this.likeCnt = this.likeCnt == 0 ? 0 : this.likeCnt - 1;
       } else {
         this.likeBool = true;
-        this.likeCnt += 1;
-        if (this.likeCnt >= 1 && this.likeCnt < 7) {
-          document.getElementById("likeIcon").style.color = "#cd7f32";
-          document.getElementById("likeCount").style.fontSize = "0.9em";
-        } else if (this.likeCnt >= 7 && this.likeCnt < 15) {
-          document.getElementById("likeIcon").style.color = "#c0c0c0";
-          document.getElementById("likeCount").style.fontSize = "1.0em";
-        } else if (this.likeCnt >= 15) {
-          document.getElementById("likeIcon").style.color = "#ffd700";
-          document.getElementById("likeCount").style.fontSize = "1.2em";
-        }
+        FirebaseService.questionHit(
+          this.docId,
+          this.getCard[this.cardId].questionDocId,
+          1
+        );
+      }
+      if (num >= 1 && num < 7) {
+        document.getElementById("likeIcon").style.color = "#cd7f32";
+        document.getElementById("likeCount").style.fontSize = "0.9em";
+      } else if (num >= 7 && num < 15) {
+        document.getElementById("likeIcon").style.color = "#c0c0c0";
+        document.getElementById("likeCount").style.fontSize = "1.0em";
+      } else if (num >= 15) {
+        document.getElementById("likeIcon").style.color = "#ffd700";
+        document.getElementById("likeCount").style.fontSize = "1.2em";
       }
     },
     likeCount(num) {

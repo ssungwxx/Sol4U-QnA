@@ -39,7 +39,7 @@
               <v-layout v-if="haveList" row wrap id="cardMother">
                 <!-- 답글 예시 -->
                 <template v-for="i in getCardList.length">
-                  <QnACard :cardId="i-1" :key="i"></QnACard>
+                  <QnACard :cardId="i-1" :docId="channelDocId" :key="i"></QnACard>
                 </template>
               </v-layout>
             </v-container>
