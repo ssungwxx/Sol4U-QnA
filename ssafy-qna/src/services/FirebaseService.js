@@ -499,5 +499,22 @@ export default {
   },
 
   // 채널 상세 내용 수정
-  changChannelDetail() {}
+  async changChannelDetail(channelDocId, title, description) {
+    const user = firebase.auth().currentUser;
+
+    const channelDoc = firestore.collection("QnAChannels").doc(channelDocId);
+
+    const channelData = await channelDoc.get().then(doc => {
+      return doc.data();
+    });
+
+    if (user && user.uid == channelData.channel_owner.user_id) {
+      channelDoc.update({
+        channel_name: title,
+        channel_description: description
+      });
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  }
 };

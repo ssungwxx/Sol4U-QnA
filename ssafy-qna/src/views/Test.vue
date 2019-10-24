@@ -11,6 +11,7 @@
         <v-btn small @click="exitTheChannel">exit The Channel</v-btn>
         <v-btn small @click="deleteChannel">delete Channel</v-btn>
         <v-btn small @click="deleteQuestion">delete Question</v-btn>
+        <v-btn small @click="changChannelDetail">changChannelDetail</v-btn>
     </div>
 </template>
 
@@ -71,6 +72,13 @@ export default {
             await FirebaseService.deleteQuestion(
                 "YBrlA3mK73iZyUHXqQb3",
                 "0cu1vt8YT89N0QMxbAOZ"
+            );
+        },
+        async changChannelDetail() {
+            await FirebaseService.changChannelDetail(
+                "kmyX1pw69Ub7qAapVNWk",
+                "제목 수정",
+                "내용 수정"
             );
         }
     }
