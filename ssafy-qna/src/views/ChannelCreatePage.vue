@@ -138,40 +138,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Lexend+Deca|Saira+Extra+Condensed&display=swap");
-.banner {
-  font-size: 160px;
-  color: white;
-  font-weight: bolder;
-  margin-top: -110px;
-}
-.code_banner {
-  font-size: 7vw;
-  margin-left: 20px;
-  font-weight: bold;
-  font-family: "Saira Extra Condensed", sans-serif;
-}
-.RouterLink {
-  width: 100%;
-  font-size: 35px;
-  color: black;
-  text-decoration: None;
-  text-align: center;
-  font-family: "Lexend Deca", sans-serif;
-}
-.RouterLink_p {
-  color: black;
-}
-.banner_background {
-  display: block;
-  background-color: #bfbfbf;
-}
-.banner_mobile {
-  display: none;
-  height: 50px;
-  background-color: #bfbfbf;
-  text-align: center;
-}
+
 #pageTitle {
   height: 9%;
   background-color: #ffffff;
@@ -179,12 +146,4 @@ export default {
   font-size: 1.1em;
 }
 
-@media (max-width: 600px) {
-  .banner_background {
-    display: none;
-  }
-  .banner_mobile {
-    display: block;
-  }
-}
 </style>
