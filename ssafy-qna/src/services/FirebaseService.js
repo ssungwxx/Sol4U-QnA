@@ -95,7 +95,13 @@ export default {
             (now_timestamp.getMonth() + 1) +
             "월 " +
             now_timestamp.getDate() +
-            "일"
+            "일 " +
+            now_timestamp.getHours() +
+            "시 " +
+            now_timestamp.getMinutes() +
+            "분 " +
+            now_timestamp.getSeconds() +
+            "초"
         },
         closed_at: {
           timestamp: closeTime,
@@ -105,7 +111,13 @@ export default {
             (closeTime.getMonth() + 1) +
             "월 " +
             closeTime.getDate() +
-            "일"
+            "일 " +
+            now_timestamp.getHours() +
+            "시 " +
+            now_timestamp.getMinutes() +
+            "분 " +
+            now_timestamp.getSeconds() +
+            "초"
         }
       };
 
@@ -241,7 +253,13 @@ export default {
             (now_timestamp.getMonth() + 1) +
             "월 " +
             now_timestamp.getDate() +
-            "일"
+            "일 " +
+            now_timestamp.getHours() +
+            "시 " +
+            now_timestamp.getMinutes() +
+            "분 " +
+            now_timestamp.getSeconds() +
+            "초"
         },
         hitCount: 0
       };
