@@ -222,7 +222,14 @@ export default {
     let flag = false;
 
     snapshots.forEach(doc => {
-      if (doc.data().is_live) {
+      if (
+        doc.data().closed_at.timestamp.seconds <
+        new Date().getTime() / 1000
+      ) {
+        QnAChannel.doc(doc.id).update({
+          is_live: false
+        });
+      } else if (doc.data().is_live) {
         flag = true;
       }
     });
@@ -535,4 +542,6 @@ export default {
       alert("잘못된 접근입니다.");
     }
   }
+
+  // 채널 is_live 확인 후 변경
 };
