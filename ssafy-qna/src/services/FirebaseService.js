@@ -454,5 +454,67 @@ export default {
     } else {
       alert("잘못된 접근입니다.");
     }
+  },
+
+  // 소유한 채널 삭제 ( 트랙잭션을 사용하여 본래의 컬렉션에서 다른 컬렉션으로 이동시켜 보관 )
+  async deleteChannel(channelDocId) {
+    const user = firebase.auth().currentUser;
+
+    const qnaChannel = firestore.collection("QnAChannels").doc(channelDocId);
+
+    const channelData = await qnaChannel.get().then(doc => {
+      return doc.data();
+    });
+
+    if (user && channelData.channel_owner.user_id == user.uid) {
+      const deletedChannel = firestore.collection("DeletedChannels");
+
+      deletedChannel.add(channelData);
+
+      qnaChannel.delete();
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  },
+
+  // 질문 삭제
+  async deleteQuestion(channelDocId, questionDocId) {
+    const user = firebase.auth().currentUser;
+
+    const questionDoc = firestore
+      .collection("QnAChannels")
+      .doc(channelDocId)
+      .collection("Questions")
+      .doc(questionDocId);
+
+    const questionData = await questionDoc.get().then(doc => {
+      return doc.data();
+    });
+
+    if (user && questionData.questioner.user_id == user.uid) {
+      questionDoc.delete();
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  },
+
+  // 채널 상세 내용 수정
+  async changChannelDetail(channelDocId, title, description) {
+    const user = firebase.auth().currentUser;
+
+    const channelDoc = firestore.collection("QnAChannels").doc(channelDocId);
+
+    const channelData = await channelDoc.get().then(doc => {
+      return doc.data();
+    });
+
+    if (user && user.uid == channelData.channel_owner.user_id) {
+      channelDoc.update({
+        channel_name: title,
+        channel_description: description
+      });
+    } else {
+      alert("잘못된 접근입니다.");
+    }
   }
 };
