@@ -23,7 +23,7 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-col cols="12" sm="12">
                             <label>Code</label>
-                            <v-text-field v-model="code"
+                            <v-text-field v-model="code" type="number"
                             :counter=10
                             :rules="codeRules"
                             solo
