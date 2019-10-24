@@ -307,11 +307,11 @@ export default {
   },
 
   // 특정 질문의 하트 수(hit) 증가/감소 (1,-1)
-  questionHit(docId, questionDocId, num) {
+  async questionHit(docId, questionDocId, num) {
     var user = firebase.auth().currentUser;
 
     if (user) {
-      firestore
+      await firestore
         .collection("QnAChannels")
         .doc(docId)
         .collection("Questions")
