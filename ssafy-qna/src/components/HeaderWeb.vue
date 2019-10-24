@@ -61,7 +61,6 @@
 <style scoped>
 .code_banner {
   font-size: 5vw;
-  margin-left: 20px;
   font-weight: bold;
   font-family: 'Raleway', sans-serif;
   color: #e6e6e6;
@@ -80,6 +79,7 @@
   text-decoration: None;
   text-align: left;
   font-family: "Lexend Deca", sans-serif;
+  margin-left:2vw;
 }
 .RouterLink_p {
   color: white;
