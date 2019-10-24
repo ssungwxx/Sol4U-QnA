@@ -11,7 +11,8 @@
         <v-btn small @click="exitTheChannel">exit The Channel</v-btn>
         <v-btn small @click="deleteChannel">delete Channel</v-btn>
         <v-btn small @click="deleteQuestion">delete Question</v-btn>
-        <v-btn small @click="changChannelDetail">changChannelDetail</v-btn>
+        <v-btn small @click="changChannelDetail">chang Channel Detail</v-btn>
+        <v-btn small @click="checkChannelIsLive">check Channel IsLive</v-btn>
     </div>
 </template>
 
@@ -25,7 +26,7 @@ export default {
     methods: {
         async createChannel() {
             await FirebaseService.createChannel(
-                "1231211",
+                "1111",
                 "Test방",
                 "요약",
                 new Date()
@@ -80,6 +81,10 @@ export default {
                 "제목 수정",
                 "내용 수정"
             );
+        },
+        async checkChannelIsLive() {
+            let flag = await FirebaseService.checkChannelIsLive("1234");
+            console.log(flag);
         }
     }
 };

@@ -95,7 +95,13 @@ export default {
             (now_timestamp.getMonth() + 1) +
             "월 " +
             now_timestamp.getDate() +
-            "일"
+            "일 " +
+            now_timestamp.getHours() +
+            "시 " +
+            now_timestamp.getMinutes() +
+            "분 " +
+            now_timestamp.getSeconds() +
+            "초"
         },
         closed_at: {
           timestamp: closeTime,
@@ -105,7 +111,13 @@ export default {
             (closeTime.getMonth() + 1) +
             "월 " +
             closeTime.getDate() +
-            "일"
+            "일 " +
+            now_timestamp.getHours() +
+            "시 " +
+            now_timestamp.getMinutes() +
+            "분 " +
+            now_timestamp.getSeconds() +
+            "초"
         }
       };
 
@@ -210,7 +222,14 @@ export default {
     let flag = false;
 
     snapshots.forEach(doc => {
-      if (doc.data().is_live) {
+      if (
+        doc.data().closed_at.timestamp.seconds <
+        new Date().getTime() / 1000
+      ) {
+        QnAChannel.doc(doc.id).update({
+          is_live: false
+        });
+      } else if (doc.data().is_live) {
         flag = true;
       }
     });
@@ -241,7 +260,13 @@ export default {
             (now_timestamp.getMonth() + 1) +
             "월 " +
             now_timestamp.getDate() +
-            "일"
+            "일 " +
+            now_timestamp.getHours() +
+            "시 " +
+            now_timestamp.getMinutes() +
+            "분 " +
+            now_timestamp.getSeconds() +
+            "초"
         },
         hitCount: 0
       };
@@ -517,4 +542,6 @@ export default {
       alert("잘못된 접근입니다.");
     }
   }
+
+  // 채널 is_live 확인 후 변경
 };
