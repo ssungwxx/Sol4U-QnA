@@ -137,8 +137,7 @@ export default {
       console.log(endtime.getHours());
       if (this.$refs.form.validate()) {
         await FirebaseService.createChannel(this.code, this.title,this.description, endtime);
-        alert(" success!");
-        this.$refs.form.reset();
+        this.$router.push('/qna/'+this.code);
        
       }
     }
