@@ -70,6 +70,7 @@ export default {
       return this.$store.state.cardList;
     }
   },
+  mounted() {},
   methods: {
     likeCheck(num) {
       if (this.likeBool) {
