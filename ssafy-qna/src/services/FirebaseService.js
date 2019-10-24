@@ -478,7 +478,25 @@ export default {
   },
 
   // 질문 삭제
-  deleteQuestion() {},
+  async deleteQuestion(channelDocId, questionDocId) {
+    const user = firebase.auth().currentUser;
+
+    const questionDoc = firestore
+      .collection("QnAChannels")
+      .doc(channelDocId)
+      .collection("Questions")
+      .doc(questionDocId);
+
+    const questionData = await questionDoc.get().then(doc => {
+      return doc.data();
+    });
+
+    if (user && questionData.questioner.user_id == user.uid) {
+      questionDoc.delete();
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  },
 
   // 채널 상세 내용 수정
   changChannelDetail() {}
