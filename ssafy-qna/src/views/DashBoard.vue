@@ -86,4 +86,12 @@ export default {
   padding: 2%;
   font-size: 1.1em;
 }
+@media (max-width: 600px) {
+  .banner_background {
+    display: none;
+  }
+  .banner_mobile {
+    display: block;
+  }
+}
 </style>

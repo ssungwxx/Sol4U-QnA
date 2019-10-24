@@ -1,14 +1,14 @@
 <template>
   <v-app>
-    <v-layout class="banner_mobile">
-      <HeaderMobile :code="code" :maxheight="maxheight" />
-    </v-layout>
     <v-layout>
       <v-flex sm3 class="banner_background">
         <HeaderWeb />
       </v-flex>
 
       <v-flex sm9 id="content_background">
+    <v-layout class="banner_mobile">
+      <HeaderMobile :maxheight="maxheight" />
+    </v-layout>
         <!-- title -->
         <div id="pageTitle">Channel "{{code}}"</div>
         <!-- page on qna page -->
@@ -135,7 +135,10 @@ export default Vue.extend({
 @import url("https://fonts.googleapis.com/css?family=Lexend+Deca|Saira+Extra+Condensed&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Raleway:700&display=swap");
-
+.banner_search {
+  text-align: center;
+  margin-top: 7vw;
+}
 .banner {
   font-size: 160px;
   color: white;
@@ -193,13 +196,11 @@ export default Vue.extend({
   margin-top: -1%;
   margin-bottom: 3%;
 }
-
 #btnQuestion {
   float: right;
   margin-bottom: 2%;
   font-family: "Lexend Deca", sans-serif;
 }
-
 @media (max-width: 600px) {
   .banner_background {
     display: none;
