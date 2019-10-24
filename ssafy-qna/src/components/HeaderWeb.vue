@@ -80,7 +80,6 @@
   text-decoration: None;
   text-align: left;
   font-family: "Lexend Deca", sans-serif;
-  margin-left:2vw;
 }
 .RouterLink_p {
   color: white;
