@@ -71,7 +71,9 @@ export default {
 <style>
 #rowField {
   margin-left: 8%;
-  margin-top: 30%;
+  margin-top: 0px;
+  position:absolute;
+  bottom:100px;
 }
 
 #imgBanner {
@@ -95,7 +97,9 @@ export default {
 }
 
 .fontBanner {
-  margin: -20% 0 0 10%;
+  position:absolute;
+  top:150px;
+  margin-left:10%;
   font-size: 1em;
 }
 </style>
