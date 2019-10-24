@@ -15,7 +15,20 @@
           </a>
         </v-layout>
         <v-layout class="banner_search">
-
+          <v-row>
+            <v-col sm="9">
+            <v-text-field
+              label="Code"
+              solo
+              v-model="code"
+            ></v-text-field>
+            </v-col>
+            <v-col> 
+            <router-link :to="'/qna/'+code">
+              <v-img style="width:45px;" src="../assets/search-icon.png"></v-img>
+            </router-link>
+            </v-col>
+          </v-row>
         </v-layout>
     </div>
 </template>
@@ -24,7 +37,9 @@
     import Vue from 'vue'
 
     export default Vue.extend({
-       
+      data: () => ({
+        code: ""
+      })
     })
 </script>
 
@@ -60,5 +75,6 @@
 .banner_search{
   text-align: center;
   margin-top: 7vw;
+  padding-left:20px;
 }
 </style>
