@@ -25,7 +25,7 @@ export default {
     methods: {
         async createChannel() {
             await FirebaseService.createChannel(
-                "1231211",
+                "1111",
                 "Test방",
                 "요약",
                 new Date()
