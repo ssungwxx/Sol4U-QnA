@@ -1,14 +1,14 @@
 <template>
   <v-app>
-    <v-layout class="banner_mobile">
-      <HeaderMobile :code="code" :maxheight="maxheight" />
-    </v-layout>
     <v-layout>
       <v-flex sm3 class="banner_background">
         <HeaderWeb />
       </v-flex>
 
       <v-flex sm9 id="content_background">
+    <v-layout class="banner_mobile">
+      <HeaderMobile :maxheight="maxheight" />
+    </v-layout>
         <!-- title -->
         <div id="pageTitle">Channel "{{code}}"</div>
         <!-- page on qna page -->

@@ -15,20 +15,33 @@
           </a>
         </v-layout>
         <v-layout class="banner_search">
-          <v-row>
-            <v-col sm="9">
+          <v-flex sm1></v-flex>
+          <v-flex sm10>
             <v-text-field
               label="Code"
+              height="20px"
               solo
-              v-model="code"
+              v-model="routercode"
             ></v-text-field>
-            </v-col>
-            <v-col> 
-            <router-link :to="'/qna/'+code">
-              <v-img style="width:45px;" src="../assets/search-icon.png"></v-img>
+          </v-flex>
+          <v-flex sm1></v-flex>
+        </v-layout>
+        <v-layout class="banner_search_icon">
+          <v-flex sm1></v-flex>
+          <v-flex sm10>
+            <router-link :to="'/qna/'+routercode" style="text-decoration: None;">
+              <!-- 여기에 vuex에 Guest아이디로 넘겨주는 기능 추가하면됨 -->
+              <v-btn
+                class="ma-2"
+                style="width:100%;"
+                outlined
+                color="white"
+              >
+                <v-icon color="white">fa-search</v-icon>
+              </v-btn>
             </router-link>
-            </v-col>
-          </v-row>
+          </v-flex>
+          <v-flex sm2></v-flex>
         </v-layout>
     </div>
 </template>
@@ -38,7 +51,7 @@
 
     export default Vue.extend({
       data: () => ({
-        code: ""
+        routercode: ""
       })
     })
 </script>
@@ -75,6 +88,8 @@
 .banner_search{
   text-align: center;
   margin-top: 7vw;
-  padding-left:20px;
+}
+.banner_search_icon{
+  text-align: center;
 }
 </style>
