@@ -6,9 +6,9 @@
                 <HeaderWeb />
             </v-flex>
 
-            <v-flex sm9 class="content_background">
+            <v-flex sm9 id="content_background">
               <v-layout class="banner_mobile">
-                <HeaderMobile :maxheight="maxheight"/>
+                <HeaderMobile/>
               </v-layout>
                 <!-- title -->
                 <div id="pageTitle">Channel list</div>
@@ -68,20 +68,10 @@ export default {
         ChannelCard
     },
     data: () => ({
-      maxheight: 0,
       dashboards: [],
       currentTimestamp: ''
     }),
     methods:{
-      heightm () {
-        const offsety = document.documentElement.offsetHeight;
-        const outy = window.outerHeight;
-        if (offsety > outy) {
-          this.maxheight = offsety;
-        } else {
-          this.maxheight = outy;
-        }
-      },
       async getdashboard () {
         function compare (a, b){
           if (a.closed_at.timestamp < b.closed_at.timestamp)
@@ -97,7 +87,6 @@ export default {
       }
     },
     mounted() {
-      this.heightm();
       this.getdashboard();
     }
 }
@@ -118,6 +107,10 @@ export default {
   display: block;
   background-color: #666666;
   text-align: center;
+  position: fixed;
+  width: 25%;
+  z-index: 20;
+  height: 100vh;
 }
 .banner_mobile {
   display: none;
@@ -125,8 +118,12 @@ export default {
   background-color: #bfbfbf;
   text-align: center;
 }
-.content_background {
-  height: 100%;
+#content_background {
+  position: absolute;
+  height: 100vh;
+  z-index: 20;
+  width: 75%;
+  right: 0;
 }
 
 #pageTitle {
@@ -142,5 +139,9 @@ export default {
   .banner_mobile {
     display: block;
   }
+  #content_background {
+  height: 100vh;
+  width: 100vw;
+ }
 }
 </style>

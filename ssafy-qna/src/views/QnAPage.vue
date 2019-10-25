@@ -7,7 +7,7 @@
 
       <v-flex sm9 id="content_background">
         <v-layout class="banner_mobile">
-          <HeaderMobile :maxheight="maxheight" />
+          <HeaderMobile />
         </v-layout>
         <!-- title -->
         <div id="pageTitle">Channel "{{code}}"</div>
@@ -75,22 +75,12 @@ export default Vue.extend({
   data: () => ({
     qnaTitle: "Title 입력하는 곳",
     qnaDes: "설명을 입력하는 곳",
-    maxheight: 0,
     qnaText: "",
     cardNum: 0,
     channelDocId: "",
     haveList: false
   }),
   methods: {
-    heightm() {
-      const offsety = document.documentElement.offsetHeight;
-      const outy = window.outerHeight;
-      if (offsety > outy) {
-        this.maxheight = offsety;
-      } else {
-        this.maxheight = outy;
-      }
-    },
     submitButton() {
       this.cardNum += 1;
       var temp = this.qnaText;
@@ -122,7 +112,6 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.heightm();
     var temp = this.getDocId();
     var vueQna = this;
     temp.then(function(now) {
@@ -153,6 +142,10 @@ export default Vue.extend({
   display: block;
   background-color: #666666;
   text-align: center;
+  position: fixed;
+  width: 25%;
+  z-index: 20;
+  height: 100vh;
 }
 .banner_mobile {
   display: none;
@@ -161,7 +154,11 @@ export default Vue.extend({
   text-align: center;
 }
 #content_background {
-  height: 100%;
+  position: absolute;
+  height: 100vh;
+  z-index: 20;
+  width: 75%;
+  right: 0;
 }
 #pageTitle {
   height: 60px !important;
@@ -176,6 +173,7 @@ export default Vue.extend({
 
 #pageBody {
   padding: 3% 5%;
+  background-color: white;
 }
 
 #channelNumber {
@@ -212,5 +210,9 @@ export default Vue.extend({
   .banner_mobile {
     display: block;
   }
+  #content_background {
+  height: 100vh;
+  width: 100vw;
+}
 }
 </style>

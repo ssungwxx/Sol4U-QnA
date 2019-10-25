@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs12 round ma-3>
+  <v-flex xs12 round>
     <v-card class="mx-auto">
       <v-card-text>
         <div>
