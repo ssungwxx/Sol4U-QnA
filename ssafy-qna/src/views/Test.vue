@@ -13,6 +13,10 @@
         <v-btn small @click="deleteQuestion">delete Question</v-btn>
         <v-btn small @click="changChannelDetail">chang Channel Detail</v-btn>
         <v-btn small @click="checkChannelIsLive">check Channel IsLive</v-btn>
+        <v-btn small @click="checkUserIsLogin">check User IsLogin</v-btn>
+        <v-btn small @click="addQuestionReply">add Question Reply</v-btn>
+        <v-btn small @click="deleteQuestionReply">delete Question Reply</v-btn>
+        <v-btn small @click="getRepliesFromQuestion">get Replies From Question</v-btn>
     </div>
 </template>
 
@@ -50,8 +54,8 @@ export default {
                 console.log(element);
             });
         },
-        async qustionHit() {
-            await FirebaseService.qustionHit(
+        qustionHit() {
+            FirebaseService.qustionHit(
                 "YBrlA3mK73iZyUHXqQb3",
                 "0cu1vt8YT89N0QMxbAOZ",
                 1
@@ -85,6 +89,30 @@ export default {
         async checkChannelIsLive() {
             let flag = await FirebaseService.checkChannelIsLive("1234");
             console.log(flag);
+        },
+        async checkUserIsLogin() {
+            let user = await FirebaseService.checkUserIsLogin();
+            console.log(user);
+        },
+        addQuestionReply() {
+            FirebaseService.addQuestionReply(
+                "YBrlA3mK73iZyUHXqQb3",
+                "RnjDpysKwpwWrU3tPpbd",
+                "대댓글 기능 잘되나?"
+            );
+        },
+        deleteQuestionReply() {
+            FirebaseService.deleteQuestionReply(
+                "YBrlA3mK73iZyUHXqQb3",
+                "RnjDpysKwpwWrU3tPpbd",
+                "FSdpBiVY8LugdKg6GJQG"
+            );
+        },
+        getRepliesFromQuestion() {
+            FirebaseService.getRepliesFromQuestion(
+                "YBrlA3mK73iZyUHXqQb3",
+                "RnjDpysKwpwWrU3tPpbd"
+            );
         }
     }
 };
