@@ -68,7 +68,109 @@ export default {
       });
   },
 
-  // 질문 채널 생성
+  // 현재 로그인한 정보확인
+  checkUserIsLogin() {
+    const user = firebase.auth().currentUser;
+
+    const userData = {
+      isAnonymous: user.isAnonymous,
+      userDisplayName: user.displayName,
+      userEmailVerified: user.emailVerified,
+      userEmail: user.email
+    };
+
+    return userData;
+  },
+
+  // 전체 채널 목록
+  async getAllChannels() {
+    const QnAChannel = firestore.collection("QnAChannels");
+
+    let channels = [];
+
+    await QnAChannel.get()
+      .then(doc => {
+        doc.forEach(data => {
+          channels.push(data.data());
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+
+    return channels;
+  },
+
+  // 채널 코드를 통해 Doc 번호 가져오기
+  async getDocByChannelCode(channelCode) {
+    const flag = await this.checkChannelIsLive(channelCode);
+
+    if (flag) {
+      const QnAChannel = firestore.collection("QnAChannels");
+
+      let QnAChannelDoc = await QnAChannel.where(
+        "channel_code",
+        "==",
+        channelCode
+      )
+        .get()
+        .then(data => {
+          return data;
+        })
+        .catch(err => {
+          console.log("Error getting documents", err);
+        });
+
+      let docId;
+
+      QnAChannelDoc.forEach(doc => {
+        if (doc.data().is_live) {
+          docId = doc.id;
+        }
+      });
+
+      return docId;
+    } else {
+      return false;
+    }
+  },
+
+  // 코드에 해당되는 채널 살아있는지 확인
+  async checkChannelIsLive(channelCode) {
+    const QnAChannel = firestore.collection("QnAChannels");
+
+    let QnAChannelDoc = await QnAChannel.where(
+      "channel_code",
+      "==",
+      channelCode
+    )
+      .get()
+      .then(data => {
+        return data;
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+
+    let flag = false;
+
+    QnAChannelDoc.forEach(doc => {
+      if (
+        doc.data().closed_at.timestamp.seconds <
+        new Date().getTime() / 1000
+      ) {
+        QnAChannel.doc(doc.id).update({
+          is_live: false
+        });
+      } else if (doc.data().is_live) {
+        flag = true;
+      }
+    });
+
+    return flag;
+  },
+
+  // 채널 생성
   async createChannel(channelCode, channelName, channelDescription, closeTime) {
     var user = firebase.auth().currentUser;
     const isLive = await this.checkChannelIsLive(channelCode);
@@ -153,180 +255,6 @@ export default {
       alert("채널 코드가 중복되었습니다.");
     } else {
       alert("인증된 로그인이 필요한 작업입니다.");
-    }
-  },
-
-  // 전체 채널 목록
-  async getAllChannels() {
-    const QnAChannel = firestore.collection("QnAChannels");
-
-    let channels = [];
-
-    await QnAChannel.get()
-      .then(doc => {
-        doc.forEach(data => {
-          channels.push(data.data());
-        });
-      })
-      .catch(err => {
-        console.log("Error getting documents", err);
-      });
-
-    return channels;
-  },
-
-  // 채널 코드를 통해 Doc 번호 가져오기
-  async getDocByChannelCode(channelCode) {
-    const flag = await this.checkChannelIsLive(channelCode);
-
-    if (flag) {
-      const QnAChannel = firestore.collection("QnAChannels");
-
-      let QnAChannelDoc = await QnAChannel.where(
-        "channel_code",
-        "==",
-        channelCode
-      )
-        .get()
-        .then(data => {
-          return data;
-        })
-        .catch(err => {
-          console.log("Error getting documents", err);
-        });
-
-      let docId;
-
-      QnAChannelDoc.forEach(doc => {
-        if (doc.data().is_live) {
-          docId = doc.id;
-        }
-      });
-
-      return docId;
-    } else {
-      return false;
-    }
-  },
-
-  // 해당되는 질문채널 살아있는지 확인
-  async checkChannelIsLive(channelCode) {
-    const QnAChannel = firestore.collection("QnAChannels");
-
-    let QnAChannelDoc = await QnAChannel.where(
-      "channel_code",
-      "==",
-      channelCode
-    )
-      .get()
-      .then(data => {
-        return data;
-      })
-      .catch(err => {
-        console.log("Error getting documents", err);
-      });
-
-    let flag = false;
-
-    QnAChannelDoc.forEach(doc => {
-      if (
-        doc.data().closed_at.timestamp.seconds <
-        new Date().getTime() / 1000
-      ) {
-        QnAChannel.doc(doc.id).update({
-          is_live: false
-        });
-      } else if (doc.data().is_live) {
-        flag = true;
-      }
-    });
-
-    return flag;
-  },
-
-  // 특정 질문 채널에 질문 추가
-  addQuestion(docId, content) {
-    var user = firebase.auth().currentUser;
-
-    if (user) {
-      const now_timestamp = new Date();
-
-      const Question = {
-        question: content,
-        questioner: {
-          user_name: user.displayName,
-          user_email_verified: user.emailVerified,
-          user_email: user.email,
-          user_id: user.uid
-        },
-        created_at: {
-          timestamp: now_timestamp,
-          string:
-            now_timestamp.getFullYear() +
-            "년 " +
-            (now_timestamp.getMonth() + 1) +
-            "월 " +
-            now_timestamp.getDate() +
-            "일 " +
-            now_timestamp.getHours() +
-            "시 " +
-            now_timestamp.getMinutes() +
-            "분 " +
-            now_timestamp.getSeconds() +
-            "초"
-        },
-        hitCount: 0
-      };
-
-      firestore
-        .collection("QnAChannels")
-        .doc(docId)
-        .collection("Questions")
-        .add(Question);
-    } else {
-      console.log("addQuestion Error");
-    }
-  },
-
-  // 특정 문서의 모든 질문 가져오기
-  async getQuestionsByDocId(docId) {
-    const QnAChannel = firestore
-      .collection("QnAChannels")
-      .doc(docId)
-      .collection("Questions");
-
-    let questionsObject = [];
-
-    await QnAChannel.get()
-      .then(data => {
-        data.forEach(doc => {
-          let data = doc.data();
-          data.questionDocId = doc.id;
-          questionsObject.push(data);
-        });
-      })
-      .catch(err => {
-        console.log("Error getting documents", err);
-      });
-
-    return questionsObject;
-  },
-
-  // 특정 질문의 하트 수(hit) 증가/감소 (1,-1)
-  questionHit(docId, questionDocId, num) {
-    var user = firebase.auth().currentUser;
-
-    if (user) {
-      firestore
-        .collection("QnAChannels")
-        .doc(docId)
-        .collection("Questions")
-        .doc(questionDocId)
-        .update({
-          hitCount: firebase.firestore.FieldValue.increment(num)
-        });
-    } else {
-      console.log("Login please");
     }
   },
 
@@ -507,6 +435,94 @@ export default {
     }
   },
 
+  // 채널 상세 내용 수정
+  async changChannelDetail(channelDocId, title, description) {
+    const user = firebase.auth().currentUser;
+
+    const channelDoc = firestore.collection("QnAChannels").doc(channelDocId);
+
+    const channelData = await channelDoc.get().then(doc => {
+      return doc.data();
+    });
+
+    if (user && user.uid == channelData.channel_owner.user_id) {
+      channelDoc.update({
+        channel_name: title,
+        channel_description: description
+      });
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  },
+
+  // 특정 질문 채널에 질문 추가
+  addQuestion(docId, content) {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      const now_timestamp = new Date();
+
+      const Question = {
+        question: content,
+        questioner: {
+          user_name: user.displayName,
+          user_email_verified: user.emailVerified,
+          user_email: user.email,
+          user_id: user.uid
+        },
+        created_at: {
+          timestamp: now_timestamp,
+          string:
+            now_timestamp.getFullYear() +
+            "년 " +
+            (now_timestamp.getMonth() + 1) +
+            "월 " +
+            now_timestamp.getDate() +
+            "일 " +
+            now_timestamp.getHours() +
+            "시 " +
+            now_timestamp.getMinutes() +
+            "분 " +
+            now_timestamp.getSeconds() +
+            "초"
+        },
+        hitCount: 0
+      };
+
+      firestore
+        .collection("QnAChannels")
+        .doc(docId)
+        .collection("Questions")
+        .add(Question);
+    } else {
+      console.log("addQuestion Error");
+    }
+  },
+
+  // 특정 문서의 모든 질문 가져오기
+  async getQuestionsByDocId(docId) {
+    const QnAChannel = firestore
+      .collection("QnAChannels")
+      .doc(docId)
+      .collection("Questions");
+
+    let questionsObject = [];
+
+    await QnAChannel.get()
+      .then(data => {
+        data.forEach(doc => {
+          let data = doc.data();
+          data.questionDocId = doc.id;
+          questionsObject.push(data);
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+
+    return questionsObject;
+  },
+
   // 질문 삭제
   async deleteQuestion(channelDocId, questionDocId) {
     const user = firebase.auth().currentUser;
@@ -528,23 +544,21 @@ export default {
     }
   },
 
-  // 채널 상세 내용 수정
-  async changChannelDetail(channelDocId, title, description) {
-    const user = firebase.auth().currentUser;
+  // 특정 질문의 하트 수(hit) 증가/감소 (1,-1)
+  questionHit(docId, questionDocId, num) {
+    var user = firebase.auth().currentUser;
 
-    const channelDoc = firestore.collection("QnAChannels").doc(channelDocId);
-
-    const channelData = await channelDoc.get().then(doc => {
-      return doc.data();
-    });
-
-    if (user && user.uid == channelData.channel_owner.user_id) {
-      channelDoc.update({
-        channel_name: title,
-        channel_description: description
-      });
+    if (user) {
+      firestore
+        .collection("QnAChannels")
+        .doc(docId)
+        .collection("Questions")
+        .doc(questionDocId)
+        .update({
+          hitCount: firebase.firestore.FieldValue.increment(num)
+        });
     } else {
-      alert("잘못된 접근입니다.");
+      console.log("Login please");
     }
   },
 
@@ -591,6 +605,7 @@ export default {
       alert("로그인이 필요한 기능입니다.");
     }
   },
+
   // 대댓글 삭제 기능
   async deleteQuestionReply(channelDocId, questionDocId, replyDocId) {
     const user = firebase.auth().currentUser;
@@ -617,20 +632,6 @@ export default {
     } else {
       alert("잘못된 접근입니다.");
     }
-  },
-
-  // 현재 로그인한 정보확인
-  checkUserIsLogin() {
-    const user = firebase.auth().currentUser;
-
-    const userData = {
-      isAnonymous: user.isAnonymous,
-      userDisplayName: user.displayName,
-      userEmailVerified: user.emailVerified,
-      userEmail: user.email
-    };
-
-    return userData;
   },
 
   // 대댓글 가져오기
