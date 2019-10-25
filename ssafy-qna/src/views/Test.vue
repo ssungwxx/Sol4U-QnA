@@ -15,6 +15,7 @@
         <v-btn small @click="checkChannelIsLive">check Channel IsLive</v-btn>
         <v-btn small @click="checkUserIsLogin">check User IsLogin</v-btn>
         <v-btn small @click="addQuestionReply">add Question Reply</v-btn>
+        <v-btn small @click="deleteQuestionReply">delete Question Reply</v-btn>
     </div>
 </template>
 
@@ -97,6 +98,13 @@ export default {
                 "YBrlA3mK73iZyUHXqQb3",
                 "RnjDpysKwpwWrU3tPpbd",
                 "대댓글 기능 잘되나?"
+            );
+        },
+        deleteQuestionReply() {
+            FirebaseService.deleteQuestionReply(
+                "YBrlA3mK73iZyUHXqQb3",
+                "RnjDpysKwpwWrU3tPpbd",
+                "FSdpBiVY8LugdKg6GJQG"
             );
         }
     }

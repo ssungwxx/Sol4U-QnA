@@ -587,6 +587,32 @@ export default {
     }
   },
   // 대댓글 삭제 기능
+  async deleteQuestionReply(channelDocId, questionDocId, replyDocId) {
+    const user = firebase.auth().currentUser;
+
+    const reply = firestore
+      .collection("QnAChannels")
+      .doc(channelDocId)
+      .collection("Questions")
+      .doc(questionDocId)
+      .collection("Replys")
+      .doc(replyDocId);
+
+    const replyData = await reply
+      .get()
+      .then(doc => {
+        return doc.data();
+      })
+      .catch(error => {
+        console.log("deleteQuestionReply Method Error");
+      });
+
+    if (user && user.uid == replyData.replyer.user_id) {
+      reply.delete();
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  },
 
   // 대댓글 수정 기능
 
