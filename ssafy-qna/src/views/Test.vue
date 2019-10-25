@@ -17,6 +17,7 @@
         <v-btn small @click="addQuestionReply">add Question Reply</v-btn>
         <v-btn small @click="deleteQuestionReply">delete Question Reply</v-btn>
         <v-btn small @click="getRepliesFromQuestion">get Replies From Question</v-btn>
+        <v-btn small @click="createVerifiedUserTable">create Verified User Table</v-btn>
     </div>
 </template>
 
@@ -113,6 +114,9 @@ export default {
                 "YBrlA3mK73iZyUHXqQb3",
                 "RnjDpysKwpwWrU3tPpbd"
             );
+        },
+        createVerifiedUserTable() {
+            FirebaseService.createVerifiedUserTable();
         }
     }
 };
