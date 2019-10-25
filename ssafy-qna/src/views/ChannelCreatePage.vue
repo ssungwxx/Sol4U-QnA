@@ -1,14 +1,16 @@
 <template>
   <v-app>
-    
+
     <!-- create-->
     <v-layout>
       <v-flex sm3 class="banner_background">
         <HeaderWeb />
       </v-flex>
+
       <v-flex sm9 id="content_background">
         <v-layout class="banner_mobile">
           <HeaderMobile/>
+
         </v-layout>
         <div id="pageTitle">Create Channel</div>
         <v-container grid-list-lg fluid>
