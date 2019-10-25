@@ -26,6 +26,7 @@
                         <v-container grid-list-lg fluid>
                             <v-layout v-for="(i) in dashboards.length" :key="i">
                                 <!-- channel list-->
+                                <router-link style="width:100%; text-decoration:none;" :to='"/qna/"+dashboards[i-1].channel_code'> <!-- vuex에 저장해야함 -->
                                 <ChannelCard v-if="dashboards[i-1].closed_at.timestamp.seconds > currentTimestamp"
                                  :CodeNumber='dashboards[i-1].channel_code'
                                  :CodeName='dashboards[i-1].channel_name'
@@ -39,6 +40,7 @@
                                  :StartDay='dashboards[i-1].created_at.string'
                                  :EndDay='dashboards[i-1].closed_at.string'
                                  setColor="#d9d9d9" />
+                                 </router-link>
                             </v-layout>
                         </v-container>
                     </v-card> 
