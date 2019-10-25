@@ -20,7 +20,7 @@
             <p id="channelTitle">{{qnaTitle}}</p>
             <p id="channelDes">{{qnaDes}}</p>
 
-            <div v-if="qnaPossible === true">
+            <div v-if="checkChannelIsLive()">
               <v-textarea
                 outlined
                 name="input-7-4"
@@ -79,7 +79,6 @@ export default Vue.extend({
     qnaText: "",
     cardNum: 0,
     channelDocId: "",
-    qnaPossible: true,
     haveList: false
   }),
   methods: {
@@ -115,6 +114,11 @@ export default Vue.extend({
     },
     setChannel(now) {
       this.channelDocId = now;
+    },
+    async checkChannelIsLive() {
+      if (this.channelDocId != "")
+        return await FirebaseService.checkChannelIsLive(this.channelDocId);
+      else return true;
     }
   },
   mounted() {

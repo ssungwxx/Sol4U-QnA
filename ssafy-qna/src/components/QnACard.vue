@@ -2,11 +2,16 @@
   <v-flex xs12 round ma-3>
     <v-card class="mx-auto">
       <v-card-text>
-        <p class="textQnA">{{getCard[cardId].question}}</p>
+        <div>
+          <p class="textQnA">{{getCard[cardId].question}}</p>
+        </div>
         <p class="writeTimeText">
           <v-icon small>access_time</v-icon>
           &nbsp;
           {{getCard[cardId].created_at.string}}
+          <v-btn icon small id="remove" @click="removeQ(getCard[cardId])">
+            <v-icon small color="red">delete_forever</v-icon>
+          </v-btn>
         </p>
         <div id="QnACardLike">
           <!-- 하트 같은 아이콘으로 좋아요 개수 표시 -->
@@ -59,6 +64,7 @@
 
 <script>
 import FirebaseService from "../services/FirebaseService";
+import QnAPage from "../views/QnAPage";
 
 export default {
   name: "QnACard",
@@ -119,6 +125,10 @@ export default {
       } else {
         this.replyBool = true;
       }
+    },
+    async removeQ(id) {
+      await FirebaseService.deleteQuestion(this.docId, id.questionDocId);
+      await QnAPage.getQuestions;
     }
   }
 };
