@@ -73,7 +73,6 @@ export default {
     var user = firebase.auth().currentUser;
     const isLive = await this.checkChannelIsLive(channelCode);
 
-    console.log(isLive);
     if (user.emailVerified && !isLive) {
       const now_timestamp = new Date();
 
@@ -125,7 +124,6 @@ export default {
 
       await firestore.collection("QnAChannels").add(channel);
       const new_channel = await this.getDocByChannelCode(channelCode);
-      console.log(new_channel);
 
       const userTable = firestore.collection("VerifiedUserTable");
 
@@ -174,7 +172,6 @@ export default {
         console.log("Error getting documents", err);
       });
 
-    console.log(channels);
     return channels;
   },
 
@@ -312,7 +309,6 @@ export default {
         console.log("Error getting documents", err);
       });
 
-    console.log(questionsObject);
     return questionsObject;
   },
 
@@ -329,7 +325,6 @@ export default {
         .update({
           hitCount: firebase.firestore.FieldValue.increment(num)
         });
-      console.log("!!");
     } else {
       console.log("Login please");
     }
@@ -654,7 +649,5 @@ export default {
         replyData.push(doc.data());
       });
     });
-
-    console.log(replyData);
   }
 };
