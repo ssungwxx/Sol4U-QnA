@@ -13,6 +13,7 @@
         <v-btn small @click="deleteQuestion">delete Question</v-btn>
         <v-btn small @click="changChannelDetail">chang Channel Detail</v-btn>
         <v-btn small @click="checkChannelIsLive">check Channel IsLive</v-btn>
+        <v-btn small @click="checkUserIsLogin">check User IsLogin</v-btn>
     </div>
 </template>
 
@@ -85,6 +86,10 @@ export default {
         async checkChannelIsLive() {
             let flag = await FirebaseService.checkChannelIsLive("1234");
             console.log(flag);
+        },
+        async checkUserIsLogin() {
+            let user = await FirebaseService.checkUserIsLogin();
+            console.log(user);
         }
     }
 };

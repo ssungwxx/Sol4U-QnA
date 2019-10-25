@@ -541,7 +541,25 @@ export default {
     } else {
       alert("잘못된 접근입니다.");
     }
-  }
+  },
 
-  // 채널 is_live 확인 후 변경
+  // 대댓글 달기 기능
+
+  // 대댓글 삭제 기능
+
+  // 대댓글 수정 기능
+
+  // 현재 로그인한 정보확인
+  checkUserIsLogin() {
+    const user = firebase.auth().currentUser;
+
+    const userData = {
+      isAnonymous: user.isAnonymous,
+      userDisplayName: user.displayName,
+      userEmailVerified: user.emailVerified,
+      userEmail: user.email
+    };
+
+    return userData;
+  }
 };
