@@ -17,6 +17,7 @@
     <v-btn small @click="addQuestionReply">add Question Reply</v-btn>
     <v-btn small @click="deleteQuestionReply">delete Question Reply</v-btn>
     <v-btn small @click="getRepliesFromQuestion">get Replies From Question</v-btn>
+    <v-btn small @click="createVerifiedUserTable">create Verified User Table</v-btn>
   </div>
 </template>
 
@@ -50,6 +51,7 @@ export default {
         "YBrlA3mK73iZyUHXqQb3"
       );
 
+<<<<<<< HEAD
       temp.forEach(element => {
         console.log(element);
       });
@@ -113,6 +115,75 @@ export default {
         "YBrlA3mK73iZyUHXqQb3",
         "RnjDpysKwpwWrU3tPpbd"
       );
+=======
+            temp.forEach(element => {
+                console.log(element);
+            });
+        },
+        qustionHit() {
+            FirebaseService.qustionHit(
+                "YBrlA3mK73iZyUHXqQb3",
+                "0cu1vt8YT89N0QMxbAOZ",
+                1
+            );
+        },
+        async getAllChannels() {
+            await FirebaseService.getAllChannels();
+        },
+        async joinTheChannel() {
+            await FirebaseService.joinTheChannel("7COxqkB4q2O6h3LP5Mw8");
+        },
+        async exitTheChannel() {
+            await FirebaseService.exitTheChannel("7COxqkB4q2O6h3LP5Mw8");
+        },
+        async deleteChannel() {
+            await FirebaseService.deleteChannel("Lm9AmvkazrJq84NoAkXA");
+        },
+        async deleteQuestion() {
+            await FirebaseService.deleteQuestion(
+                "YBrlA3mK73iZyUHXqQb3",
+                "0cu1vt8YT89N0QMxbAOZ"
+            );
+        },
+        async changChannelDetail() {
+            await FirebaseService.changChannelDetail(
+                "kmyX1pw69Ub7qAapVNWk",
+                "제목 수정",
+                "내용 수정"
+            );
+        },
+        async checkChannelIsLive() {
+            let flag = await FirebaseService.checkChannelIsLive("1234");
+            console.log(flag);
+        },
+        async checkUserIsLogin() {
+            let user = await FirebaseService.checkUserIsLogin();
+            console.log(user);
+        },
+        addQuestionReply() {
+            FirebaseService.addQuestionReply(
+                "YBrlA3mK73iZyUHXqQb3",
+                "RnjDpysKwpwWrU3tPpbd",
+                "대댓글 기능 잘되나?"
+            );
+        },
+        deleteQuestionReply() {
+            FirebaseService.deleteQuestionReply(
+                "YBrlA3mK73iZyUHXqQb3",
+                "RnjDpysKwpwWrU3tPpbd",
+                "FSdpBiVY8LugdKg6GJQG"
+            );
+        },
+        getRepliesFromQuestion() {
+            FirebaseService.getRepliesFromQuestion(
+                "YBrlA3mK73iZyUHXqQb3",
+                "RnjDpysKwpwWrU3tPpbd"
+            );
+        },
+        createVerifiedUserTable() {
+            FirebaseService.createVerifiedUserTable();
+        }
+>>>>>>> develop
     }
   }
 };

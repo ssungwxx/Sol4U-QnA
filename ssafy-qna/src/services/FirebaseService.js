@@ -56,6 +56,37 @@ export default {
       });
   },
 
+  // 익명 로그인이 아니라면 VerifiedUserTable테이블 생성
+  async createVerifiedUserTable() {
+    const user = firebase.auth().currentUser;
+
+    if (!user.isAnonymous) {
+      const userTalbe = firestore.collection("VerifiedUserTable");
+
+      let flag = false;
+
+      await userTalbe.get().then(docs => {
+        docs.forEach(doc => {
+          if (doc.data().user_id == user.uid) {
+            flag = true;
+          }
+        });
+      });
+
+      if (flag) {
+        return;
+      } else {
+        const userInfo = {
+          user_id: user.uid,
+          joinned_channels: [],
+          owned_channels: []
+        };
+
+        userTalbe.add(userInfo);
+      }
+    }
+  },
+
   // 로그아웃
   logout() {
     return fireauth
@@ -666,4 +697,6 @@ export default {
       });
     });
   }
+
+  //
 };
