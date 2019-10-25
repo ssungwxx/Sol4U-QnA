@@ -16,6 +16,7 @@
         <v-btn small @click="checkUserIsLogin">check User IsLogin</v-btn>
         <v-btn small @click="addQuestionReply">add Question Reply</v-btn>
         <v-btn small @click="deleteQuestionReply">delete Question Reply</v-btn>
+        <v-btn small @click="getRepliesFromQuestion">get Replies From Question</v-btn>
     </div>
 </template>
 
@@ -105,6 +106,12 @@ export default {
                 "YBrlA3mK73iZyUHXqQb3",
                 "RnjDpysKwpwWrU3tPpbd",
                 "FSdpBiVY8LugdKg6GJQG"
+            );
+        },
+        getRepliesFromQuestion() {
+            FirebaseService.getRepliesFromQuestion(
+                "YBrlA3mK73iZyUHXqQb3",
+                "RnjDpysKwpwWrU3tPpbd"
             );
         }
     }

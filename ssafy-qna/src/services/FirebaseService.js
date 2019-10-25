@@ -591,7 +591,7 @@ export default {
         comment: comment
       };
 
-      questionDoc.collection("Replys").add(reply);
+      questionDoc.collection("Replies").add(reply);
     } else {
       alert("로그인이 필요한 기능입니다.");
     }
@@ -605,7 +605,7 @@ export default {
       .doc(channelDocId)
       .collection("Questions")
       .doc(questionDocId)
-      .collection("Replys")
+      .collection("Replies")
       .doc(replyDocId);
 
     const replyData = await reply
@@ -636,5 +636,25 @@ export default {
     };
 
     return userData;
+  },
+
+  // 대댓글 가져오기
+  async getRepliesFromQuestion(channelDocId, questionDocId) {
+    const replies = firestore
+      .collection("QnAChannels")
+      .doc(channelDocId)
+      .collection("Questions")
+      .doc(questionDocId)
+      .collection("Replies");
+
+    let replyData = [];
+
+    await replies.get().then(docs => {
+      docs.forEach(doc => {
+        replyData.push(doc.data());
+      });
+    });
+
+    console.log(replyData);
   }
 };
