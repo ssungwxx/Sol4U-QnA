@@ -56,6 +56,21 @@ export default {
       });
   },
 
+  // 로그인 세션으로 유지
+  setPersistence() {
+    firebase
+      .auth()
+      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(function() {
+        return this.loginWithGoogle;
+      })
+      .catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorCode + " : " + errorMessage);
+      });
+  },
+
   // 익명 로그인이 아니라면 VerifiedUserTable테이블 생성
   async createVerifiedUserTable() {
     const user = firebase.auth().currentUser;
