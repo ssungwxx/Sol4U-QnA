@@ -1,14 +1,15 @@
 <template>
   <v-app>
-    <v-layout class="banner_mobile">
-      <HeaderMobile/>
-    </v-layout>
+    
     <!-- create-->
     <v-layout>
       <v-flex sm3 class="banner_background">
         <HeaderWeb />
       </v-flex>
-      <v-flex sm9 class>
+      <v-flex sm9 id="content_background">
+        <v-layout class="banner_mobile">
+          <HeaderMobile/>
+        </v-layout>
         <div id="pageTitle">Create Channel</div>
         <v-container grid-list-lg fluid>
             <v-layout row wrap>
@@ -153,7 +154,28 @@ export default {
 </script>
 
 <style>
-
+.banner_background {
+  display: block;
+  background-color: #666666;
+  text-align: center;
+  position: fixed;
+  width: 25%;
+  z-index: 20;
+  height: 100vh;
+}
+.banner_mobile {
+  display: none;
+  height: 50px;
+  background-color: #bfbfbf;
+  text-align: center;
+}
+#content_background {
+  position: absolute;
+  height: 100vh;
+  z-index: 20;
+  width: 75%;
+  right: 0;
+}
 #pageTitle {
   height: 9%;
   background-color: #ffffff;
@@ -161,4 +183,16 @@ export default {
   font-size: 1.1em;
 }
 
+@media (max-width: 600px) {
+  .banner_background {
+    display: none;
+  }
+  .banner_mobile {
+    display: block;
+  }
+  #content_background {
+  height: 100vh;
+  width: 100vw;
+}
+}
 </style>
