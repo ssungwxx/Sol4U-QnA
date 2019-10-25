@@ -67,7 +67,7 @@ export default {
           alert("채널정보가 없습니다. 다시 확인해주세요");
         }
         else{
-          this.$router.push('/qna/'+this.code);
+          this.$router.push('/qna/'+this.code); // 여기 vuex로 처리하기
           await FirebaseService.loginWithAnonymous();
         }
       }
