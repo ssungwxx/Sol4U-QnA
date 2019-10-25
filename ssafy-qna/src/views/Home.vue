@@ -3,7 +3,7 @@
     <!-- <ImageBanner imgSrc="https://picsum.photos/1600/900" id="imgBanner"> -->
     <ImageBanner id="imgBanner">
       <div style="line-height:1.2em; color: white;" slot="text" class="font-weight-bold fontBanner">
-        Sol4U
+        Sol4U!
         <br />SSAFY QnA Service
       </div>
     </ImageBanner>
