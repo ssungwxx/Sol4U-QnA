@@ -20,7 +20,7 @@ const firestore = firebase.firestore();
 const fireauth = firebase.auth();
 
 export default {
-  // Login Function
+  // 구글 로그인
   loginWithGoogle() {
     let provider = new firebase.auth.GoogleAuthProvider();
     return firebase
@@ -39,6 +39,8 @@ export default {
         );
       });
   },
+
+  // 익명 로그인
   loginWithAnonymous() {
     firebase
       .auth()
@@ -53,6 +55,8 @@ export default {
         // ...
       });
   },
+
+  // 로그아웃
   logout() {
     return fireauth
       .signOut()
@@ -63,8 +67,6 @@ export default {
         return error;
       });
   },
-
-  // Cloud Firebase Database Function
 
   // 질문 채널 생성
   async createChannel(channelCode, channelName, channelDescription, closeTime) {
@@ -127,11 +129,11 @@ export default {
 
       const userTable = firestore.collection("VerifiedUserTable");
 
-      let snapshots = await userTable
+      let userTableDoc = await userTable
         .where("user_id", "==", user.uid)
         .get()
-        .then(snapshot => {
-          return snapshot;
+        .then(data => {
+          return data;
         })
         .catch(err => {
           console.log("Error getting documents", err);
@@ -139,7 +141,7 @@ export default {
 
       let docId;
 
-      snapshots.forEach(doc => {
+      userTableDoc.forEach(doc => {
         docId = doc.id;
       });
 
@@ -163,9 +165,9 @@ export default {
     let channels = [];
 
     await QnAChannel.get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          channels.push(doc.data());
+      .then(doc => {
+        doc.forEach(data => {
+          channels.push(data.data());
         });
       })
       .catch(err => {
@@ -183,10 +185,14 @@ export default {
     if (flag) {
       const QnAChannel = firestore.collection("QnAChannels");
 
-      let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
+      let QnAChannelDoc = await QnAChannel.where(
+        "channel_code",
+        "==",
+        channelCode
+      )
         .get()
-        .then(snapshot => {
-          return snapshot;
+        .then(data => {
+          return data;
         })
         .catch(err => {
           console.log("Error getting documents", err);
@@ -194,7 +200,7 @@ export default {
 
       let docId;
 
-      snapshots.forEach(doc => {
+      QnAChannelDoc.forEach(doc => {
         if (doc.data().is_live) {
           docId = doc.id;
         }
@@ -210,10 +216,14 @@ export default {
   async checkChannelIsLive(channelCode) {
     const QnAChannel = firestore.collection("QnAChannels");
 
-    let snapshots = await QnAChannel.where("channel_code", "==", channelCode)
+    let QnAChannelDoc = await QnAChannel.where(
+      "channel_code",
+      "==",
+      channelCode
+    )
       .get()
-      .then(snapshot => {
-        return snapshot;
+      .then(data => {
+        return data;
       })
       .catch(err => {
         console.log("Error getting documents", err);
@@ -221,7 +231,7 @@ export default {
 
     let flag = false;
 
-    snapshots.forEach(doc => {
+    QnAChannelDoc.forEach(doc => {
       if (
         doc.data().closed_at.timestamp.seconds <
         new Date().getTime() / 1000
@@ -291,8 +301,8 @@ export default {
     let questionsObject = [];
 
     await QnAChannel.get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
+      .then(data => {
+        data.forEach(doc => {
           let data = doc.data();
           data.questionDocId = doc.id;
           questionsObject.push(data);
@@ -360,11 +370,11 @@ export default {
           channel_entry: firebase.firestore.FieldValue.arrayUnion(user.uid)
         });
 
-        let snapshots = await userTable
+        let doc = await userTable
           .where("user_id", "==", user.uid)
           .get()
-          .then(snapshot => {
-            return snapshot;
+          .then(data => {
+            return data;
           })
           .catch(err => {
             console.log("Error getting documents", err);
@@ -372,8 +382,8 @@ export default {
 
         let userTableDocId;
 
-        snapshots.forEach(doc => {
-          userTableDocId = doc.id;
+        doc.forEach(data => {
+          userTableDocId = data.id;
         });
 
         const userTableDoc = userTable.doc(userTableDocId);
@@ -436,11 +446,11 @@ export default {
         }
       });
 
-      const snapshots = await userTable
+      const userTableDoc = await userTable
         .where("user_id", "==", user.uid)
         .get()
-        .then(snapshot => {
-          return snapshot;
+        .then(data => {
+          return data;
         })
         .catch(err => {
           console.log("Error getting documents", err);
@@ -448,7 +458,7 @@ export default {
 
       let userTableDocId;
 
-      snapshots.forEach(data => {
+      userTableDoc.forEach(data => {
         userTableDocId = data.id;
       });
 
