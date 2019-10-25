@@ -2,13 +2,8 @@
   <div id="containerHome">
     <!-- <ImageBanner imgSrc="https://picsum.photos/1600/900" id="imgBanner"> -->
     <ImageBanner id="imgBanner">
-      <div
-        id="bannerText"
-        style="line-height:1.2em; color: white;"
-        slot="text"
-        class="font-weight-bold fontBanner"
-      >
-        Sol4U
+      <div style="line-height:1.2em; color: white;" slot="text" class="font-weight-bold fontBanner">
+        Sol4U!
         <br />SSAFY QnA Service
       </div>
     </ImageBanner>
