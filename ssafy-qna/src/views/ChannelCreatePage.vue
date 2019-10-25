@@ -23,7 +23,7 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-col cols="12" sm="12">
                             <label>Code</label>
-                            <v-text-field v-model.number="code" type="number"
+                            <v-text-field v-model="code" type="number"
                             :counter=10
                             :rules="codeRules"
                             solo
@@ -61,7 +61,7 @@
                         
                         <v-col cols="12" sm="6" >
                             <label>Using time</label>
-                            <v-select
+                            <v-select v-model="end"
                               :items="items"
                               label="using time"
                               solo
@@ -120,10 +120,25 @@ export default {
   methods:{
     async createChannel() {
       
+      let plustime ="";
+      let endtime = new Date();
+      if(this.end=="+ 1hours"){
+        plustime=1;
+      }else if(this.end=="+ 2hours"){
+        plustime=2;
+      }else if(this.end=="+ +3hours"){
+        plustime=3;
+      }else{
+        plustime=4;
+      }
+
+      endtime.setHours(endtime.getHours()+plustime);
+      console.log(endtime);
+      console.log(endtime.getHours());
       if (this.$refs.form.validate()) {
-        await FirebaseService.createChannel(this.code, this.title,this.description, new Date());
-        alert(" success!");
-        this.$refs.from.reset();
+        await FirebaseService.createChannel(this.code, this.title,this.description, endtime);
+        this.$router.push('/qna/'+this.code);
+       
       }
     }
   },
@@ -138,40 +153,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Lexend+Deca|Saira+Extra+Condensed&display=swap");
-.banner {
-  font-size: 160px;
-  color: white;
-  font-weight: bolder;
-  margin-top: -110px;
-}
-.code_banner {
-  font-size: 7vw;
-  margin-left: 20px;
-  font-weight: bold;
-  font-family: "Saira Extra Condensed", sans-serif;
-}
-.RouterLink {
-  width: 100%;
-  font-size: 35px;
-  color: black;
-  text-decoration: None;
-  text-align: center;
-  font-family: "Lexend Deca", sans-serif;
-}
-.RouterLink_p {
-  color: black;
-}
-.banner_background {
-  display: block;
-  background-color: #bfbfbf;
-}
-.banner_mobile {
-  display: none;
-  height: 50px;
-  background-color: #bfbfbf;
-  text-align: center;
-}
+
 #pageTitle {
   height: 9%;
   background-color: #ffffff;
@@ -179,12 +161,4 @@ export default {
   font-size: 1.1em;
 }
 
-@media (max-width: 600px) {
-  .banner_background {
-    display: none;
-  }
-  .banner_mobile {
-    display: block;
-  }
-}
 </style>

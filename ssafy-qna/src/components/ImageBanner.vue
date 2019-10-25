@@ -24,12 +24,10 @@ export default {
 };
 </script>
 <style>
-.text-shadow {
-  text-shadow: 0 0 15px rgb(255, 255, 255);
-}
-@media (max-width: 1200px) {
+  .text-shadow {
+    text-shadow: 0 0 15px rgb(255, 255, 255);
+  }
   .v-image {
     height: 100vh;
   }
-}
 </style>

@@ -11,7 +11,7 @@
 
                 <v-app-bar class="bar_design">
                     <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="margin-right:20px;" color="white"></v-app-bar-nav-icon>
-                    SSAFY__{{code}}
+                    SSAFY
                 </v-app-bar>
 
                 <v-navigation-drawer
@@ -20,12 +20,46 @@
                 right
                 temporary
                 width = "150"
-                style="padding-top:150px;"
+                style="padding-top:20px; background-color:#f2f2f2;"
                 >
                 <v-list nav dense>
-                    <router-link to="/" class="RouterLink">
-                        <p class="RouterLink_p">DashBoard</p>
-                    </router-link>
+                    <div style="display:inline-block; margin-bottom:70px;">
+                        <v-img src = "../assets/Icon.png" style="height:40px; width:40px;" />
+                    </div>
+                    <span class="code_banner">SSAFY</span>
+                    <v-layout>
+                        <router-link to="/dashboard" class="RouterLink">
+                            <p class="RouterLink_p">DashBoard</p>
+                        </router-link>
+                    </v-layout>
+                    <v-layout>
+                        <a href="https://lab.ssafy.com/s1-final/s1p1351008" class="GithubAddress">
+                            <div class="RouterLink_p">Gitlab</div>
+                        </a>
+                    </v-layout>
+                    <v-layout class="banner_search">
+                        <v-flex sm10>
+                            <v-text-field
+                            label="Code"
+                            height="20px"
+                            solo
+                            v-model="routercode2"
+                            ></v-text-field>
+                        </v-flex>
+                        </v-layout>
+                        <v-layout class="banner_search_icon">
+                        <v-flex>
+                            <v-btn
+                                class="ma-2"
+                                style="width:100%;"
+                                outlined
+                                color="black"
+                                @click="checkChannel"
+                            >
+                                <v-icon color="black">fa-search</v-icon>
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
                 </v-list>
                 </v-navigation-drawer>
 
@@ -37,19 +71,32 @@
 
 <script lang="ts">
     import Vue from 'vue'
+    import FirebaseService from "../services/FirebaseService";
 
     export default Vue.extend({
-        props: ['code', 'maxheight'],
+        props: ['maxheight'],
         data: () => ({
             drawer: false,
-            group: null
+            group: null,
+            routercode2: ""
         }),
 
         watch: {
             group () {
                 this.drawer = false
             },
+        },
+        methods: {
+        async checkChannel(){
+          const docId = await FirebaseService.getDocByChannelCode(this.routercode2);
+          if (docId == false){
+            alert("채널정보가 없습니다. 다시 확인해주세요");
+          }
+          else{
+            this.$router.push('/qna/'+this.routercode2);
+          }
         }
+      }
     })
 </script>
 
@@ -64,5 +111,36 @@
 .bar_design{
     background-image: url('../assets/lol.png');
     color: white;
+}
+.code_banner{
+    font-size:30px;
+  font-family: 'Do Hyeon', sans-serif;
+}
+.RouterLink {
+  width: 100%;
+  color: black;
+  text-decoration: None;
+  text-align: left;
+  font-family: "Lexend Deca", sans-serif;
+}
+.RouterLink_p {
+  color: black;
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 25px;
+}
+.GithubAddress{
+  width: 100%;
+  color: black;
+  text-decoration: None;
+  text-align: left;
+  font-family: "Lexend Deca", sans-serif;
+}
+.banner_search{
+  text-align: center;
+  margin-top: 60px;
+}
+.banner_search_icon{
+    margin-left:-10px;
+    margin-right:10px;
 }
 </style>

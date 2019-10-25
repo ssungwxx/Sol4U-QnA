@@ -10,29 +10,39 @@
         </p>
         <div id="QnACardLike">
           <!-- 하트 같은 아이콘으로 좋아요 개수 표시 -->
-          <v-card-actions class="QnACardLikeAction">
-            <v-btn
-              v-if="!likeBool"
-              @click="likeCheck(getCard[cardId].hitCount)"
-              text
-              icon
-              color="#00000033"
-            >
-              <v-icon>favorite_border</v-icon>
+          <v-card-actions>
+            <div class="QnACardLikeAction">
+              <v-btn
+                v-if="!likeBool"
+                @click="likeCheck(getCard[cardId].hitCount)"
+                text
+                icon
+                color="#00000033"
+              >
+                <v-icon>favorite_border</v-icon>
+              </v-btn>
+              <v-btn v-else @click="likeCheck(getCard[cardId].hitCount)" text icon color="#ff0000">
+                <v-icon>favorite</v-icon>
+              </v-btn>
+              <!-- 하트 개수 표시 영역 -->
+              <template v-if="likeCount(getCard[cardId].hitCount)">
+                <v-icon color="#cd7f32" id="likeIcon">favorite</v-icon>
+                <!-- 하트 숫자 표시 -->
+                <span id="likeCount">...{{getCard[cardId].hitCount}}</span>
+              </template>
+            </div>
+            <v-btn @click="replyOn()" text color="deep-purple accent-4" id="replyBtn">
+              <v-icon large>reply</v-icon>
             </v-btn>
-            <v-btn v-else @click="likeCheck(getCard[cardId].hitCount)" text icon color="#ff0000">
-              <v-icon>favorite</v-icon>
-            </v-btn>
-            <!-- 하트 개수 표시 영역 -->
-            <template v-if="likeCount(getCard[cardId].hitCount)">
-              <v-icon color="#cd7f32" id="likeIcon">favorite</v-icon>
-              <!-- 하트 숫자 표시 -->
-              <span id="likeCount">...{{getCard[cardId].hitCount}}</span>
-            </template>
           </v-card-actions>
         </div>
+        <div v-if="replyBool" pa-5 id="replyTextBox">
+          <v-textarea outlined label="답변을 등록하세요." id="replyText" v-model="replyText"></v-textarea>
 
-        <div id="QnACardReply">
+          <v-btn color="success" id="btnReply" @click="submitButton()">SUBMIT</v-btn>
+          <v-spacer style="clear: both;"></v-spacer>
+        </div>
+        <div id="QnACardReply" v-for="i in replyCnt" :key="i">
           <!-- 답변에 대한 공간 -->
           <div class="textReply">
             <slot name="qnaReply"></slot>
@@ -43,11 +53,6 @@
           </p>
         </div>
       </v-card-text>
-      <v-card-actions>
-        <v-btn text color="deep-purple accent-4">
-          <v-icon large>reply</v-icon>
-        </v-btn>
-      </v-card-actions>
     </v-card>
   </v-flex>
 </template>
@@ -63,13 +68,16 @@ export default {
   },
   data: () => ({
     // like or not check boolean var
-    likeBool: false
+    likeBool: false,
+    replyCnt: 0,
+    replyBool: false
   }),
   computed: {
     getCard() {
       return this.$store.state.cardList;
     }
   },
+  mounted() {},
   methods: {
     likeCheck(num) {
       if (this.likeBool) {
@@ -104,12 +112,29 @@ export default {
       if (num > 0) {
         return true;
       } else return false;
+    },
+    replyOn() {
+      if (this.replyBool) {
+        this.replyBool = false;
+      } else {
+        this.replyBool = true;
+      }
     }
   }
 };
 </script>
 
 <style>
+#btnReply {
+  float: right;
+  font-family: "Lexend Deca", sans-serif;
+}
+
+#replyTextBox {
+  padding: 1% 4%;
+  width: 100%;
+}
+
 #QnACardReply {
   margin-left: 2%;
 }
@@ -118,21 +143,28 @@ export default {
   margin-bottom: 1%;
 }
 
+.QnACardLikeAction {
+  width: 100%;
+  text-align: left;
+}
+
 #likeCount {
   font-family: "Lexend Deca", sans-serif;
-  margin-top: 12px;
   margin-left: -5px;
   color: blueviolet;
   font-size: 0.8em;
+  vertical-align: bottom;
 }
 
 .writeTimeText {
+  padding: 0% 0% 0% 1%;
   font-family: "Lexend Deca", sans-serif;
   justify-content: center;
   font-size: 0.9em;
 }
 
 .textQnA {
+  padding: 3% 0% 0% 1%;
   font-family: "Lexend Deca", sans-serif;
   font-size: 2em;
   color: midnightblue;
@@ -143,5 +175,8 @@ export default {
   font-size: 1.3em;
   margin-bottom: 1%;
   color: cadetblue;
+}
+
+#replyBtn {
 }
 </style>

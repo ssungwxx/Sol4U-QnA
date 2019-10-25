@@ -17,23 +17,60 @@
           </a>
         </v-layout>
         <v-layout class="banner_search">
-
+          <v-flex sm1></v-flex>
+          <v-flex sm10>
+            <v-text-field
+              label="Code"
+              height="20px"
+              solo
+              v-model="routercode"
+            ></v-text-field>
+          </v-flex>
+          <v-flex sm1></v-flex>
+        </v-layout>
+        <v-layout class="banner_search_icon">
+          <v-flex sm1></v-flex>
+          <v-flex sm10>
+            <v-btn
+              class="ma-2"
+              style="width:100%;"
+              outlined
+              color="white"
+              @click="checkChannel"
+            >
+              <v-icon color="white">fa-search</v-icon>
+              </v-btn>
+          </v-flex>
+          <v-flex sm2></v-flex>
         </v-layout>
     </div>
 </template>
 
 <script lang="ts">
     import Vue from 'vue'
+    import FirebaseService from "../services/FirebaseService";
 
     export default Vue.extend({
-       
+      data: () => ({
+        routercode: ""
+      }),
+      methods: {
+        async checkChannel(){
+          const docId = await FirebaseService.getDocByChannelCode(this.routercode);
+          if (docId == false){
+            alert("채널정보가 없습니다. 다시 확인해주세요");
+          }
+          else{
+            this.$router.push('/qna/'+this.routercode);
+          }
+        }
+      }
     })
 </script>
 
 <style scoped>
 .code_banner {
   font-size: 5vw;
-  margin-left: 20px;
   font-weight: bold;
   font-family: 'Raleway', sans-serif;
   color: #e6e6e6;
@@ -62,5 +99,8 @@
 .banner_search{
   text-align: center;
   margin-top: 7vw;
+}
+.banner_search_icon{
+  text-align: center;
 }
 </style>
