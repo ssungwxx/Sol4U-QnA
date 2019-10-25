@@ -614,8 +614,6 @@ export default {
     }
   },
 
-  // 대댓글 수정 기능
-
   // 현재 로그인한 정보확인
   checkUserIsLogin() {
     const user = firebase.auth().currentUser;
