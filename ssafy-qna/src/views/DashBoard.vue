@@ -6,7 +6,7 @@
                 <HeaderWeb />
             </v-flex>
 
-            <v-flex sm9 class="content_background">
+            <v-flex sm9 id="content_background">
               <v-layout class="banner_mobile">
                 <HeaderMobile/>
               </v-layout>
@@ -118,7 +118,7 @@ export default {
   background-color: #bfbfbf;
   text-align: center;
 }
-.content_background {
+#content_background {
   position: absolute;
   height: 100vh;
   z-index: 20;
