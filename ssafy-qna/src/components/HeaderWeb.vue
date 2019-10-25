@@ -73,7 +73,7 @@
   font-size: 5vw;
   font-weight: bold;
   font-family: 'Raleway', sans-serif;
-  color: #e6e6e6;
+  color: rgb(51, 150, 244);
 }
 .GithubAddress{
   width: 100%;

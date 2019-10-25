@@ -105,7 +105,7 @@ export default {
 }
 .banner_background {
   display: block;
-  background-color: #666666;
+  background-color: rgb(36, 40, 43);
   text-align: center;
   position: fixed;
   width: 25%;

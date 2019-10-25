@@ -140,7 +140,7 @@ export default Vue.extend({
 }
 .banner_background {
   display: block;
-  background-color: #666666;
+  background-color: rgb(36, 40, 43);
   text-align: center;
   position: fixed;
   width: 25%;
@@ -150,7 +150,7 @@ export default Vue.extend({
 .banner_mobile {
   display: none;
   height: 50px;
-  background-color: #bfbfbf;
+  background-color: white;
   text-align: center;
 }
 #content_background {
@@ -162,7 +162,7 @@ export default Vue.extend({
 }
 #pageTitle {
   height: 60px !important;
-  background-color: #ffffff;
+  background-color: rgb(51, 150, 244);;
   padding: 2%;
   font-size: 1.1em;
 }
