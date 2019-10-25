@@ -14,6 +14,7 @@
         <v-btn small @click="changChannelDetail">chang Channel Detail</v-btn>
         <v-btn small @click="checkChannelIsLive">check Channel IsLive</v-btn>
         <v-btn small @click="checkUserIsLogin">check User IsLogin</v-btn>
+        <v-btn small @click="addQuestionReply">add Question Reply</v-btn>
     </div>
 </template>
 
@@ -90,6 +91,13 @@ export default {
         async checkUserIsLogin() {
             let user = await FirebaseService.checkUserIsLogin();
             console.log(user);
+        },
+        addQuestionReply() {
+            FirebaseService.addQuestionReply(
+                "YBrlA3mK73iZyUHXqQb3",
+                "RnjDpysKwpwWrU3tPpbd",
+                "대댓글 기능 잘되나?"
+            );
         }
     }
 };

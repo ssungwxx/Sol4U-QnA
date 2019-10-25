@@ -544,7 +544,48 @@ export default {
   },
 
   // 대댓글 달기 기능
+  addQuestionReply(channelDocId, questionDocId, comment) {
+    const user = firebase.auth().currentUser;
+    const now_timestamp = new Date();
 
+    if (user) {
+      const questionDoc = firestore
+        .collection("QnAChannels")
+        .doc(channelDocId)
+        .collection("Questions")
+        .doc(questionDocId);
+
+      const reply = {
+        created_at: {
+          timestamp: now_timestamp,
+          string:
+            now_timestamp.getFullYear() +
+            "년 " +
+            (now_timestamp.getMonth() + 1) +
+            "월 " +
+            now_timestamp.getDate() +
+            "일 " +
+            now_timestamp.getHours() +
+            "시 " +
+            now_timestamp.getMinutes() +
+            "분 " +
+            now_timestamp.getSeconds() +
+            "초"
+        },
+        replyer: {
+          user_email: user.email,
+          user_email_verified: user.emailVerified,
+          user_id: user.uid,
+          user_name: user.displayName
+        },
+        comment: comment
+      };
+
+      questionDoc.collection("Replys").add(reply);
+    } else {
+      alert("로그인이 필요한 기능입니다.");
+    }
+  },
   // 대댓글 삭제 기능
 
   // 대댓글 수정 기능
