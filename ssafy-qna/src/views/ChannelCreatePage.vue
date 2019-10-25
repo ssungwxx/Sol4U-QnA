@@ -1,14 +1,15 @@
 <template>
   <v-app>
-    <v-layout class="banner_mobile">
-      <HeaderMobile/>
-    </v-layout>
     <!-- create-->
     <v-layout>
       <v-flex sm3 class="banner_background">
         <HeaderWeb />
       </v-flex>
-      <v-flex sm9 class>
+
+      <v-flex sm9 id="content_background">
+        <v-layout class="banner_mobile">
+          <HeaderMobile :maxheight="maxheight" />
+        </v-layout>
         <div id="pageTitle">Create Channel</div>
         <v-container grid-list-lg fluid>
             <v-layout row wrap>
