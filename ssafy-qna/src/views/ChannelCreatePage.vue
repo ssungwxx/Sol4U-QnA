@@ -23,7 +23,7 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-col cols="12" sm="12">
                             <label>Code</label>
-                            <v-text-field v-model.number="code"
+                            <v-text-field v-model="code" type="number"
                             :counter=10
                             :rules="codeRules"
                             solo
@@ -137,11 +137,7 @@ export default {
       console.log(endtime.getHours());
       if (this.$refs.form.validate()) {
         await FirebaseService.createChannel(this.code, this.title,this.description, endtime);
-        alert(" success!");
-        this.code= "",
-        this.title="",
-        this.description="",
-        this.end=""
+        this.$router.push('/qna/'+this.code);
        
       }
     }
