@@ -1,17 +1,17 @@
-import firebase from "firebase";
-import "firebase/firestore";
-import "firebase/auth";
+import firebase from 'firebase';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 // Setup Firebase
 const config = {
-  apiKey: "AIzaSyCRq_nISqiR-itSoaVPS8KyrxiEdalKddo",
-  authDomain: "ssafyfinal.firebaseapp.com",
-  databaseURL: "https://ssafyfinal.firebaseio.com",
-  projectId: "ssafyfinal",
-  storageBucket: "ssafyfinal.appspot.com",
-  messagingSenderId: "752151326570",
-  appId: "1:752151326570:web:d4d773f1ea0237a4273f13",
-  measurementId: "G-ZE1GDYK77V"
+  apiKey: 'AIzaSyCRq_nISqiR-itSoaVPS8KyrxiEdalKddo',
+  authDomain: 'ssafyfinal.firebaseapp.com',
+  databaseURL: 'https://ssafyfinal.firebaseio.com',
+  projectId: 'ssafyfinal',
+  storageBucket: 'ssafyfinal.appspot.com',
+  messagingSenderId: '752151326570',
+  appId: '1:752151326570:web:d4d773f1ea0237a4273f13',
+  measurementId: 'G-ZE1GDYK77V'
 };
 
 firebase.initializeApp(config);
@@ -37,7 +37,7 @@ export default {
         let errorCode = error.code;
         let errorMessage = error.message;
         console.log(
-          "errorCode : " + errorCode + "\n errorMessage : " + errorMessage
+          'errorCode : ' + errorCode + '\n errorMessage : ' + errorMessage
         );
       });
   },
@@ -48,7 +48,7 @@ export default {
       .auth()
       .signInAnonymously()
       .then(function() {
-        alert("익명 로그인 되었습니다.");
+        alert('익명 로그인 되었습니다.');
       })
       .catch(function(error) {
         // Handle Errors here.
@@ -63,7 +63,7 @@ export default {
     const user = firebase.auth().currentUser;
 
     if (!user.isAnonymous) {
-      const userTalbe = firestore.collection("VerifiedUserTable");
+      const userTalbe = firestore.collection('VerifiedUserTable');
 
       let flag = false;
 
@@ -94,7 +94,7 @@ export default {
     return fireauth
       .signOut()
       .then(function() {
-        alert("로그아웃 되었습니다.");
+        alert('로그아웃 되었습니다.');
       })
       .catch(function(error) {
         return error;
@@ -103,7 +103,7 @@ export default {
 
   // 현재 로그인한 정보확인
   checkUserIsLogin() {
-    console.log("firebase");
+    console.log('firebase');
 
     const user = firebase.auth().currentUser;
     console.log(user);
@@ -131,7 +131,7 @@ export default {
 
   // 전체 채널 목록
   async getAllChannels() {
-    const QnAChannel = firestore.collection("QnAChannels");
+    const QnAChannel = firestore.collection('QnAChannels');
 
     let channels = [];
 
@@ -142,7 +142,7 @@ export default {
         });
       })
       .catch(err => {
-        console.log("Error getting documents", err);
+        console.log('Error getting documents', err);
       });
 
     return channels;
@@ -153,11 +153,11 @@ export default {
     const flag = await this.checkChannelIsLive(channelCode);
 
     if (flag) {
-      const QnAChannel = firestore.collection("QnAChannels");
+      const QnAChannel = firestore.collection('QnAChannels');
 
       let QnAChannelDoc = await QnAChannel.where(
-        "channel_code",
-        "==",
+        'channel_code',
+        '==',
         channelCode
       )
         .get()
@@ -165,7 +165,7 @@ export default {
           return data;
         })
         .catch(err => {
-          console.log("Error getting documents", err);
+          console.log('Error getting documents', err);
         });
 
       let docId;
@@ -184,11 +184,11 @@ export default {
 
   // 코드에 해당되는 채널 살아있는지 확인
   async checkChannelIsLive(channelCode) {
-    const QnAChannel = firestore.collection("QnAChannels");
+    const QnAChannel = firestore.collection('QnAChannels');
 
     let QnAChannelDoc = await QnAChannel.where(
-      "channel_code",
-      "==",
+      'channel_code',
+      '==',
       channelCode
     )
       .get()
@@ -196,7 +196,7 @@ export default {
         return data;
       })
       .catch(err => {
-        console.log("Error getting documents", err);
+        console.log('Error getting documents', err);
       });
 
     let flag = false;
@@ -241,49 +241,49 @@ export default {
           timestamp: now_timestamp,
           string:
             now_timestamp.getFullYear() +
-            "년 " +
+            '년 ' +
             (now_timestamp.getMonth() + 1) +
-            "월 " +
+            '월 ' +
             now_timestamp.getDate() +
-            "일 " +
+            '일 ' +
             now_timestamp.getHours() +
-            "시 " +
+            '시 ' +
             now_timestamp.getMinutes() +
-            "분 " +
+            '분 ' +
             now_timestamp.getSeconds() +
-            "초"
+            '초'
         },
         closed_at: {
           timestamp: closeTime,
           string:
             closeTime.getFullYear() +
-            "년 " +
+            '년 ' +
             (closeTime.getMonth() + 1) +
-            "월 " +
+            '월 ' +
             closeTime.getDate() +
-            "일 " +
+            '일 ' +
             closeTime.getHours() +
-            "시 " +
+            '시 ' +
             closeTime.getMinutes() +
-            "분 " +
+            '분 ' +
             closeTime.getSeconds() +
-            "초"
+            '초'
         }
       };
 
-      await firestore.collection("QnAChannels").add(channel);
+      await firestore.collection('QnAChannels').add(channel);
       const new_channel = await this.getDocByChannelCode(channelCode);
 
-      const userTable = firestore.collection("VerifiedUserTable");
+      const userTable = firestore.collection('VerifiedUserTable');
 
       let userTableDoc = await userTable
-        .where("user_id", "==", user.uid)
+        .where('user_id', '==', user.uid)
         .get()
         .then(data => {
           return data;
         })
         .catch(err => {
-          console.log("Error getting documents", err);
+          console.log('Error getting documents', err);
         });
 
       let docId;
@@ -293,15 +293,15 @@ export default {
       });
 
       firestore
-        .collection("VerifiedUserTable")
+        .collection('VerifiedUserTable')
         .doc(docId)
         .update({
           owned_channels: firebase.firestore.FieldValue.arrayUnion(new_channel)
         });
     } else if (isLive) {
-      alert("채널 코드가 중복되었습니다.");
+      alert('채널 코드가 중복되었습니다.');
     } else {
-      alert("인증된 로그인이 필요한 작업입니다.");
+      alert('인증된 로그인이 필요한 작업입니다.');
     }
   },
 
@@ -310,28 +310,28 @@ export default {
     var user = firebase.auth().currentUser;
 
     if (user) {
-      const channel = firestore.collection("QnAChannels").doc(channelDocId);
-      const userTable = firestore.collection("VerifiedUserTable");
+      const channel = firestore.collection('QnAChannels').doc(channelDocId);
+      const userTable = firestore.collection('VerifiedUserTable');
 
       let channelData = await channel
         .get()
         .then(doc => {
           if (!doc.exists) {
-            console.log("No such document!");
+            console.log('No such document!');
           } else {
             return doc.data();
           }
         })
         .catch(err => {
-          console.log("joinTheChannel Method Error", err);
+          console.log('joinTheChannel Method Error', err);
         });
 
       if (channelData.channel_owner.user_id == user.uid) {
-        alert("채널 소유자 입니다");
+        alert('채널 소유자 입니다');
       } else {
         channelData.channel_entry.forEach(entry => {
           if (entry == user.uid) {
-            alert("이미 채널에 참가한 사용자 입니다.");
+            alert('이미 채널에 참가한 사용자 입니다.');
             return;
           }
         });
@@ -341,13 +341,13 @@ export default {
         });
 
         let doc = await userTable
-          .where("user_id", "==", user.uid)
+          .where('user_id', '==', user.uid)
           .get()
           .then(data => {
             return data;
           })
           .catch(err => {
-            console.log("Error getting documents", err);
+            console.log('Error getting documents', err);
           });
 
         let userTableDocId;
@@ -362,18 +362,18 @@ export default {
           .get()
           .then(doc => {
             if (!doc.exists) {
-              console.log("No such document!");
+              console.log('No such document!');
             } else {
               return doc.data();
             }
           })
           .catch(err => {
-            console.log("joinTheChannel Method Error", err);
+            console.log('joinTheChannel Method Error', err);
           });
 
         joinedChannels.joined_channels.forEach(data => {
           if (data == channelDocId) {
-            alert("이미 입장한 채널입니다.");
+            alert('이미 입장한 채널입니다.');
             return;
           }
         });
@@ -392,20 +392,20 @@ export default {
     var user = firebase.auth().currentUser;
 
     if (user) {
-      const channel = firestore.collection("QnAChannels").doc(channelDocId);
-      const userTable = firestore.collection("VerifiedUserTable");
+      const channel = firestore.collection('QnAChannels').doc(channelDocId);
+      const userTable = firestore.collection('VerifiedUserTable');
 
       let channelData = await channel
         .get()
         .then(doc => {
           if (!doc.exists) {
-            console.log("No such document!");
+            console.log('No such document!');
           } else {
             return doc.data();
           }
         })
         .catch(err => {
-          console.log("exitTheChannel Method Error", err);
+          console.log('exitTheChannel Method Error', err);
         });
 
       channelData.channel_entry.forEach(entry => {
@@ -417,13 +417,13 @@ export default {
       });
 
       const userTableDoc = await userTable
-        .where("user_id", "==", user.uid)
+        .where('user_id', '==', user.uid)
         .get()
         .then(data => {
           return data;
         })
         .catch(err => {
-          console.log("Error getting documents", err);
+          console.log('Error getting documents', err);
         });
 
       let userTableDocId;
@@ -438,13 +438,13 @@ export default {
         .get()
         .then(doc => {
           if (!doc.exists) {
-            console.log("No such document!");
+            console.log('No such document!');
           } else {
             return doc.data();
           }
         })
         .catch(err => {
-          console.log("joinTheChannel Method Error", err);
+          console.log('joinTheChannel Method Error', err);
         });
 
       currentUserTableData.joined_channels.forEach(data => {
@@ -457,7 +457,7 @@ export default {
         }
       });
     } else {
-      alert("잘못된 접근입니다.");
+      alert('잘못된 접근입니다.');
     }
   },
 
@@ -465,20 +465,20 @@ export default {
   async deleteChannel(channelDocId) {
     const user = firebase.auth().currentUser;
 
-    const qnaChannel = firestore.collection("QnAChannels").doc(channelDocId);
+    const qnaChannel = firestore.collection('QnAChannels').doc(channelDocId);
 
     const channelData = await qnaChannel.get().then(doc => {
       return doc.data();
     });
 
     if (user && channelData.channel_owner.user_id == user.uid) {
-      const deletedChannel = firestore.collection("DeletedChannels");
+      const deletedChannel = firestore.collection('DeletedChannels');
 
       deletedChannel.add(channelData);
 
       qnaChannel.delete();
     } else {
-      alert("잘못된 접근입니다.");
+      alert('잘못된 접근입니다.');
     }
   },
 
@@ -486,7 +486,7 @@ export default {
   async changChannelDetail(channelDocId, title, description) {
     const user = firebase.auth().currentUser;
 
-    const channelDoc = firestore.collection("QnAChannels").doc(channelDocId);
+    const channelDoc = firestore.collection('QnAChannels').doc(channelDocId);
 
     const channelData = await channelDoc.get().then(doc => {
       return doc.data();
@@ -498,7 +498,7 @@ export default {
         channel_description: description
       });
     } else {
-      alert("잘못된 접근입니다.");
+      alert('잘못된 접근입니다.');
     }
   },
 
@@ -521,37 +521,37 @@ export default {
           timestamp: now_timestamp,
           string:
             now_timestamp.getFullYear() +
-            "년 " +
+            '년 ' +
             (now_timestamp.getMonth() + 1) +
-            "월 " +
+            '월 ' +
             now_timestamp.getDate() +
-            "일 " +
+            '일 ' +
             now_timestamp.getHours() +
-            "시 " +
+            '시 ' +
             now_timestamp.getMinutes() +
-            "분 " +
+            '분 ' +
             now_timestamp.getSeconds() +
-            "초"
+            '초'
         },
         hitCount: 0
       };
 
       firestore
-        .collection("QnAChannels")
+        .collection('QnAChannels')
         .doc(docId)
-        .collection("Questions")
+        .collection('Questions')
         .add(Question);
     } else {
-      console.log("addQuestion Error");
+      console.log('addQuestion Error');
     }
   },
 
   // 특정 문서의 모든 질문 가져오기
   async getQuestionsByDocId(docId) {
     const QnAChannel = firestore
-      .collection("QnAChannels")
+      .collection('QnAChannels')
       .doc(docId)
-      .collection("Questions");
+      .collection('Questions');
 
     let questionsObject = [];
 
@@ -564,7 +564,7 @@ export default {
         });
       })
       .catch(err => {
-        console.log("Error getting documents", err);
+        console.log('Error getting documents', err);
       });
 
     return questionsObject;
@@ -575,9 +575,9 @@ export default {
     const user = firebase.auth().currentUser;
 
     const questionDoc = firestore
-      .collection("QnAChannels")
+      .collection('QnAChannels')
       .doc(channelDocId)
-      .collection("Questions")
+      .collection('Questions')
       .doc(questionDocId);
 
     const questionData = await questionDoc.get().then(doc => {
@@ -587,7 +587,7 @@ export default {
     if (user && questionData.questioner.user_id == user.uid) {
       questionDoc.delete();
     } else {
-      alert("잘못된 접근입니다.");
+      alert('잘못된 접근입니다.');
     }
   },
 
@@ -597,15 +597,15 @@ export default {
 
     if (user) {
       firestore
-        .collection("QnAChannels")
+        .collection('QnAChannels')
         .doc(docId)
-        .collection("Questions")
+        .collection('Questions')
         .doc(questionDocId)
         .update({
           hitCount: firebase.firestore.FieldValue.increment(num)
         });
     } else {
-      console.log("Login please");
+      console.log('Login please');
     }
   },
 
@@ -616,9 +616,9 @@ export default {
 
     if (user) {
       const questionDoc = firestore
-        .collection("QnAChannels")
+        .collection('QnAChannels')
         .doc(channelDocId)
-        .collection("Questions")
+        .collection('Questions')
         .doc(questionDocId);
 
       const reply = {
@@ -626,17 +626,17 @@ export default {
           timestamp: now_timestamp,
           string:
             now_timestamp.getFullYear() +
-            "년 " +
+            '년 ' +
             (now_timestamp.getMonth() + 1) +
-            "월 " +
+            '월 ' +
             now_timestamp.getDate() +
-            "일 " +
+            '일 ' +
             now_timestamp.getHours() +
-            "시 " +
+            '시 ' +
             now_timestamp.getMinutes() +
-            "분 " +
+            '분 ' +
             now_timestamp.getSeconds() +
-            "초"
+            '초'
         },
         replyer: {
           user_email: user.email,
@@ -647,9 +647,9 @@ export default {
         comment: comment
       };
 
-      questionDoc.collection("Replies").add(reply);
+      questionDoc.collection('Replies').add(reply);
     } else {
-      alert("로그인이 필요한 기능입니다.");
+      alert('로그인이 필요한 기능입니다.');
     }
   },
 
@@ -658,11 +658,11 @@ export default {
     const user = firebase.auth().currentUser;
 
     const reply = firestore
-      .collection("QnAChannels")
+      .collection('QnAChannels')
       .doc(channelDocId)
-      .collection("Questions")
+      .collection('Questions')
       .doc(questionDocId)
-      .collection("Replies")
+      .collection('Replies')
       .doc(replyDocId);
 
     const replyData = await reply
@@ -671,24 +671,24 @@ export default {
         return doc.data();
       })
       .catch(error => {
-        console.log("deleteQuestionReply Method Error");
+        console.log('deleteQuestionReply Method Error');
       });
 
     if (user && user.uid == replyData.replyer.user_id) {
       reply.delete();
     } else {
-      alert("잘못된 접근입니다.");
+      alert('잘못된 접근입니다.');
     }
   },
 
   // 대댓글 가져오기
   async getRepliesFromQuestion(channelDocId, questionDocId) {
     const replies = firestore
-      .collection("QnAChannels")
+      .collection('QnAChannels')
       .doc(channelDocId)
-      .collection("Questions")
+      .collection('Questions')
       .doc(questionDocId)
-      .collection("Replies");
+      .collection('Replies');
 
     let replyData = [];
 
