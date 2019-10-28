@@ -11,7 +11,7 @@
         <p id="channelTitle">{{qnaTitle}}</p>
         <p id="channelDes">{{qnaDes}}</p>
 
-        <div v-if="checkChannelIsLive()">
+        <div v-if="checkChannelIsLive()" style="width:100%;">
           <v-textarea
             outlined
             name="input-7-4"
@@ -22,6 +22,16 @@
           ></v-textarea>
         </div>
 
+        <v-btn-toggle v-model="icon" borderless>
+          <v-btn value="created">
+            <span class="hidden-sm-and-down">Created</span>
+            <v-icon right>access_time</v-icon>
+          </v-btn>
+          <v-btn value="favorite">
+            <span class="hidden-sm-and-down">Favorite</span>
+            <v-icon right>thumb_up_alt</v-icon>
+          </v-btn>
+        </v-btn-toggle>
         <v-btn color="success" id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
         <v-spacer style="clear: both;"></v-spacer>
       </div>
@@ -115,6 +125,11 @@ export default Vue.extend({
 @import url("https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Raleway:700&display=swap");
 
+#btnQuestion {
+  float: right;
+  font-family: "Lexend Deca", sans-serif;
+}
+
 #pageTitle {
   height: 60px !important;
   background-color: rgb(51, 150, 244);
@@ -153,11 +168,5 @@ export default Vue.extend({
   height: 2%;
   margin-top: -1%;
   margin-bottom: 3%;
-}
-#btnQuestion {
-  float: right;
-  margin-top: -3%;
-  margin-bottom: 2%;
-  font-family: "Lexend Deca", sans-serif;
 }
 </style>

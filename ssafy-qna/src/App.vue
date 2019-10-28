@@ -93,8 +93,8 @@ body::-webkit-scrollbar {
     display: block;
   }
   #content_background {
-  height: 100vh;
-  width: 100vw;
-}
+    height: 100vh;
+    width: 100vw;
+  }
 }
 </style>
