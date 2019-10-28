@@ -1,58 +1,47 @@
 <template>
   <v-app>
-    <v-layout>
-      <v-flex sm3 class="banner_background">
-        <HeaderWeb />
-      </v-flex>
+    <!-- title -->
+    <div id="pageTitle">Channel "{{code}}"</div>
+    <!-- page on qna page -->
+    <div id="pageBody">
+      <!-- header on qna page -->
+      <!-- add qna point -->
+      <div id="pageHeader">
+        <p id="channelNumber">@{{code}}</p>
+        <p id="channelTitle">{{qnaTitle}}</p>
+        <p id="channelDes">{{qnaDes}}</p>
 
-      <v-flex sm9 id="content_background">
-        <v-layout class="banner_mobile">
-          <HeaderMobile />
-        </v-layout>
-        <!-- title -->
-        <div id="pageTitle">Channel "{{code}}"</div>
-        <!-- page on qna page -->
-        <div id="pageBody">
-          <!-- header on qna page -->
-          <!-- add qna point -->
-          <div id="pageHeader">
-            <p id="channelNumber">@{{code}}</p>
-            <p id="channelTitle">{{qnaTitle}}</p>
-            <p id="channelDes">{{qnaDes}}</p>
-
-            <div v-if="checkChannelIsLive()">
-              <v-textarea
-                outlined
-                name="input-7-4"
-                label="질문을 입력하세요."
-                id="qnaText"
-                v-model="qnaText"
-                @keyup.enter="submitButton()"
-              ></v-textarea>
-              <v-btn color="success" id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
-            </div>
-
-            <v-spacer style="clear: both;"></v-spacer>
-          </div>
-          <v-container grid-list-md fluid>
-            <v-layout v-if="haveList" row wrap id="cardMother">
-              <!-- 답글 예시 -->
-              <template v-for="i in getCardList.length">
-                <QnACard :cardId="i-1" :docId="channelDocId" :key="i"></QnACard>
-              </template>
-            </v-layout>
-          </v-container>
+        <div v-if="checkChannelIsLive()">
+          <v-textarea
+            outlined
+            name="input-7-4"
+            label="질문을 입력하세요."
+            id="qnaText"
+            v-model="qnaText"
+            @keyup.enter="submitButton()"
+          ></v-textarea>
         </div>
-      </v-flex>
-    </v-layout>
+
+        <v-btn color="success" id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
+        <v-spacer style="clear: both;"></v-spacer>
+      </div>
+      <v-card flat>
+        <v-container grid-list-lg fluid>
+          <v-layout v-if="haveList" row wrap id="cardMother">
+            <!-- 답글 예시 -->
+            <template v-for="i in getCardList.length">
+              <QnACard :cardId="i-1" :docId="channelDocId" :key="i"></QnACard>
+            </template>
+          </v-layout>
+        </v-container>
+      </v-card>
+    </div>
   </v-app>
 </template>
 
 <script>
 import Vue from "vue";
 import QnACard from "../components/QnACard";
-import HeaderMobile from "../components/HeaderMobile";
-import HeaderWeb from "../components/HeaderWeb";
 import FirebaseService from "../services/FirebaseService";
 import { log } from "util";
 
@@ -67,9 +56,7 @@ export default Vue.extend({
     }
   },
   components: {
-    QnACard,
-    HeaderMobile,
-    HeaderWeb
+    QnACard
   },
   data: () => ({
     qnaTitle: "Title 입력하는 곳",
@@ -128,42 +115,6 @@ export default Vue.extend({
 @import url("https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Raleway:700&display=swap");
 
-.v-textarea {
-  width: 80%;
-}
-
-.banner_search {
-  text-align: center;
-  margin-top: 7vw;
-}
-.banner {
-  font-size: 160px;
-  color: white;
-  font-weight: bolder;
-  margin-top: -110px;
-}
-.banner_background {
-  display: block;
-  background-color: rgb(36, 40, 43);
-  text-align: center;
-  position: fixed;
-  width: 25%;
-  z-index: 20;
-  height: 100vh;
-}
-.banner_mobile {
-  display: none;
-  height: 50px;
-  background-color: white;
-  text-align: center;
-}
-#content_background {
-  position: absolute;
-  height: 100vh;
-  z-index: 20;
-  width: 75%;
-  right: 0;
-}
 #pageTitle {
   height: 60px !important;
   background-color: rgb(51, 150, 244);
@@ -208,17 +159,5 @@ export default Vue.extend({
   margin-top: -3%;
   margin-bottom: 2%;
   font-family: "Lexend Deca", sans-serif;
-}
-@media (max-width: 600px) {
-  .banner_background {
-    display: none;
-  }
-  .banner_mobile {
-    display: block;
-  }
-  #content_background {
-    height: 100vh;
-    width: 100vw;
-  }
 }
 </style>
