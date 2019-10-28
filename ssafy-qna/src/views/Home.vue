@@ -91,6 +91,7 @@ export default {
     async loginWithGoogle() {
       await FirebaseService.loginWithGoogle();
       this.setLoginInfo();
+      this.$router.push("/dashboard");
     },
     async loginWithAnonymous() {
       if (this.code == "") {
