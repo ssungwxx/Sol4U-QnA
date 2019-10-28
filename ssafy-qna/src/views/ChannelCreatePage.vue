@@ -44,14 +44,26 @@
                         clearable
                         ></v-textarea>
                     </v-col>
-                    <v-col cols="12" sm="6" >
-                        <label>Using time</label>
-                        <v-select v-model="end"
-                          :items="items"
-                          label="using time"
-                          solo
-                        ></v-select>
-                    </v-col>
+                    <v-row style="margin:2px;">
+                      <v-col cols="12" sm="6" >
+                          <label>Using time</label>
+                          <v-select v-model="end"
+                            :items="items"
+                            label="using time"
+
+                            solo
+                          ></v-select>
+                      </v-col>
+                      <v-col cols="12" sm="6" style="margin-top:15px;">
+                          <div v-if= "end==='기타'">
+                            <v-text-field v-model="end2" type="number"
+                            :counter=5
+                            label="only type number"
+                            clearable
+                            />
+                          </div>
+                      </v-col>
+                    </v-row>
                     <v-card-actions>
                         <v-btn class="ma-2" outlined color="indigo" @click="createChannel()">Create</v-btn>
                     </v-card-actions>
@@ -76,6 +88,7 @@ export default {
       title:"",
       description:"",
       end:"",
+      end2:"",
       codeRules: [
         v => !!v || "Code is required"
       ],
@@ -90,7 +103,7 @@ export default {
          v =>
         (v && v.length >=10)|| "description is too short",
       ],
-      items: ['+ 1hours', '+ 2hours', '+ 3hours', '+ 4hours'],
+      items: ['+ 1hours', '+ 2hours', '+ 3hours', '+ 4hours','기타'],
       
     };
   },
@@ -103,10 +116,12 @@ export default {
         plustime=1;
       }else if(this.end=="+ 2hours"){
         plustime=2;
-      }else if(this.end=="+ +3hours"){
+      }else if(this.end=="+ 3hours"){
         plustime=3;
-      }else{
+      }else if(this.end=="+ 4hours"){
         plustime=4;
+      }else{
+        plustime=this.end2;
       }
 
       endtime.setHours(endtime.getHours()+plustime);

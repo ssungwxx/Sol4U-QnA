@@ -108,7 +108,7 @@ export default {
             await FirebaseService.getAllChannels();
         },
         async joinTheChannel() {
-            await FirebaseService.joinTheChannel("7COxqkB4q2O6h3LP5Mw8");
+            await FirebaseService.joinTheChannel("35i27vmd8YFDhxNaA9UI");
         },
         async exitTheChannel() {
             await FirebaseService.exitTheChannel("7COxqkB4q2O6h3LP5Mw8");
