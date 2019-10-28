@@ -69,7 +69,6 @@ body::-webkit-scrollbar {
   text-align: center;
   position: fixed;
   width: 25%;
-  z-index: 20;
   height: 100vh;
 }
 #banner_mobile {
@@ -81,7 +80,6 @@ body::-webkit-scrollbar {
 #content_background {
   position: absolute;
   height: 100vh;
-  z-index: 20;
   width: 75%;
   right: 0;
 }

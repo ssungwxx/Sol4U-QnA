@@ -1,7 +1,6 @@
 <template>
     <v-flex xs12 ma-2>
         <v-card :color='setColor'>
-
             <v-card-title class="codetitle">code번호 : {{CodeNumber}}</v-card-title>
             <v-card-text>
                 <div class="channeinfo">
@@ -14,7 +13,9 @@
                     </p>
                 </div>
             </v-card-text>
-
+            <div id="ChannelMenu">
+                <v-btn text small color="primary">Primary</v-btn>
+            </div>
         </v-card>
     </v-flex>
 </template>
@@ -35,5 +36,8 @@ export default {
 </script>
 
 <style>
-
+    #ChannelMenu{
+        top:0;
+        right:0;
+    }
 </style>
