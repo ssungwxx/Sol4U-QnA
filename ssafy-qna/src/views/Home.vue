@@ -146,6 +146,9 @@ export default {
   min-height: 500px;
   height: 100vh;
   width: 100vw;
+  left: 0;
+  top: 0;
+  z-index: 100;
 }
 
 .fontBanner {
