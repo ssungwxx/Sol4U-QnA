@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- title -->
-    <div id="pageTitle">Channel list</div>
+    <div id="pageTitle">DashBoard</div>
 
     <!-- body -->
     <div id="pageBody">

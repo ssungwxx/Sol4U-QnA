@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- title -->
-    <div id="pageTitle">Channel "{{code}}"</div>
+    <div id="pageTitle">DashBoard.Channel "{{code}}"</div>
     <!-- page on qna page -->
     <div id="pageBody">
       <!-- header on qna page -->
@@ -10,6 +10,7 @@
         <p id="channelNumber">@{{code}}</p>
         <p id="channelTitle">{{qnaTitle}}</p>
         <p id="channelDes">{{qnaDes}}</p>
+        <p id="channelClose">[{{closeAt}}에 종료 됩니다.]</p>
 
         <div v-if="checkChannelIsLive()" style="width:100%;">
           <v-textarea
@@ -68,13 +69,14 @@ export default Vue.extend({
     QnACard
   },
   data: () => ({
-    qnaTitle: "Title 입력하는 곳",
-    qnaDes: "설명을 입력하는 곳",
+    qnaTitle: "--",
+    qnaDes: "---",
     qnaText: "",
     cardNum: 0,
     channelDocId: "",
     haveList: false,
-    icon: "created"
+    icon: "created",
+    closeAt: "---"
   }),
   methods: {
     submitButton() {
@@ -100,6 +102,13 @@ export default Vue.extend({
     },
     setChannel(now) {
       this.channelDocId = now;
+      console.log(now);
+      const channel = FirebaseService.getChannelDetail(now);
+      channel.then(data => {
+        this.qnaTitle = data.channel_name;
+        this.qnaDes = data.channel_description;
+        this.closeAt = data.closed_at.string;
+      });
     },
     async checkChannelIsLive() {
       if (this.channelDocId != "")
@@ -134,8 +143,10 @@ export default Vue.extend({
 #pageTitle {
   height: 60px !important;
   background-color: rgb(51, 150, 244);
+  color: white;
+  font-family: "Lexend Deca", sans-serif;
   padding: 2%;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
 #pageHeader {
@@ -168,5 +179,11 @@ export default Vue.extend({
   height: 2%;
   margin-top: -1%;
   margin-bottom: 3%;
+}
+
+#channelClose {
+  font-size: 0.7em;
+  color: brown;
+  font-family: "Lexend Deca", sans-serif;
 }
 </style>
