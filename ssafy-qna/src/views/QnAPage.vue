@@ -23,11 +23,11 @@
         </div>
 
         <v-btn-toggle v-model="icon" borderless>
-          <v-btn value="created">
+          <v-btn value="created" @click="sort()">
             <span class="hidden-sm-and-down">Created</span>
             <v-icon right>access_time</v-icon>
           </v-btn>
-          <v-btn value="favorite">
+          <v-btn value="favorite" @click="sort()">
             <span class="hidden-sm-and-down">Favorite</span>
             <v-icon right>thumb_up_alt</v-icon>
           </v-btn>
@@ -74,7 +74,8 @@ export default Vue.extend({
     qnaText: "",
     cardNum: 0,
     channelDocId: "",
-    haveList: false
+    haveList: false,
+    icon: "created"
   }),
   methods: {
     submitButton() {
@@ -105,6 +106,9 @@ export default Vue.extend({
       if (this.channelDocId != "")
         return await FirebaseService.checkChannelIsLive(this.channelDocId);
       else return true;
+    },
+    sort() {
+      console.log(this.icon);
     }
   },
   mounted() {
