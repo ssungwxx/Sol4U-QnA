@@ -115,9 +115,7 @@ export default Vue.extend({
     var vueQna = this;
     temp.then(function(now) {
       vueQna.setChannel(now);
-      if (vueQna.$store.state.haveCard === false) {
-        vueQna.getQuestions();
-      }
+      vueQna.getQuestions();
     });
   }
 });
@@ -141,7 +139,6 @@ export default Vue.extend({
 }
 
 #pageHeader {
-  height: 15%;
   padding: 12px;
 }
 
