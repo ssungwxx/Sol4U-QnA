@@ -35,16 +35,15 @@
         <v-btn color="success" id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
         <v-spacer style="clear: both;"></v-spacer>
       </div>
-      <v-card flat>
-        <v-container grid-list-lg fluid>
-          <v-layout v-if="haveList" row wrap id="cardMother">
-            <!-- 답글 예시 -->
-            <template v-for="i in getCardList.length">
-              <QnACard :cardId="i-1" :docId="channelDocId" :key="i"></QnACard>
-            </template>
-          </v-layout>
-        </v-container>
-      </v-card>
+
+      <v-container grid-list-lg fluid>
+        <v-layout v-if="haveList" row wrap id="cardMother">
+          <!-- 답글 예시 -->
+          <template v-for="i in getCardList.length">
+            <QnACard :cardId="i-1" :docId="channelDocId" :key="i"></QnACard>
+          </template>
+        </v-layout>
+      </v-container>
     </div>
   </v-app>
 </template>

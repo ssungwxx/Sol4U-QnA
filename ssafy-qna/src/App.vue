@@ -4,7 +4,6 @@
       <v-flex sm3 id="banner_background">
         <HeaderWeb />
       </v-flex>
-
       <v-flex sm9 id="content_background">
         <v-layout id="banner_mobile">
           <HeaderMobile />
@@ -20,6 +19,7 @@
 <script>
 import HeaderMobile from "../src/components/HeaderMobile";
 import HeaderWeb from "../src/components/HeaderWeb";
+
 export default {
   name: "App",
   data: () => ({
@@ -63,6 +63,7 @@ if (agent.indexOf("chrome") === -1) {
 body::-webkit-scrollbar {
   display: none;
 }
+
 #banner_background {
   display: block;
   background-color: rgb(36, 40, 43);
@@ -71,6 +72,7 @@ body::-webkit-scrollbar {
   width: 25%;
   height: 100vh;
 }
+
 #banner_mobile {
   display: none;
   height: 50px;
@@ -86,6 +88,7 @@ body::-webkit-scrollbar {
 @media (max-width: 600px) {
   #banner_background {
     display: none;
+    position: relative;
   }
   #banner_mobile {
     display: block;
@@ -96,3 +99,4 @@ body::-webkit-scrollbar {
   }
 }
 </style>
+
