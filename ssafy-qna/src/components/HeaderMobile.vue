@@ -8,7 +8,6 @@
                 width="100%"
                 id="drawers"
                 color="rgba(0,0,0,0)"
-                @click="menuclick"
             >
 
                 <v-app-bar class="bar_design">
