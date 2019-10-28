@@ -109,7 +109,7 @@ export default {
                 if (docId == false) {
                     alert("채널정보가 없습니다. 다시 확인해주세요");
                 } else {
-                    this.$router.push("/qna/" + this.code); // 여기 vuex로 처리하기
+                    this.$router.push("/qna/" + docId); // 여기 vuex로 처리하기
                     await FirebaseService.loginWithAnonymous();
                 }
             }
