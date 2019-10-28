@@ -4,10 +4,11 @@
             <!-- =========================================================== -->
             <v-card
                 class="mx-auto overflow-hidden"
-                height="100vh !important"
+                :height = 'he'
                 width="100%"
                 id="drawers"
                 color="rgba(0,0,0,0)"
+                @click="menuclick"
             >
 
                 <v-app-bar class="bar_design">
@@ -80,7 +81,8 @@
         data: () => ({
             drawer: false,
             group: null,
-            routercode2: ""
+            routercode2: "",
+            he: 0
         }),
 
         watch: {
@@ -88,13 +90,14 @@
                 this.drawer = false
             },
         },
+        mounted() {
+            this.he = window.outerHeight;
+      }
     })
 </script>
 
 <style scoped>
 #drawers {
-position: fixed;
-z-index: 30;
 }
 
 .banner_mobile_font{

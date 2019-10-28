@@ -1,10 +1,19 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import FirebaseService from './services/FirebaseService';
+import Vue from "vue";
+import Vuex from "vuex";
+import FirebaseService from "./services/FirebaseService";
+import createPersistedState from "vuex-persistedstate";
+import * as Cookies from "js-cookie";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  plugins: [
+    createPersistedState({
+      getState: vuexKey => Cookies.getJSON(vuexKey),
+      setState: (vuexKey, state) =>
+        Cookies.set(vuexKey, state, { expires: 3, secure: true })
+    })
+  ],
   state: {
     // QnACard
     cardList: [],
@@ -16,7 +25,8 @@ export default new Vuex.Store({
       userDisplayName: null,
       userEmailVerified: null,
       userEmail: null
-    }
+    },
+    userData2: FirebaseService.firebase.auth().currentUser
   },
   getters: {
     getIsLogin: state => {
@@ -40,17 +50,17 @@ export default new Vuex.Store({
   },
   actions: {
     getCardMutation(context, payload) {
-      context.commit('getCardCommit', payload);
+      context.commit("getCardCommit", payload);
     },
     async setLoginInfo({ commit }) {
-      console.log('dads');
+      console.log("dads");
 
       const userData = await FirebaseService.checkUserIsLogin();
       console.log(userData);
 
       if (userData.isAnonymous != null) {
-        commit('setIsLogin', true);
-        commit('setUserData', userData);
+        commit("setIsLogin", true);
+        commit("setUserData", userData);
       }
     },
     setLogout({ commit }) {
@@ -60,8 +70,8 @@ export default new Vuex.Store({
         userEmailVerified: null,
         userEmail: null
       };
-      commit('setIsLogin', false);
-      commit('setUserData', userData);
+      commit("setIsLogin", false);
+      commit("setUserData", userData);
     }
   }
 });
