@@ -185,5 +185,6 @@ export default {
             );
         }
     }
+  }
 };
 </script>
