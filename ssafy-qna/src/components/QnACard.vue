@@ -131,6 +131,13 @@ export default {
       await FirebaseService.deleteQuestion(this.docId, id.questionDocId);
       await QnAPage.getQuestions;
     }
+  },
+  created() {
+    const channelDoc = FirebaseService.firestore.collection("QnAChannels");
+
+    channelDoc.get().then(doc => {
+      doc.forEach(snapshots => {});
+    });
   }
 };
 </script>
