@@ -106,6 +106,7 @@ export default {
                 const docId = await FirebaseService.getDocByChannelCode(
                     this.code
                 );
+                FirebaseService.joinTheChannel(docId)
                 if (docId == false) {
                     alert("채널정보가 없습니다. 다시 확인해주세요");
                 } else {

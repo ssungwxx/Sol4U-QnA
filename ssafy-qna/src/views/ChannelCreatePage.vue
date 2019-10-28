@@ -130,6 +130,9 @@ export default {
       if (this.$refs.form.validate()) {
         await FirebaseService.createChannel(this.code, this.title,this.description, endtime);
         this.$router.push('/qna/'+this.code);
+
+        const channelDocId = await FirebaseService.getDocByChannelCode(this.code)
+        FirebaseService.joinTheChannel(channelDocId)
        
       }
     }
