@@ -168,4 +168,10 @@ export default {
     display: none;
   }
 }
+
+@media (max-width: 600px) {
+  .fontBanner{
+    font-size: 0.7em;
+  }
+}
 </style>

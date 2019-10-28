@@ -75,7 +75,7 @@ export default {
 <style>
 #pageTitle {
   height: 9%;
-  background-color: #ffffff;
+  background-color: rgb(51, 150, 244);
   padding: 2%;
   font-size: 1.1em;
 }
