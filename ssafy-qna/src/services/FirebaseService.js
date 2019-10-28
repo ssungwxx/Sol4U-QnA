@@ -105,11 +105,8 @@ export default {
   },
 
   // 현재 로그인한 정보확인
-  checkUserIsLogin() {
-    console.log("firebase");
-
-    const user = firebase.auth().currentUser;
-    console.log(user);
+  async checkUserIsLogin() {
+    const user = await firebase.auth().currentUser;
 
     if (user) {
       const userData = {
