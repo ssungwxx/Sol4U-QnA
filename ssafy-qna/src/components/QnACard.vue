@@ -24,14 +24,14 @@
                 icon
                 color="#00000033"
               >
-                <v-icon>favorite_border</v-icon>
+                <v-icon>thumb_up_alt</v-icon>
               </v-btn>
               <v-btn v-else @click="likeCheck(getCard[cardId].hitCount)" text icon color="#ff0000">
-                <v-icon>favorite</v-icon>
+                <v-icon>thumb_up_alt</v-icon>
               </v-btn>
               <!-- 하트 개수 표시 영역 -->
               <template v-if="likeCount(getCard[cardId].hitCount)">
-                <v-icon color="#cd7f32" id="likeIcon">favorite</v-icon>
+                <v-icon color="#cd7f32" id="likeIcon">thumb_up_alt</v-icon>
                 <!-- 하트 숫자 표시 -->
                 <span id="likeCount">...{{getCard[cardId].hitCount}}</span>
               </template>
