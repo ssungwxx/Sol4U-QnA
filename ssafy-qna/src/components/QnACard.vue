@@ -1,6 +1,6 @@
 <template>
   <v-flex xs12 round>
-    <v-card class="mx-auto">
+    <v-card class="cardChild">
       <v-card-text>
         <div>
           <p class="textQnA">{{getCard[cardId].question}}</p>
@@ -80,6 +80,7 @@ export default {
   }),
   computed: {
     getCard() {
+      var list = this.$store.state.cardList;
       return this.$store.state.cardList;
     }
   },
@@ -135,6 +136,9 @@ export default {
 </script>
 
 <style>
+.cardChild {
+}
+
 #btnReply {
   float: right;
   font-family: "Lexend Deca", sans-serif;
@@ -161,13 +165,14 @@ export default {
 #likeCount {
   font-family: "Lexend Deca", sans-serif;
   margin-left: -5px;
-  color: blueviolet;
+  color: grey;
   font-size: 0.8em;
   vertical-align: bottom;
 }
 
 .writeTimeText {
   padding: 0% 0% 0% 1%;
+  margin-bottom: 0px !important;
   font-family: "Lexend Deca", sans-serif;
   justify-content: center;
   font-size: 0.9em;
@@ -176,7 +181,7 @@ export default {
 .textQnA {
   padding: 3% 0% 0% 1%;
   font-family: "Lexend Deca", sans-serif;
-  font-size: 2em;
+  font-size: 1.5em;
   color: midnightblue;
 }
 

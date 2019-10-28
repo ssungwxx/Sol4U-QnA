@@ -27,22 +27,21 @@
                 label="질문을 입력하세요."
                 id="qnaText"
                 v-model="qnaText"
+                @keyup.enter="submitButton()"
               ></v-textarea>
+              <v-btn color="success" id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
             </div>
 
-            <v-btn color="success" id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
             <v-spacer style="clear: both;"></v-spacer>
           </div>
-          <v-card flat>
-            <v-container grid-list-lg fluid>
-              <v-layout v-if="haveList" row wrap id="cardMother">
-                <!-- 답글 예시 -->
-                <template v-for="i in getCardList.length">
-                  <QnACard :cardId="i-1" :docId="channelDocId" :key="i"></QnACard>
-                </template>
-              </v-layout>
-            </v-container>
-          </v-card>
+          <v-container grid-list-md fluid>
+            <v-layout v-if="haveList" row wrap id="cardMother">
+              <!-- 답글 예시 -->
+              <template v-for="i in getCardList.length">
+                <QnACard :cardId="i-1" :docId="channelDocId" :key="i"></QnACard>
+              </template>
+            </v-layout>
+          </v-container>
         </div>
       </v-flex>
     </v-layout>
@@ -128,6 +127,11 @@ export default Vue.extend({
 @import url("https://fonts.googleapis.com/css?family=Lexend+Deca|Saira+Extra+Condensed&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Raleway:700&display=swap");
+
+.v-textarea {
+  width: 80%;
+}
+
 .banner_search {
   text-align: center;
   margin-top: 7vw;
@@ -162,13 +166,14 @@ export default Vue.extend({
 }
 #pageTitle {
   height: 60px !important;
-  background-color: rgb(51, 150, 244);;
+  background-color: rgb(51, 150, 244);
   padding: 2%;
   font-size: 1.1em;
 }
 
 #pageHeader {
   height: 15%;
+  padding: 12px;
 }
 
 #pageBody {
@@ -200,6 +205,7 @@ export default Vue.extend({
 }
 #btnQuestion {
   float: right;
+  margin-top: -3%;
   margin-bottom: 2%;
   font-family: "Lexend Deca", sans-serif;
 }
@@ -211,8 +217,8 @@ export default Vue.extend({
     display: block;
   }
   #content_background {
-  height: 100vh;
-  width: 100vw;
-}
+    height: 100vh;
+    width: 100vw;
+  }
 }
 </style>
