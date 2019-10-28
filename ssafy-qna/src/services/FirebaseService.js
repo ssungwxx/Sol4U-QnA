@@ -20,6 +20,9 @@ const firestore = firebase.firestore();
 const fireauth = firebase.auth();
 
 export default {
+  // Vue 내부에서 사용용도
+  firebase,
+  firestore,
   // 구글 로그인
   loginWithGoogle() {
     let provider = new firebase.auth.GoogleAuthProvider();
@@ -297,6 +300,8 @@ export default {
         .update({
           owned_channels: firebase.firestore.FieldValue.arrayUnion(new_channel)
         });
+
+      console.log(new_channel);
     } else if (isLive) {
       alert("채널 코드가 중복되었습니다.");
     } else {
@@ -697,6 +702,4 @@ export default {
       });
     });
   }
-
-  //
 };

@@ -18,6 +18,8 @@
         <v-btn small @click="deleteQuestionReply">delete Question Reply</v-btn>
         <v-btn small @click="getRepliesFromQuestion">get Replies From Question</v-btn>
         <v-btn small @click="createVerifiedUserTable">create Verified User Table</v-btn>
+        <v-btn small @click="getOwnedChannels">get Owned Channels</v-btn>
+        <v-btn small @click="getJoinedChannels">get Joined Channels</v-btn>
     </div>
 </template>
 
@@ -26,8 +28,49 @@ import FirebaseService from "../services/FirebaseService";
 
 export default {
     data: () => ({
-        msg: "입력하세요"
+        msg: "입력하세요",
+        verifiedUserTable: []
     }),
+    created() {
+        let vueInstance = this;
+
+        const dataDoc = FirebaseService.firestore.collection(
+            "VerifiedUserTable"
+        );
+
+        dataDoc
+            .doc("ioXyGxXXciFe7gjasw9P")
+            .get()
+            .then(doc => {
+                const data = {
+                    user_id: "ioXyGxXXciFe7gjasw9P",
+                    owned_channels: doc.data().owned_channels,
+                    joinned_channels: doc.data().joinned_channels
+                };
+
+                vueInstance.verifiedUserTable.push(data);
+            });
+
+        dataDoc
+            .where("user_id", "==", "sD7kshFQWxXeTm42k4KgfpPacfs1")
+            .onSnapshot(snapshots => {
+                snapshots.docChanges().forEach(change => {
+                    if (change.type === "added") {
+                        console.log("New post: ", change.doc.data());
+                    }
+                    if (change.type === "modified") {
+                        console.log("Modified post: ", change.doc.data());
+                        console.log(this);
+                    }
+                    if (change.type === "removed") {
+                        console.log("Removed post: ", change.doc.data());
+                    }
+                });
+            });
+    },
+    mounted() {
+        console.log(this.verifiedUserTable);
+    },
     methods: {
         async createChannel() {
             await FirebaseService.createChannel(
@@ -43,7 +86,7 @@ export default {
             this.msg = "";
         },
         async getDocByChannelCode() {
-            let temp = await FirebaseService.getDocByChannelCode("1234");
+            let temp = await FirebaseService.getDocByChannelCode("1111");
             console.log(temp);
         },
         async getQuestionsByDocId() {
@@ -117,6 +160,29 @@ export default {
         },
         createVerifiedUserTable() {
             FirebaseService.createVerifiedUserTable();
+        },
+        getOwnedChannels() {
+            FirebaseService.getOwnedChannels();
+        },
+        getJoinedChannels() {
+            FirebaseService.getJoinedChannels();
+        },
+        test() {
+            let doc = FirebaseService.firestore
+                .collection("VerifiedUserTable")
+                .doc(FirebaseService.firebase.auth().currentUser.uid);
+
+            let observer = doc.onSnapshot(
+                docSnapshot => {
+                    console.log(`Received doc snapshot: ${docSnapshot}`);
+                    console.log(docSnapshot);
+                    console.log(docSnapshot.id);
+                    console.log(docSnapshot.data());
+                },
+                err => {
+                    console.log(`Encountered error: ${err}`);
+                }
+            );
         }
     }
 };
