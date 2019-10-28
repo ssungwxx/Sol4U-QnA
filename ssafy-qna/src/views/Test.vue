@@ -18,8 +18,7 @@
         <v-btn small @click="deleteQuestionReply">delete Question Reply</v-btn>
         <v-btn small @click="getRepliesFromQuestion">get Replies From Question</v-btn>
         <v-btn small @click="createVerifiedUserTable">create Verified User Table</v-btn>
-        <v-btn small @click="getOwnedChannels">get Owned Channels</v-btn>
-        <v-btn small @click="getJoinedChannels">get Joined Channels</v-btn>
+        <v-btn small @click="getChannelDetail">get Channel Detail</v-btn>
     </div>
 </template>
 
@@ -161,30 +160,12 @@ export default {
         createVerifiedUserTable() {
             FirebaseService.createVerifiedUserTable();
         },
-        getOwnedChannels() {
-            FirebaseService.getOwnedChannels();
-        },
-        getJoinedChannels() {
-            FirebaseService.getJoinedChannels();
-        },
-        test() {
-            let doc = FirebaseService.firestore
-                .collection("VerifiedUserTable")
-                .doc(FirebaseService.firebase.auth().currentUser.uid);
-
-            let observer = doc.onSnapshot(
-                docSnapshot => {
-                    console.log(`Received doc snapshot: ${docSnapshot}`);
-                    console.log(docSnapshot);
-                    console.log(docSnapshot.id);
-                    console.log(docSnapshot.data());
-                },
-                err => {
-                    console.log(`Encountered error: ${err}`);
-                }
+        async getChannelDetail() {
+            let temp = await FirebaseService.getChannelDetail(
+                "35i27vmd8YFDhxNaA9UI"
             );
+            console.log(temp);
         }
     }
-  }
 };
 </script>
