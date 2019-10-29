@@ -19,10 +19,10 @@
   </v-flex>
   <v-flex sm1 id="ChannelMenu">
     <div>
-     <v-btn class="ma-2" tile outlined color="success" width="100%">
+     <v-btn class="ma-2" tile outlined color="success" width="100%" @click="test">
       <v-icon left>mdi-pencil</v-icon> Edit
     </v-btn>
-    <v-btn class="ma-2" tile outlined color="error" width="100%">
+    <v-btn class="ma-2" tile outlined color="error" width="100%" @click="test">
       <v-icon left>mdi-delete</v-icon>
       Del
     </v-btn>
@@ -30,8 +30,8 @@
   </v-flex>
   </v-layout>
     <div id="mobileMenu">
-     <v-btn text small color="success">Edit</v-btn>
-     <v-btn text small color="error">Delete</v-btn>
+     <v-btn text small color="success" @click="test">Edit</v-btn>
+     <v-btn text small color="error" @click="test">Delete</v-btn>
     </div>
 </div>
 </template>
@@ -41,7 +41,12 @@ import Vue from "vue";
 import FirebaseService from "../services/FirebaseService";
 
 export default {
-  props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor"]
+  props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor"],
+  methods: {
+    test () {
+      alert("아직 작업안했어요 제가 할겁니다 건들지마세요")
+    }
+  }
 };
 </script>
 
