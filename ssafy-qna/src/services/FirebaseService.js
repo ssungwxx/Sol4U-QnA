@@ -138,7 +138,10 @@ export default {
     await QnAChannel.get()
       .then(doc => {
         doc.forEach(data => {
-          channels.push(data.data());
+          let channelData = data.data();
+          channelData.channel_doc_id = data.id;
+
+          channels.push(channelData);
         });
       })
       .catch(err => {
