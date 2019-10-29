@@ -17,7 +17,7 @@
     </v-btn>
     </v-card>
   </v-flex>
-  <v-flex sm1 id="ChannelMenu">
+  <v-flex v-if="this.check === true" sm1 id="ChannelMenu">
     <div>
      <v-btn class="ma-2" tile outlined color="success" width="100%" @click="test">
       <v-icon left>mdi-pencil</v-icon> Edit
@@ -29,7 +29,7 @@
     </div>
   </v-flex>
   </v-layout>
-    <div id="mobileMenu">
+    <div v-if="this.check === true" id="mobileMenu">
      <v-btn text small color="success" @click="test">Edit</v-btn>
      <v-btn text small color="error" @click="test">Delete</v-btn>
     </div>
@@ -42,14 +42,30 @@ import FirebaseService from "../services/FirebaseService";
 import { mapActions } from "vuex";
 
 export default {
-  props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor","ChannelDocId"],
+  props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor","ChannelDocId","ChannelOwner"],
+  
+  data: () => ({
+    check: false
+  }),
   methods: {
     test () {
       alert("아직 작업안했어요 제가 할겁니다 건들지마세요")
     },
-    async JoinDashBoard () {
+    JoinDashBoard () {
       this.$router.push("/qna/"+this.ChannelDocId);
+    },
+    checkOwner () {
+      const vuexUserEmail = this.$store.getters.getUserData.userEmail
+      console.log("owner   "+this.ChannelOwner)
+      console.log(vuexUserEmail)
+      if(vuexUserEmail === this.ChannelOwner){
+        this.check = true
+      }
+      console.log(this.check)
     }
+  },
+  mounted() {
+    this.checkOwner();
   }
 };
 </script>

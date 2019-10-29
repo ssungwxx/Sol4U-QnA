@@ -24,7 +24,8 @@
             :StartDay="dashboards[i-1].created_at.string"
             :EndDay="dashboards[i-1].closed_at.string"
             :ChannelDocId="dashboards[i-1].channel_doc_id"
-            setColor
+            :ChannelOwner="dashboards[i-1].channel_owner.user_email"
+            setColor=""
           />
 
           <ChannelCard
@@ -34,6 +35,7 @@
             :StartDay="dashboards[i-1].created_at.string"
             :EndDay="dashboards[i-1].closed_at.string"
             :ChannelDocId="dashboards[i-1].channel_doc_id"
+            :ChannelOwner="dashboards[i-1].channel_owner.user_email"
             setColor="#d9d9d9"
           />
       </v-layout>
@@ -73,7 +75,6 @@ export default {
       this.dashboards = await FirebaseService.getAllChannels();
       this.dashboards.sort(compare);
       this.currentTimestamp = parseInt(new Date().getTime() / 1000);
-      console.log(this.dashboards);
     },
     create(){
       this.$router.push("/channel/create");
