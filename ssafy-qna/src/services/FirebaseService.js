@@ -605,24 +605,15 @@ export default {
         .collection("Questions")
         .doc(questionDocId);
 
-      const flag = questionDoc
-        .get()
-        .where("questionList", "array-contains", user.uid)
-        .then(data => {
-          return data;
-        });
-
-      if (!flag && num == 1) {
+      if (num == 1) {
         questionDoc.update({
           hitCount: firebase.firestore.FieldValue.increment(num),
-          hitList: firebase.firestore.arrayUnion(user.uid)
+          hitList: firebase.firestore.FieldValue.arrayUnion(user.uid)
         });
-      } else if (!flag && num == 1) {
-        alert("잘못된 접근입니다.");
-      } else if (flag && num == -1) {
+      } else if (num == -1) {
         questionDoc.update({
           hitCount: firebase.firestore.FieldValue.increment(num),
-          hitList: firebase.firestore.arrayRemove(user.uid)
+          hitList: firebase.firestore.FieldValue.arrayRemove(user.uid)
         });
       } else {
         alert("잘못된 접근입니다.");
