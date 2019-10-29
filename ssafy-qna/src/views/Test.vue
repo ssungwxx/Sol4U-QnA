@@ -19,6 +19,8 @@
         <v-btn small @click="getRepliesFromQuestion">get Replies From Question</v-btn>
         <v-btn small @click="createVerifiedUserTable">create Verified User Table</v-btn>
         <v-btn small @click="getChannelDetail">get Channel Detail</v-btn>
+        <v-btn small @click="getChannelDetail">get Channel Detail</v-btn>
+        <v-btn small @click="getOwnedChannels">get Owned Channels</v-btn>
     </div>
 </template>
 
@@ -31,41 +33,37 @@ export default {
         verifiedUserTable: []
     }),
     created() {
-        let vueInstance = this;
-
-        const dataDoc = FirebaseService.firestore.collection(
-            "VerifiedUserTable"
-        );
-
-        dataDoc
-            .doc("ioXyGxXXciFe7gjasw9P")
-            .get()
-            .then(doc => {
-                const data = {
-                    user_id: "ioXyGxXXciFe7gjasw9P",
-                    owned_channels: doc.data().owned_channels,
-                    joinned_channels: doc.data().joinned_channels
-                };
-
-                vueInstance.verifiedUserTable.push(data);
-            });
-
-        dataDoc
-            .where("user_id", "==", "sD7kshFQWxXeTm42k4KgfpPacfs1")
-            .onSnapshot(snapshots => {
-                snapshots.docChanges().forEach(change => {
-                    if (change.type === "added") {
-                        console.log("New post: ", change.doc.data());
-                    }
-                    if (change.type === "modified") {
-                        console.log("Modified post: ", change.doc.data());
-                        console.log(this);
-                    }
-                    if (change.type === "removed") {
-                        console.log("Removed post: ", change.doc.data());
-                    }
-                });
-            });
+        // let vueInstance = this;
+        // const dataDoc = FirebaseService.firestore.collection(
+        //     "VerifiedUserTable"
+        // );
+        // dataDoc
+        //     .doc("ioXyGxXXciFe7gjasw9P")
+        //     .get()
+        //     .then(doc => {
+        //         const data = {
+        //             user_id: "ioXyGxXXciFe7gjasw9P",
+        //             owned_channels: doc.data().owned_channels,
+        //             joinned_channels: doc.data().joinned_channels
+        //         };
+        //         vueInstance.verifiedUserTable.push(data);
+        //     });
+        // dataDoc
+        //     .where("user_id", "==", "sD7kshFQWxXeTm42k4KgfpPacfs1")
+        //     .onSnapshot(snapshots => {
+        //         snapshots.docChanges().forEach(change => {
+        //             if (change.type === "added") {
+        //                 console.log("New post: ", change.doc.data());
+        //             }
+        //             if (change.type === "modified") {
+        //                 console.log("Modified post: ", change.doc.data());
+        //                 console.log(this);
+        //             }
+        //             if (change.type === "removed") {
+        //                 console.log("Removed post: ", change.doc.data());
+        //             }
+        //         });
+        //     });
     },
     mounted() {
         console.log(this.verifiedUserTable);
@@ -165,6 +163,9 @@ export default {
                 "35i27vmd8YFDhxNaA9UI"
             );
             console.log(temp);
+        },
+        async getOwnedChannels() {
+            await FirebaseService.getOwnedChannels();
         }
     }
 };

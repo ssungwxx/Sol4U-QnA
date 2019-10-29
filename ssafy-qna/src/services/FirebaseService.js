@@ -720,5 +720,34 @@ export default {
     return channelDoc.get().then(doc => {
       return doc.data();
     });
+  },
+
+  // 사용자가 참여한 채널 목록 불러오기
+  async getOwnedChannels() {
+    const user = firebase.auth().currentUser;
+
+    if (user) {
+      const userTable = firestore.collection("VerifiedUserTable");
+
+      let docId;
+
+      await userTable
+        .where("user_id", "==", user.uid)
+        .get()
+        .then(doc => {
+          doc.forEach(data => {
+            docId = data.id;
+          });
+        });
+
+      const userTableChannelData = await userTable
+        .doc(docId)
+        .get()
+        .then(doc => {
+          return doc.data();
+        });
+
+      console.log(userTableChannelData);
+    }
   }
 };
