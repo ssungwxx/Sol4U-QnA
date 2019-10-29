@@ -21,6 +21,7 @@
         <v-btn small @click="getChannelDetail">get Channel Detail</v-btn>
         <v-btn small @click="getChannelDetail">get Channel Detail</v-btn>
         <v-btn small @click="getOwnedChannels">get Owned Channels</v-btn>
+        <v-btn small @click="checkUserInHitList">check User In HitList</v-btn>
     </div>
 </template>
 
@@ -166,6 +167,14 @@ export default {
         },
         async getOwnedChannels() {
             await FirebaseService.getOwnedChannels();
+        },
+        async checkUserInHitList() {
+            console.log(
+                await FirebaseService.checkUserInHitList(
+                    "YBrlA3mK73iZyUHXqQb3",
+                    "2UoI8wEHNHxZCbyaawgJ"
+                )
+            );
         }
     }
 };
