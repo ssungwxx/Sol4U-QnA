@@ -11,12 +11,8 @@
       </div>
 
       <!-- 정렬-->
-      <v-layout v-for="(i) in dashboards.length" :key="i">
+      <v-layout v-for="(i) in dashboards.length" :key="i" style="margin-bottom:8px;">
         <!-- channel list-->
-        <router-link
-          style="width:100%; text-decoration:none;"
-          :to="'/qna/'+dashboards[i-1].channel_code"
-        >
           <!-- vuex에 저장해야함 -->
           <ChannelCard
             v-if="dashboards[i-1].closed_at.timestamp.seconds > currentTimestamp"
@@ -35,7 +31,6 @@
             :EndDay="dashboards[i-1].closed_at.string"
             setColor="#d9d9d9"
           />
-        </router-link>
       </v-layout>
     </div>
   </v-app>
