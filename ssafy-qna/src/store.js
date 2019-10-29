@@ -2,16 +2,19 @@ import Vue from "vue";
 import Vuex from "vuex";
 import FirebaseService from "./services/FirebaseService";
 import createPersistedState from "vuex-persistedstate";
-import * as Cookies from "js-cookie";
+import SecureLS from "secure-ls";
 
 Vue.use(Vuex);
+const ls = new SecureLS({ isCompression: false });
 
 export default new Vuex.Store({
   plugins: [
     createPersistedState({
-      getState: vuexKey => Cookies.getJSON(vuexKey),
-      setState: (vuexKey, state) =>
-        Cookies.set(vuexKey, state, { expires: 3, secure: true })
+      storage: {
+        getItem: key => ls.get(key),
+        setItem: (key, value) => ls.set(key, value),
+        removeItem: key => ls.remove(key)
+      }
     })
   ],
   state: {
@@ -24,12 +27,7 @@ export default new Vuex.Store({
       userDisplayName: null,
       userEmailVerified: null,
       userEmail: null
-    },
-    userData2: FirebaseService.firebase.auth().currentUser,
-
-    // 주석 삭제할거임 ~~~ 채널 코드랑 채널 docId 뷰엑스 저장
-    channelDocId: '',
-    channelCode: ''
+    }
   },
   getters: {
     getIsLogin: state => {
@@ -37,12 +35,6 @@ export default new Vuex.Store({
     },
     getUserData: state => {
       return state.userData;
-    },
-    getChannelDocId: state => { // 창규창규
-      return state.channelDocId;
-    },
-    getChannelCode: state => {
-      return state.channelCode;
     }
   },
   mutations: {
@@ -55,12 +47,6 @@ export default new Vuex.Store({
     },
     setUserData(state, userData) {
       state.userData = userData;
-    },
-    setChannelDocId(state, channelDocId){ // 창규창규
-      state.channelDocId = channelDocId;
-    },
-    setChannelCode(state, channelCode){
-      state.channelCode = channelCode;
     }
   },
   actions: {
@@ -87,8 +73,6 @@ export default new Vuex.Store({
       };
       commit("setIsLogin", false);
       commit("setUserData", userData);
-    },
-    async setChannelInfo({ channelCode }) {
     }
   }
 });

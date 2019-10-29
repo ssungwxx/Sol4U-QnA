@@ -3,7 +3,7 @@
   <v-layout>
   <v-flex sm12 ma-2>
     <v-card :color="setColor">
-    <v-btn text width="100%" height="100%">
+    <v-btn text width="100%" height="100%" @click="JoinDashBoard">
       <div id="channelWidth">
       <v-card-title class="codeTitle">Code : {{CodeNumber}}</v-card-title>
       <v-card-text style="margin-top:10px;">
@@ -17,21 +17,21 @@
     </v-btn>
     </v-card>
   </v-flex>
-  <v-flex sm1 id="ChannelMenu">
+  <v-flex v-if="this.check === true" sm1 id="ChannelMenu">
     <div>
-     <v-btn class="ma-2" tile outlined color="success" width="100%">
+     <v-btn class="ma-2" tile outlined color="success" width="100%" @click="test">
       <v-icon left>mdi-pencil</v-icon> Edit
     </v-btn>
-    <v-btn class="ma-2" tile outlined color="error" width="100%">
+    <v-btn class="ma-2" tile outlined color="error" width="100%" @click="test">
       <v-icon left>mdi-delete</v-icon>
       Del
     </v-btn>
     </div>
   </v-flex>
   </v-layout>
-    <div id="mobileMenu">
-     <v-btn text small color="success">Edit</v-btn>
-     <v-btn text small color="error">Delete</v-btn>
+    <div v-if="this.check === true" id="mobileMenu">
+     <v-btn text small color="success" @click="test">Edit</v-btn>
+     <v-btn text small color="error" @click="test">Delete</v-btn>
     </div>
 </div>
 </template>
@@ -39,9 +39,34 @@
 <script>
 import Vue from "vue";
 import FirebaseService from "../services/FirebaseService";
+import { mapActions } from "vuex";
 
 export default {
-  props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor"]
+  props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor","ChannelDocId","ChannelOwner"],
+  
+  data: () => ({
+    check: false
+  }),
+  methods: {
+    test () {
+      alert("아직 작업안했어요 제가 할겁니다 건들지마세요")
+    },
+    JoinDashBoard () {
+      this.$router.push("/qna/"+this.ChannelDocId);
+    },
+    checkOwner () {
+      const vuexUserEmail = this.$store.getters.getUserData.userEmail
+      console.log("owner   "+this.ChannelOwner)
+      console.log(vuexUserEmail)
+      if(vuexUserEmail === this.ChannelOwner){
+        this.check = true
+      }
+      console.log(this.check)
+    }
+  },
+  mounted() {
+    this.checkOwner();
+  }
 };
 </script>
 

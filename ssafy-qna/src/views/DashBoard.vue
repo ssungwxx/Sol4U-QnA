@@ -5,6 +5,9 @@
 
     <!-- body -->
     <div id="pageBody">
+      <div v-if="getIsLogin&&!getUserData.isAnonymous" id="create">
+        <v-btn @click="create">create</v-btn>
+      </div>
       <div id="pageHeader">
         <h1>Channel List</h1>
         <p>Channel List You Created.</p>
@@ -20,6 +23,8 @@
           :CodeName="dashboards[i-1].channel_name"
           :StartDay="dashboards[i-1].created_at.string"
           :EndDay="dashboards[i-1].closed_at.string"
+          :ChannelDocId="dashboards[i-1].channel_doc_id"
+          :ChannelOwner="dashboards[i-1].channel_owner.user_email"
           setColor
         />
 
@@ -29,6 +34,8 @@
           :CodeName="dashboards[i-1].channel_name"
           :StartDay="dashboards[i-1].created_at.string"
           :EndDay="dashboards[i-1].closed_at.string"
+          :ChannelDocId="dashboards[i-1].channel_doc_id"
+          :ChannelOwner="dashboards[i-1].channel_owner.user_email"
           setColor="#d9d9d9"
         />
       </v-layout>
@@ -40,6 +47,8 @@
 import Vue from "vue";
 import ChannelCard from "../components/ChannelListCard";
 import FirebaseService from "../services/FirebaseService";
+import { mapActions } from "vuex";
+
 export default {
   components: {
     ChannelCard
@@ -48,6 +57,14 @@ export default {
     dashboards: [],
     currentTimestamp: ""
   }),
+  computed: {
+    getIsLogin: function() {
+      return this.$store.getters.getIsLogin;
+    },
+    getUserData: function() {
+      return this.$store.getters.getUserData;
+    }
+  },
   methods: {
     async getdashboard() {
       function compare(a, b) {
@@ -58,7 +75,9 @@ export default {
       this.dashboards = await FirebaseService.getAllChannels();
       this.dashboards.sort(compare);
       this.currentTimestamp = parseInt(new Date().getTime() / 1000);
-      console.log(this.dashboards);
+    },
+    create() {
+      this.$router.push("/channel/create");
     }
   },
   mounted() {
@@ -73,5 +92,10 @@ export default {
   background-color: rgb(51, 150, 244);
   padding: 2%;
   font-size: 1.1em;
+}
+#create {
+  float: right;
+  margin-top: 15px;
+  margin-right: 10px;
 }
 </style>
