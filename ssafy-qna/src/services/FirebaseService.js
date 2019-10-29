@@ -754,5 +754,29 @@ export default {
 
       console.log(userTableChannelData);
     }
+  },
+
+  // 질문의 hitList에 현재 유저가 속해있는지 확인
+  async checkUserInHitList(channelDocId, questtionDocId) {
+    const user = firebase.auth().currentUser;
+    let flag = false;
+    if (user) {
+      const hitList = firestore
+        .collection("QnAChannels")
+        .doc(channelDocId)
+        .collection("Questions")
+        .doc(questtionDocId);
+
+      const hitListData = await hitList.get().then(doc => {
+        return doc.data();
+      });
+
+      hitListData.hitList.forEach(userList => {
+        if (userList == user.uid) {
+          flag = true;
+        }
+      });
+    }
+    return flag;
   }
 };
