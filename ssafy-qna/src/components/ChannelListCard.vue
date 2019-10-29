@@ -22,7 +22,7 @@
      <v-btn class="ma-2" tile outlined color="success" width="100%" @click="test">
       <v-icon left>mdi-pencil</v-icon> Edit
     </v-btn>
-    <v-btn class="ma-2" tile outlined color="error" width="100%" @click="test">
+    <v-btn class="ma-2" tile outlined color="error" width="100%" @click="channelDelete">
       <v-icon left>mdi-delete</v-icon>
       Del
     </v-btn>
@@ -31,7 +31,7 @@
   </v-layout>
     <div v-if="this.check === true" id="mobileMenu">
      <v-btn text small color="success" @click="test">Edit</v-btn>
-     <v-btn text small color="error" @click="test">Delete</v-btn>
+     <v-btn text small color="error" @click="channelDelete">Delete</v-btn>
     </div>
 </div>
 </template>
@@ -56,12 +56,16 @@ export default {
     },
     checkOwner () {
       const vuexUserEmail = this.$store.getters.getUserData.userEmail
-      console.log("owner   "+this.ChannelOwner)
+      console.log("owner   "+this.ChannelOwne6r)
       console.log(vuexUserEmail)
       if(vuexUserEmail === this.ChannelOwner){
         this.check = true
       }
       console.log(this.check)
+    },
+    async channelDelete () {
+      await FirebaseService.deleteChannel(this.ChannelDocId);
+      alert("'"+this.CodeNumber+"' 채널을 삭제했습니다")
     }
   },
   mounted() {
