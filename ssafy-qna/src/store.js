@@ -2,16 +2,19 @@ import Vue from "vue";
 import Vuex from "vuex";
 import FirebaseService from "./services/FirebaseService";
 import createPersistedState from "vuex-persistedstate";
-import * as Cookies from "js-cookie";
+import SecureLS from "secure-ls";
 
 Vue.use(Vuex);
+const ls = new SecureLS({ isCompression: false });
 
 export default new Vuex.Store({
   plugins: [
     createPersistedState({
-      getState: vuexKey => Cookies.getJSON(vuexKey),
-      setState: (vuexKey, state) =>
-        Cookies.set(vuexKey, state, { expires: 3, secure: true })
+      storage: {
+        getItem: key => ls.get(key),
+        setItem: (key, value) => ls.set(key, value),
+        removeItem: key => ls.remove(key)
+      }
     })
   ],
   state: {
@@ -24,7 +27,7 @@ export default new Vuex.Store({
       userDisplayName: null,
       userEmailVerified: null,
       userEmail: null
-    },
+    }
   },
   getters: {
     getIsLogin: state => {
