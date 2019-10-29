@@ -138,39 +138,7 @@ export default {
             await QnAPage.getQuestions;
         }
     },
-    created() {
-        const channelDoc = FirebaseService.firestore
-            .collection("QnAChannels")
-            .doc("YBrlA3mK73iZyUHXqQb3")
-            .collection("Questions");
-
-        channelDoc.onSnapshot(snapshots => {
-            snapshots.docChanges().forEach(change => {
-                const data = {
-                    questioner: change.doc.data().questioner,
-                    question: change.doc.data().question,
-                    created_at: change.doc.data().created_at,
-                    hitCount: change.doc.data().hitCount,
-                    hitList: change.doc.data().hitCount
-                };
-
-                if (change.type === "added") {
-                    console.log("New post: ", change.doc.data());
-                }
-                if (change.type === "modified") {
-                    console.log("Modified post: ", change.doc.data());
-                    console.log(this);
-                }
-                if (change.type === "removed") {
-                    console.log("Removed post: ", change.doc.data());
-                }
-            });
-        });
-
-        channelDoc.get().then(doc => {
-            doc.forEach(snapshots => {});
-        });
-    }
+    created() {}
 };
 </script>
 
