@@ -70,7 +70,8 @@ export default {
   name: "QnACard",
   props: {
     cardId: { type: Number },
-    docId: { type: String }
+    docId: { type: String },
+    sort: { type: String }
   },
   data: () => ({
     // like or not check boolean var
@@ -81,7 +82,10 @@ export default {
   computed: {
     getCard() {
       var list = this.$store.state.cardList;
-      return this.$store.state.cardList;
+      if (sort === "favorite") {
+      } else {
+      }
+      return list;
     }
   },
   mounted() {},
