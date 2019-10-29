@@ -20,6 +20,7 @@
             :CodeName="dashboards[i-1].channel_name"
             :StartDay="dashboards[i-1].created_at.string"
             :EndDay="dashboards[i-1].closed_at.string"
+            :ChannelDocId="dashboards[i-1].channel_doc_id"
             setColor
           />
 
@@ -29,6 +30,7 @@
             :CodeName="dashboards[i-1].channel_name"
             :StartDay="dashboards[i-1].created_at.string"
             :EndDay="dashboards[i-1].closed_at.string"
+            :ChannelDocId="dashboards[i-1].channel_doc_id"
             setColor="#d9d9d9"
           />
       </v-layout>

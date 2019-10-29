@@ -3,7 +3,7 @@
   <v-layout>
   <v-flex sm12 ma-2>
     <v-card :color="setColor">
-    <v-btn text width="100%" height="100%">
+    <v-btn text width="100%" height="100%" @click="JoinDashBoard">
       <div id="channelWidth">
       <v-card-title class="codeTitle">Code : {{CodeNumber}}</v-card-title>
       <v-card-text style="margin-top:10px;">
@@ -39,12 +39,16 @@
 <script>
 import Vue from "vue";
 import FirebaseService from "../services/FirebaseService";
+import { mapActions } from "vuex";
 
 export default {
-  props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor"],
+  props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor","ChannelDocId"],
   methods: {
     test () {
       alert("아직 작업안했어요 제가 할겁니다 건들지마세요")
+    },
+    async JoinDashBoard () {
+      this.$router.push("/qna/"+this.ChannelDocId);
     }
   }
 };
