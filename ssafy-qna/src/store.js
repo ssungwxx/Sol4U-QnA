@@ -26,7 +26,11 @@ export default new Vuex.Store({
       userEmailVerified: null,
       userEmail: null
     },
-    userData2: FirebaseService.firebase.auth().currentUser
+    userData2: FirebaseService.firebase.auth().currentUser,
+
+    // 주석 삭제할거임 ~~~ 채널 코드랑 채널 docId 뷰엑스 저장
+    channelDocId: '',
+    channelCode: ''
   },
   getters: {
     getIsLogin: state => {
@@ -34,6 +38,12 @@ export default new Vuex.Store({
     },
     getUserData: state => {
       return state.userData;
+    },
+    getChannelDocId: state => { // 창규창규
+      return state.channelDocId;
+    },
+    getChannelCode: state => {
+      return state.channelCode;
     }
   },
   mutations: {
@@ -46,6 +56,12 @@ export default new Vuex.Store({
     },
     setUserData(state, userData) {
       state.userData = userData;
+    },
+    setChannelDocId(state, channelDocId){ // 창규창규
+      state.channelDocId = channelDocId;
+    },
+    setChannelCode(state, channelCode){
+      state.channelCode = channelCode;
     }
   },
   actions: {
@@ -72,6 +88,8 @@ export default new Vuex.Store({
       };
       commit("setIsLogin", false);
       commit("setUserData", userData);
+    },
+    async setChannelInfo({ channelCode }) {
     }
   }
 });
