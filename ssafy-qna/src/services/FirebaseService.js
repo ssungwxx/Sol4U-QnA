@@ -46,8 +46,8 @@ export default {
   },
 
   // 익명 로그인
-  loginWithAnonymous() {
-    firebase
+  async loginWithAnonymous() {
+    await firebase
       .auth()
       .signInAnonymously()
       .then(function() {

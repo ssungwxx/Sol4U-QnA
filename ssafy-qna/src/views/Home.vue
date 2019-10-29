@@ -28,18 +28,17 @@
                         <v-icon color="indigo">fa-user-secret</v-icon>&nbsp;Login as Guest
                     </v-btn>
 
-                    <router-link :to="'/channel/create'">
-                        <v-btn
-                            v-if="getIsLogin"
-                            class="ma-2 btnHome"
-                            style="width:200px"
-                            outlined
-                            color="indigo"
-                            @click="create()"
-                        >Create</v-btn>
-                    </router-link>
                     <v-btn
-                        v-if="!getIsLogin"
+                       v-if="getIsLogin&&!getUserData.isAnonymous"
+                        class="ma-2 btnHome"
+                        style="width:200px"
+                        outlined
+                        color="indigo"
+                        @click="dashboard"
+                    >DashBoard</v-btn>
+                    
+                    <v-btn
+                        v-else
                         class="ma-2 btnHome"
                         style="width:200px"
                         outlined
@@ -50,7 +49,7 @@
                     </v-btn>
 
                     <v-btn
-                        v-if="getIsLogin"
+                        v-if="getIsLogin&&!getUserData.isAnonymous"
                         class="ma-2 btnHome"
                         style="width:200px"
                         outlined
@@ -59,6 +58,16 @@
                     >
                         <v-icon color="red">fa-google</v-icon>&nbsp;Logout
                     </v-btn>
+
+                    <v-btn
+                        v-if="getIsLogin&&getUserData.isAnonymous"
+                        class="ma-2 btnHome"
+                        style="width:200px"
+                        outlined
+                        color="indigo"
+                        @click="logout"
+                    >logout</v-btn>
+
                 </v-col>
             </v-row>
         </div>
@@ -99,9 +108,10 @@ export default {
         },
         async loginWithAnonymous() {
             if (this.code == "") {
+                await FirebaseService.loginWithAnonymous();
+                this.setLoginInfo();
                 alert("DashBoard로 이동합니다");
                 this.$router.push("/dashboard");
-                this.setLoginInfo();
             } else {
                 const docId = await FirebaseService.getDocByChannelCode(
                     this.code
@@ -110,16 +120,21 @@ export default {
                 if (docId == false) {
                     alert("채널정보가 없습니다. 다시 확인해주세요");
                 } else {
-                    this.$router.push("/qna/" + docId); // 여기 vuex로 처리하기
+                    
                     await FirebaseService.loginWithAnonymous();
+                    this.setLoginInfo();
+                    this.$router.push("/qna/" + docId); // 여기 vuex로 처리하기
                 }
             }
         },
         async logout() {
             await FirebaseService.logout();
+            
             this.setLogout();
         },
-        create() {}
+        dashboard() {
+            this.$router.push("/dashboard");
+        }
     }
 };
 </script>
