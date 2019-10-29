@@ -24,16 +24,16 @@
         </div>
 
         <v-btn-toggle borderless>
-          <v-btn @click="sort('created')">
+          <v-btn @click="setSortTag('created')">
             <span class="hidden-sm-and-down">Created</span>
             <v-icon right>access_time</v-icon>
           </v-btn>
-          <v-btn @click="sort('favorite')">
+          <v-btn @click="setSortTag('favorite')">
             <span class="hidden-sm-and-down">Favorite</span>
             <v-icon right>thumb_up_alt</v-icon>
           </v-btn>
         </v-btn-toggle>
-        <v-btn color="success" id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
+        <v-btn color="rgb(51, 150, 244)" dark id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
         <v-spacer style="clear: both;"></v-spacer>
       </div>
 
@@ -62,7 +62,22 @@ export default Vue.extend({
     },
     getCardList() {
       var temp = this.$store.state.cardList;
-      return temp;
+
+      if (this.sortTag === "favorite") {
+        function compare(a, b) {
+          if (a.hitCount < b.hitCount) return 1;
+          if (a.hitCount > b.hitCount) return -1;
+          return 0;
+        }
+        return temp.sort(compare);
+      } else {
+        function compare(a, b) {
+          if (a.created_at.timestamp < b.created_at.timestamp) return 1;
+          if (a.created_at.timestamp > b.created_at.timestamp) return -1;
+          return 0;
+        }
+        return temp.sort(compare);
+      }
     }
   },
   components: {
@@ -77,8 +92,8 @@ export default Vue.extend({
     closeAt: "---",
     // card list part
     haveList: false,
-    // button group
-    icon: "created"
+    // button groups
+    sortTag: "created"
   }),
   methods: {
     submitButton() {
@@ -88,11 +103,8 @@ export default Vue.extend({
       FirebaseService.addQuestion(this.code, temp);
       this.getQuestions();
     },
-    getDocId() {
-      // var temp = FirebaseService.getDocByChannelCode(this.code);
-      // return temp;
-    },
     async getQuestions() {
+      // 질문 리스트 (카드) 불러오기
       var temp = FirebaseService.getQuestionsByDocId(this.code);
       this.haveList = true;
       var tt = this;
@@ -102,7 +114,7 @@ export default Vue.extend({
       return temp;
     },
     setChannel() {
-      // this.channelDocId = now;
+      // 채널 디테일 정보 받아오기
       const channel = FirebaseService.getChannelDetail(this.code);
       channel.then(data => {
         this.qnaTitle = data.channel_name;
@@ -116,8 +128,8 @@ export default Vue.extend({
         return await FirebaseService.checkChannelIsLive(this.code);
       else return true;
     },
-    sort(tag) {
-      console.log(this.icon);
+    setSortTag(tag) {
+      this.sortTag = tag;
     }
   },
   mounted() {
@@ -129,7 +141,7 @@ export default Vue.extend({
 
     const channelDoc = FirebaseService.firestore
       .collection("QnAChannels")
-      .doc("YBrlA3mK73iZyUHXqQb3")
+      .doc(this.code)
       .collection("Questions");
 
     channelDoc.onSnapshot(snapshots => {
@@ -143,18 +155,14 @@ export default Vue.extend({
         };
 
         if (change.type === "added") {
-          // console.log("New post: ", change.doc.data());
           vueInstance.getQuestions();
           console.log("실시간으로 추가했닷");
         }
         if (change.type === "modified") {
-          // console.log("Modified post: ", change.doc.data());
-          // console.log(this);
           vueInstance.getQuestions();
           console.log("실시간으로 수정했닷");
         }
         if (change.type === "removed") {
-          // console.log("Removed post: ", change.doc.data());
           vueInstance.getQuestions();
           console.log("실시간으로 제거했닷");
         }
@@ -179,16 +187,20 @@ export default Vue.extend({
 }
 
 #pageTitle {
-  height: 60px !important;
+  position: fixed;
+  height: 50px !important;
+  width: 100%;
   background-color: rgb(51, 150, 244);
   color: white;
   font-family: "Lexend Deca", sans-serif;
   padding: 2%;
   font-size: 1.2em;
+  z-index: 10;
 }
 
 #pageHeader {
   padding: 12px;
+  margin-top: 50px;
 }
 
 #pageBody {

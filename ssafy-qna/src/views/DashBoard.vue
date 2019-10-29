@@ -12,32 +12,32 @@
         <h1>Channel List</h1>
         <p>Channel List You Created.</p>
       </div>
-      
+
       <!-- 정렬-->
       <v-layout v-for="(i) in dashboards.length" :key="i" style="margin-bottom:8px;">
         <!-- channel list-->
-          <!-- vuex에 저장해야함 -->
-          <ChannelCard
-            v-if="dashboards[i-1].closed_at.timestamp.seconds > currentTimestamp"
-            :CodeNumber="dashboards[i-1].channel_code"
-            :CodeName="dashboards[i-1].channel_name"
-            :StartDay="dashboards[i-1].created_at.string"
-            :EndDay="dashboards[i-1].closed_at.string"
-            :ChannelDocId="dashboards[i-1].channel_doc_id"
-            :ChannelOwner="dashboards[i-1].channel_owner.user_email"
-            setColor=""
-          />
+        <!-- vuex에 저장해야함 -->
+        <ChannelCard
+          v-if="dashboards[i-1].closed_at.timestamp.seconds > currentTimestamp"
+          :CodeNumber="dashboards[i-1].channel_code"
+          :CodeName="dashboards[i-1].channel_name"
+          :StartDay="dashboards[i-1].created_at.string"
+          :EndDay="dashboards[i-1].closed_at.string"
+          :ChannelDocId="dashboards[i-1].channel_doc_id"
+          :ChannelOwner="dashboards[i-1].channel_owner.user_email"
+          setColor
+        />
 
-          <ChannelCard
-            v-else
-            :CodeNumber="dashboards[i-1].channel_code"
-            :CodeName="dashboards[i-1].channel_name"
-            :StartDay="dashboards[i-1].created_at.string"
-            :EndDay="dashboards[i-1].closed_at.string"
-            :ChannelDocId="dashboards[i-1].channel_doc_id"
-            :ChannelOwner="dashboards[i-1].channel_owner.user_email"
-            setColor="#d9d9d9"
-          />
+        <ChannelCard
+          v-else
+          :CodeNumber="dashboards[i-1].channel_code"
+          :CodeName="dashboards[i-1].channel_name"
+          :StartDay="dashboards[i-1].created_at.string"
+          :EndDay="dashboards[i-1].closed_at.string"
+          :ChannelDocId="dashboards[i-1].channel_doc_id"
+          :ChannelOwner="dashboards[i-1].channel_owner.user_email"
+          setColor="#d9d9d9"
+        />
       </v-layout>
     </div>
   </v-app>
@@ -59,11 +59,11 @@ export default {
   }),
   computed: {
     getIsLogin: function() {
-            return this.$store.getters.getIsLogin;
-        },
+      return this.$store.getters.getIsLogin;
+    },
     getUserData: function() {
-            return this.$store.getters.getUserData;
-        }
+      return this.$store.getters.getUserData;
+    }
   },
   methods: {
     async getdashboard() {
@@ -76,7 +76,7 @@ export default {
       this.dashboards.sort(compare);
       this.currentTimestamp = parseInt(new Date().getTime() / 1000);
     },
-    create(){
+    create() {
       this.$router.push("/channel/create");
     }
   },
@@ -98,5 +98,4 @@ export default {
   margin-top: 15px;
   margin-right: 10px;
 }
-
 </style>
