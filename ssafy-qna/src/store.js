@@ -18,7 +18,6 @@ export default new Vuex.Store({
     // QnACard
     cardList: [],
     haveCard: false,
-
     isLogin: false,
     userData: {
       isAnonymous: null,
