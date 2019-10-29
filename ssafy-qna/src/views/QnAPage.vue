@@ -40,8 +40,8 @@
       <v-container grid-list-lg fluid>
         <v-layout v-if="haveList" row wrap id="cardMother">
           <!-- 답글 예시 -->
-          <template v-for="i in getCardList.length">
-            <QnACard :cardId="i-1" :docId="channelDocId" :sort="icon" :key="i"></QnACard>
+          <template v-for="i in getCardList">
+            <QnACard :card="i" :docId="channelDocId" :key="i"></QnACard>
           </template>
         </v-layout>
       </v-container>
