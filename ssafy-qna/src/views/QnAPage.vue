@@ -1,13 +1,13 @@
 <template>
   <v-app>
     <!-- title -->
-    <div id="pageTitle">DashBoard.Channel "{{code}}"</div>
+    <div id="pageTitle">DashBoard.Channel "{{channelNum}}"</div>
     <!-- page on qna page -->
     <div id="pageBody">
       <!-- header on qna page -->
       <!-- add qna point -->
       <div id="pageHeader">
-        <p id="channelNumber">@{{code}}</p>
+        <p id="channelNumber">@{{channelNum}}</p>
         <p id="channelTitle">{{qnaTitle}}</p>
         <p id="channelDes">{{qnaDes}}</p>
         <p id="channelClose">[{{closeAt}}에 종료 됩니다.]</p>
@@ -23,12 +23,12 @@
           ></v-textarea>
         </div>
 
-        <v-btn-toggle v-model="icon" borderless>
-          <v-btn value="created" @click="sort()">
+        <v-btn-toggle borderless>
+          <v-btn @click="sort('created')">
             <span class="hidden-sm-and-down">Created</span>
             <v-icon right>access_time</v-icon>
           </v-btn>
-          <v-btn value="favorite" @click="sort()">
+          <v-btn @click="sort('favorite')">
             <span class="hidden-sm-and-down">Favorite</span>
             <v-icon right>thumb_up_alt</v-icon>
           </v-btn>
@@ -40,8 +40,8 @@
       <v-container grid-list-lg fluid>
         <v-layout v-if="haveList" row wrap id="cardMother">
           <!-- 답글 예시 -->
-          <template v-for="i in getCardList.length">
-            <QnACard :cardId="i-1" :docId="channelDocId" :key="i"></QnACard>
+          <template v-for="i in getCardList">
+            <QnACard :card="i" :docId="code" :key="i.questionDocId"></QnACard>
           </template>
         </v-layout>
       </v-container>
@@ -73,7 +73,7 @@ export default Vue.extend({
     qnaDes: "---",
     qnaText: "",
     cardNum: 0,
-    channelDocId: "",
+    channelNum: "",
     haveList: false,
     icon: "created",
     closeAt: "---"
@@ -83,15 +83,15 @@ export default Vue.extend({
       this.cardNum += 1;
       var temp = this.qnaText;
       this.qnaText = "";
-      FirebaseService.addQuestion(this.channelDocId, temp);
+      FirebaseService.addQuestion(this.code, temp);
       this.getQuestions();
     },
     getDocId() {
-      var temp = FirebaseService.getDocByChannelCode(this.code);
-      return temp;
+      // var temp = FirebaseService.getDocByChannelCode(this.code);
+      // return temp;
     },
     async getQuestions() {
-      var temp = FirebaseService.getQuestionsByDocId(this.channelDocId);
+      var temp = FirebaseService.getQuestionsByDocId(this.code);
       this.cardNum = temp.length;
       this.haveList = true;
       var tt = this;
@@ -100,19 +100,19 @@ export default Vue.extend({
       });
       return temp;
     },
-    setChannel(now) {
-      this.channelDocId = now;
-      console.log(now);
-      const channel = FirebaseService.getChannelDetail(now);
+    setChannel() {
+      // this.channelDocId = now;
+      const channel = FirebaseService.getChannelDetail(this.code);
       channel.then(data => {
         this.qnaTitle = data.channel_name;
         this.qnaDes = data.channel_description;
         this.closeAt = data.closed_at.string;
+        this.channelNum = data.channel_code;
       });
     },
     async checkChannelIsLive() {
-      if (this.channelDocId != "")
-        return await FirebaseService.checkChannelIsLive(this.channelDocId);
+      if (this.code != "")
+        return await FirebaseService.checkChannelIsLive(this.code);
       else return true;
     },
     sort() {
@@ -120,11 +120,54 @@ export default Vue.extend({
     }
   },
   mounted() {
-    var temp = this.getDocId();
-    var vueQna = this;
-    temp.then(function(now) {
-      vueQna.setChannel(now);
-      vueQna.getQuestions();
+    // var temp = this.getDocId();
+    // var vueQna = this;
+    // temp.then(function(now) {
+    //   vueQna.setChannel(now);
+    //   vueQna.getQuestions();
+    // });
+    this.getQuestions();
+    this.setChannel();
+  },
+  created() {
+    var vueInstance = this;
+
+    const channelDoc = FirebaseService.firestore
+      .collection("QnAChannels")
+      .doc("YBrlA3mK73iZyUHXqQb3")
+      .collection("Questions");
+
+    channelDoc.onSnapshot(snapshots => {
+      snapshots.docChanges().forEach(change => {
+        const data = {
+          questioner: change.doc.data().questioner,
+          question: change.doc.data().question,
+          created_at: change.doc.data().created_at,
+          hitCount: change.doc.data().hitCount,
+          hitList: change.doc.data().hitCount
+        };
+
+        if (change.type === "added") {
+          // console.log("New post: ", change.doc.data());
+          vueInstance.getQuestions();
+          console.log("실시간으로 추가했닷");
+        }
+        if (change.type === "modified") {
+          // console.log("Modified post: ", change.doc.data());
+          // console.log(this);
+          vueInstance.getQuestions();
+          console.log("실시간으로 수정했닷");
+        }
+        if (change.type === "removed") {
+          // console.log("Removed post: ", change.doc.data());
+          vueInstance.getQuestions();
+          console.log("실시간으로 제거했닷");
+        }
+      });
+    });
+
+    channelDoc.get().then(doc => {
+      doc.forEach(snapshots => {});
     });
   }
 });

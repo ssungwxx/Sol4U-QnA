@@ -1,19 +1,39 @@
 <template>
-  <v-flex xs12 ma-2>
+<div style="width:100%;">
+  <v-layout>
+  <v-flex sm12 ma-2>
     <v-card :color="setColor">
-      <v-card-title class="codetitle">Code : {{CodeNumber}}</v-card-title>
-      <v-card-text>
+    <v-btn text width="100%" height="100%">
+      <div id="channelWidth">
+      <v-card-title class="codeTitle">Code : {{CodeNumber}}</v-card-title>
+      <v-card-text style="margin-top:10px;">
         <div class="channeInfo">
           <p class="channelTitle">채널이름 : {{CodeName}}</p>
 
           <p class="channelDuetime">{{StartDay}} ~ {{EndDay}}</p>
         </div>
       </v-card-text>
-      <div id="ChannelMenu">
-        <v-btn text small color="primary">Primary</v-btn>
       </div>
+    </v-btn>
     </v-card>
   </v-flex>
+  <v-flex sm1 id="ChannelMenu">
+    <div>
+     <v-btn class="ma-2" tile outlined color="success" width="100%">
+      <v-icon left>mdi-pencil</v-icon> Edit
+    </v-btn>
+    <v-btn class="ma-2" tile outlined color="error" width="100%">
+      <v-icon left>mdi-delete</v-icon>
+      Del
+    </v-btn>
+    </div>
+  </v-flex>
+  </v-layout>
+    <div id="mobileMenu">
+     <v-btn text small color="success">Edit</v-btn>
+     <v-btn text small color="error">Delete</v-btn>
+    </div>
+</div>
 </template>
 
 <script>
@@ -36,6 +56,36 @@ export default {
 }
 
 .channelDuetime {
-  font-size: 0.6em;
+  font-size: 0.8em;
+}
+
+.codeTitle{
+  font-size: 2em;
+  display: inline;
+}
+
+#channelWidth{
+  display: contents;
+  padding-top : 0px;
+}
+#mobileMenu{
+  display: none;
+}
+
+
+@media (max-width:1400px) {
+  #channelWidth{
+    display: block;
+    padding-top: 20px;
+  }
+  #ChannelMenu{
+    display:none;
+  }
+  #mobileMenu{
+    display: block;
+    margin-top:-5px;
+    margin-bottom:-10px;
+
+  }
 }
 </style>
