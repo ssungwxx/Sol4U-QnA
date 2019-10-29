@@ -3,13 +3,13 @@
         <v-card class="cardChild">
             <v-card-text>
                 <div>
-                    <p class="textQnA">{{getCard[cardId].question}}</p>
+                    <p class="textQnA">{{card.question}}</p>
                 </div>
                 <p class="writeTimeText">
                     <v-icon small>access_time</v-icon>
                     &nbsp;
-                    {{getCard[cardId].created_at.string}}
-                    <v-btn icon small id="remove" @click="removeQ(getCard[cardId])">
+                    {{card.created_at.string}}
+                    <v-btn icon small id="remove" @click="removeQ(card)">
                         <v-icon small color="red">delete_forever</v-icon>
                     </v-btn>
                 </p>
@@ -19,7 +19,7 @@
                         <div class="QnACardLikeAction">
                             <v-btn
                                 v-if="!likeBool"
-                                @click="likeCheck(getCard[cardId].hitCount)"
+                                @click="likeCheck(card.hitCount)"
                                 text
                                 icon
                                 color="#00000033"
@@ -28,7 +28,7 @@
                             </v-btn>
                             <v-btn
                                 v-else
-                                @click="likeCheck(getCard[cardId].hitCount)"
+                                @click="likeCheck(card.hitCount)"
                                 text
                                 icon
                                 color="#ff0000"
@@ -36,10 +36,10 @@
                                 <v-icon>thumb_up_alt</v-icon>
                             </v-btn>
                             <!-- 하트 개수 표시 영역 -->
-                            <template v-if="likeCount(getCard[cardId].hitCount)">
+                            <template v-if="likeCount(card.hitCount)">
                                 <v-icon color="#cd7f32" id="likeIcon">thumb_up_alt</v-icon>
                                 <!-- 하트 숫자 표시 -->
-                                <span id="likeCount">...{{getCard[cardId].hitCount}}</span>
+                                <span id="likeCount">...{{card.hitCount}}</span>
                             </template>
                         </div>
                         <v-btn @click="replyOn()" text color="deep-purple accent-4" id="replyBtn">
@@ -75,7 +75,7 @@ import QnAPage from "../views/QnAPage";
 export default {
     name: "QnACard",
     props: {
-        cardId: { type: Number },
+        card: {},
         docId: { type: String }
     },
     data: () => ({
@@ -84,12 +84,7 @@ export default {
         replyCnt: 0,
         replyBool: false
     }),
-    computed: {
-        getCard() {
-            var list = this.$store.state.cardList;
-            return this.$store.state.cardList;
-        }
-    },
+    computed: {},
     mounted() {},
     methods: {
         likeCheck(num) {
@@ -98,7 +93,7 @@ export default {
                 // console.log(this.getCard[this.cardId].questionDocId);
                 FirebaseService.questionHit(
                     this.docId,
-                    this.getCard[this.cardId].questionDocId,
+                    this.card.questionDocId,
                     -1
                 );
                 // this.likeCnt = this.likeCnt == 0 ? 0 : this.likeCnt - 1;
@@ -106,7 +101,7 @@ export default {
                 this.likeBool = true;
                 FirebaseService.questionHit(
                     this.docId,
-                    this.getCard[this.cardId].questionDocId,
+                    this.card.questionDocId,
                     1
                 );
             }

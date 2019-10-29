@@ -23,12 +23,12 @@
                     ></v-textarea>
                 </div>
 
-                <v-btn-toggle v-model="icon" borderless>
-                    <v-btn value="created" @click="sort()">
+                <v-btn-toggle borderless>
+                    <v-btn @click="sort('created')">
                         <span class="hidden-sm-and-down">Created</span>
                         <v-icon right>access_time</v-icon>
                     </v-btn>
-                    <v-btn value="favorite" @click="sort()">
+                    <v-btn @click="sort('favorite')">
                         <span class="hidden-sm-and-down">Favorite</span>
                         <v-icon right>thumb_up_alt</v-icon>
                     </v-btn>
@@ -40,8 +40,8 @@
             <v-container grid-list-lg fluid>
                 <v-layout v-if="haveList" row wrap id="cardMother">
                     <!-- 답글 예시 -->
-                    <template v-for="i in getCardList.length">
-                        <QnACard :cardId="i-1" :docId="channelDocId" :key="i"></QnACard>
+                    <template v-for="i in getCardList">
+                        <QnACard :card="i" :docId="channelDocId" :key="i"></QnACard>
                     </template>
                 </v-layout>
             </v-container>
