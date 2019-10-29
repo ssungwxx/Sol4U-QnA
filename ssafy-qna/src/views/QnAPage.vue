@@ -1,13 +1,13 @@
 <template>
   <v-app>
     <!-- title -->
-    <div id="pageTitle">DashBoard.Channel "{{code}}"</div>
+    <div id="pageTitle">DashBoard.Channel "{{channelNum}}"</div>
     <!-- page on qna page -->
     <div id="pageBody">
       <!-- header on qna page -->
       <!-- add qna point -->
       <div id="pageHeader">
-        <p id="channelNumber">@{{code}}</p>
+        <p id="channelNumber">@{{channelNum}}</p>
         <p id="channelTitle">{{qnaTitle}}</p>
         <p id="channelDes">{{qnaDes}}</p>
         <p id="channelClose">[{{closeAt}}에 종료 됩니다.]</p>
@@ -73,7 +73,7 @@ export default Vue.extend({
     qnaDes: "---",
     qnaText: "",
     cardNum: 0,
-    channelDocId: "",
+    channelNum: "",
     haveList: false,
     icon: "created",
     closeAt: "---"
@@ -107,6 +107,7 @@ export default Vue.extend({
         this.qnaTitle = data.channel_name;
         this.qnaDes = data.channel_description;
         this.closeAt = data.closed_at.string;
+        this.channelNum = data.channel_code;
       });
     },
     async checkChannelIsLive() {
