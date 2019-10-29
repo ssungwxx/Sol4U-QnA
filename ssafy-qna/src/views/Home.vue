@@ -96,29 +96,6 @@ export default {
       return this.$store.getters.getUserData;
     }
   },
-  methods: {
-    ...mapActions(["setLoginInfo", "setLogout"]),
-    async loginWithGoogle() {
-      await FirebaseService.loginWithGoogle();
-      this.setLoginInfo();
-      this.$router.push("/dashboard");
-    },
-    async loginWithAnonymous() {
-      if (this.code == "") {
-        alert("DashBoard로 이동합니다");
-        this.$router.push("/dashboard");
-        this.setLoginInfo();
-      } else {
-        const docId = await FirebaseService.getDocByChannelCode(this.code);
-        FirebaseService.joinTheChannel(docId);
-        if (docId == false) {
-          alert("채널정보가 없습니다. 다시 확인해주세요");
-        } else {
-          this.$router.push("/qna/" + docId); // 여기 vuex로 처리하기
-          await FirebaseService.loginWithAnonymous();
-        }
-      }
-    },
     methods: {
         ...mapActions(["setLoginInfo", "setLogout"]),
         async loginWithGoogle() {
