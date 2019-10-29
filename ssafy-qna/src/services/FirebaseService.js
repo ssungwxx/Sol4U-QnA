@@ -714,6 +714,8 @@ export default {
         replyData.push(doc.data());
       });
     });
+
+    return replyData;
   },
 
   // 채널 상세정보 가져오기

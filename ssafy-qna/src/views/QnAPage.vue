@@ -101,7 +101,6 @@ export default Vue.extend({
       var temp = this.qnaText;
       this.qnaText = "";
       FirebaseService.addQuestion(this.code, temp);
-      this.getQuestions();
     },
     async getQuestions() {
       // 질문 리스트 (카드) 불러오기
