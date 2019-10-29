@@ -57,15 +57,15 @@
             </v-layout>
             <v-layout class="banner_search_icon">
               <v-flex>
-                  <v-btn
-                    class="ma-2"
-                    style="width:100%;"
-                    outlined
-                    color="black"
-                    @click="btnBackClickedAndRouter()"
-                  >
-                    <v-icon color="black">fa-search</v-icon>
-                  </v-btn>
+                <v-btn
+                  class="ma-2"
+                  style="width:100%;"
+                  outlined
+                  color="black"
+                  @click="btnBackClickedAndRouter()"
+                >
+                  <v-icon color="black">fa-search</v-icon>
+                </v-btn>
               </v-flex>
             </v-layout>
           </v-list>
@@ -108,14 +108,13 @@ export default Vue.extend({
         this.drawer = true;
       }
       const docId = await FirebaseService.getDocByChannelCode(this.routercode2);
-          if (docId == false){
-            alert("채널정보가 없습니다. 다시 확인해주세요");
-          }
-          else{
-            this.$router.push('/qna/'+docId);
-          }
-        }
+      if (docId == false) {
+        alert("채널정보가 없습니다. 다시 확인해주세요");
+      } else {
+        this.$router.push("/qna/" + docId);
+      }
     }
+  }
 });
 </script>
 
@@ -133,6 +132,8 @@ export default Vue.extend({
 }
 .bar_design {
   background-image: url("../assets/lol.png");
+  position: fixed;
+  z-index: 10;
   color: white;
 }
 .code_banner {

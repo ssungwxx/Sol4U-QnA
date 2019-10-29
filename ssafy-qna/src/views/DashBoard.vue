@@ -13,24 +13,24 @@
       <!-- 정렬-->
       <v-layout v-for="(i) in dashboards.length" :key="i" style="margin-bottom:8px;">
         <!-- channel list-->
-          <!-- vuex에 저장해야함 -->
-          <ChannelCard
-            v-if="dashboards[i-1].closed_at.timestamp.seconds > currentTimestamp"
-            :CodeNumber="dashboards[i-1].channel_code"
-            :CodeName="dashboards[i-1].channel_name"
-            :StartDay="dashboards[i-1].created_at.string"
-            :EndDay="dashboards[i-1].closed_at.string"
-            setColor
-          />
+        <!-- vuex에 저장해야함 -->
+        <ChannelCard
+          v-if="dashboards[i-1].closed_at.timestamp.seconds > currentTimestamp"
+          :CodeNumber="dashboards[i-1].channel_code"
+          :CodeName="dashboards[i-1].channel_name"
+          :StartDay="dashboards[i-1].created_at.string"
+          :EndDay="dashboards[i-1].closed_at.string"
+          setColor
+        />
 
-          <ChannelCard
-            v-else
-            :CodeNumber="dashboards[i-1].channel_code"
-            :CodeName="dashboards[i-1].channel_name"
-            :StartDay="dashboards[i-1].created_at.string"
-            :EndDay="dashboards[i-1].closed_at.string"
-            setColor="#d9d9d9"
-          />
+        <ChannelCard
+          v-else
+          :CodeNumber="dashboards[i-1].channel_code"
+          :CodeName="dashboards[i-1].channel_name"
+          :StartDay="dashboards[i-1].created_at.string"
+          :EndDay="dashboards[i-1].closed_at.string"
+          setColor="#d9d9d9"
+        />
       </v-layout>
     </div>
   </v-app>
