@@ -69,18 +69,20 @@ export default Vue.extend({
     QnACard
   },
   data: () => ({
+    // channel detail part
     qnaTitle: "--",
     qnaDes: "---",
     qnaText: "",
-    cardNum: 0,
     channelNum: "",
+    closeAt: "---",
+    // card list part
     haveList: false,
-    icon: "created",
-    closeAt: "---"
+    // button group
+    icon: "created"
   }),
   methods: {
     submitButton() {
-      this.cardNum += 1;
+      // 질문 작성 제출 버튼 클릭 이벤트
       var temp = this.qnaText;
       this.qnaText = "";
       FirebaseService.addQuestion(this.code, temp);
@@ -92,7 +94,6 @@ export default Vue.extend({
     },
     async getQuestions() {
       var temp = FirebaseService.getQuestionsByDocId(this.code);
-      this.cardNum = temp.length;
       this.haveList = true;
       var tt = this;
       temp.then(function(now) {
@@ -115,17 +116,11 @@ export default Vue.extend({
         return await FirebaseService.checkChannelIsLive(this.code);
       else return true;
     },
-    sort() {
+    sort(tag) {
       console.log(this.icon);
     }
   },
   mounted() {
-    // var temp = this.getDocId();
-    // var vueQna = this;
-    // temp.then(function(now) {
-    //   vueQna.setChannel(now);
-    //   vueQna.getQuestions();
-    // });
     this.getQuestions();
     this.setChannel();
   },
