@@ -3,13 +3,13 @@
     <v-card class="cardChild">
       <v-card-text>
         <div>
-          <p class="textQnA">{{getCard[cardId].question}}</p>
+          <p class="textQnA">{{card.question}}</p>
         </div>
         <p class="writeTimeText">
           <v-icon small>access_time</v-icon>
           &nbsp;
-          {{getCard[cardId].created_at.string}}
-          <v-btn icon small id="remove" @click="removeQ(getCard[cardId])">
+          {{card.created_at.string}}
+          <v-btn icon small id="remove" @click="removeQ(card)">
             <v-icon small color="red">delete_forever</v-icon>
           </v-btn>
         </p>
@@ -17,23 +17,17 @@
           <!-- 하트 같은 아이콘으로 좋아요 개수 표시 -->
           <v-card-actions>
             <div class="QnACardLikeAction">
-              <v-btn
-                v-if="!likeBool"
-                @click="likeCheck(getCard[cardId].hitCount)"
-                text
-                icon
-                color="#00000033"
-              >
+              <v-btn v-if="!likeBool" @click="likeCheck(card.hitCount)" text icon color="#00000033">
                 <v-icon>thumb_up_alt</v-icon>
               </v-btn>
-              <v-btn v-else @click="likeCheck(getCard[cardId].hitCount)" text icon color="#ff0000">
+              <v-btn v-else @click="likeCheck(card.hitCount)" text icon color="#ff0000">
                 <v-icon>thumb_up_alt</v-icon>
               </v-btn>
               <!-- 하트 개수 표시 영역 -->
-              <template v-if="likeCount(getCard[cardId].hitCount)">
+              <template v-if="likeCount(card.hitCount)">
                 <v-icon color="#cd7f32" id="likeIcon">thumb_up_alt</v-icon>
                 <!-- 하트 숫자 표시 -->
-                <span id="likeCount">...{{getCard[cardId].hitCount}}</span>
+                <span id="likeCount">...{{card.hitCount}}</span>
               </template>
             </div>
             <v-btn @click="replyOn()" text color="deep-purple accent-4" id="replyBtn">
@@ -69,9 +63,8 @@ import QnAPage from "../views/QnAPage";
 export default {
   name: "QnACard",
   props: {
-    cardId: { type: Number },
-    docId: { type: String },
-    sort: { type: String }
+    card: {},
+    docId: { type: String }
   },
   data: () => ({
     // like or not check boolean var
@@ -79,34 +72,18 @@ export default {
     replyCnt: 0,
     replyBool: false
   }),
-  computed: {
-    getCard() {
-      var list = this.$store.state.cardList;
-      if (sort === "favorite") {
-      } else {
-      }
-      return list;
-    }
-  },
+  computed: {},
   mounted() {},
   methods: {
     likeCheck(num) {
       if (this.likeBool) {
         this.likeBool = false;
         // console.log(this.getCard[this.cardId].questionDocId);
-        FirebaseService.questionHit(
-          this.docId,
-          this.getCard[this.cardId].questionDocId,
-          -1
-        );
+        FirebaseService.questionHit(this.docId, this.card.questionDocId, -1);
         // this.likeCnt = this.likeCnt == 0 ? 0 : this.likeCnt - 1;
       } else {
         this.likeBool = true;
-        FirebaseService.questionHit(
-          this.docId,
-          this.getCard[this.cardId].questionDocId,
-          1
-        );
+        FirebaseService.questionHit(this.docId, this.card.questionDocId, 1);
       }
       if (num >= 1 && num < 7) {
         document.getElementById("likeIcon").style.color = "#cd7f32";
@@ -137,7 +114,33 @@ export default {
     }
   },
   created() {
-    const channelDoc = FirebaseService.firestore.collection("QnAChannels");
+    const channelDoc = FirebaseService.firestore
+      .collection("QnAChannels")
+      .doc("YBrlA3mK73iZyUHXqQb3")
+      .collection("Questions");
+
+    channelDoc.onSnapshot(snapshots => {
+      snapshots.docChanges().forEach(change => {
+        const data = {
+          questioner: change.doc.data().questioner,
+          question: change.doc.data().question,
+          created_at: change.doc.data().created_at,
+          hitCount: change.doc.data().hitCount,
+          hitList: change.doc.data().hitCount
+        };
+
+        if (change.type === "added") {
+          console.log("New post: ", change.doc.data());
+        }
+        if (change.type === "modified") {
+          console.log("Modified post: ", change.doc.data());
+          console.log(this);
+        }
+        if (change.type === "removed") {
+          console.log("Removed post: ", change.doc.data());
+        }
+      });
+    });
 
     channelDoc.get().then(doc => {
       doc.forEach(snapshots => {});

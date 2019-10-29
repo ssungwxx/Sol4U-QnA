@@ -535,7 +535,8 @@ export default {
             now_timestamp.getSeconds() +
             "초"
         },
-        hitCount: 0
+        hitCount: 0,
+        hitList: []
       };
 
       firestore
@@ -598,16 +599,27 @@ export default {
     var user = firebase.auth().currentUser;
 
     if (user) {
-      firestore
+      const questionDoc = firestore
         .collection("QnAChannels")
         .doc(docId)
         .collection("Questions")
-        .doc(questionDocId)
-        .update({
-          hitCount: firebase.firestore.FieldValue.increment(num)
+        .doc(questionDocId);
+
+      if (num == 1) {
+        questionDoc.update({
+          hitCount: firebase.firestore.FieldValue.increment(num),
+          hitList: firebase.firestore.FieldValue.arrayUnion(user.uid)
         });
+      } else if (num == -1) {
+        questionDoc.update({
+          hitCount: firebase.firestore.FieldValue.increment(num),
+          hitList: firebase.firestore.FieldValue.arrayRemove(user.uid)
+        });
+      } else {
+        alert("잘못된 접근입니다.");
+      }
     } else {
-      console.log("Login please");
+      console.log("로그인이 필요한 기능입니다.");
     }
   },
 
