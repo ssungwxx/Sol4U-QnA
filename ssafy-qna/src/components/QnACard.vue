@@ -45,19 +45,23 @@
         </div>
 
         <div v-if="replyBool" pa-5 id="replyTextBox">
-          <v-textarea outlined label="답변을 등록하세요." id="replyText" v-model="replyText"></v-textarea>
+          <v-textarea
+            @keyup.enter="submitButton()"
+            outlined
+            label="답변을 등록하세요."
+            id="replyText"
+            v-model="replyText"
+          ></v-textarea>
 
           <v-btn dark color="rgb(51, 150, 244)" id="btnReply" @click="submitButton()">SUBMIT</v-btn>
           <v-spacer style="clear: both;"></v-spacer>
         </div>
-        <div id="QnACardReply" v-for="i in replyCnt" :key="i">
+        <div id="QnACardReply" v-for="i in 0" :key="i.created_at.timestamp">
           <!-- 답변에 대한 공간 -->
-          <div class="textReply">
-            <slot name="qnaReply"></slot>
-          </div>
+          <div class="textReply">{{i.comment}}</div>
           <p class="writeTimeText">
-            <v-icon small>access_time</v-icon>&nbsp;
-            <slot name="qnaReplyTime"></slot>
+            <v-icon small>access_time</v-icon>
+            {{i.created_at.timestamp}}
           </p>
         </div>
       </v-card-text>
@@ -78,12 +82,24 @@ export default {
   data: () => ({
     // like or not check boolean var
     likeBool: false,
-    replyCnt: 0,
     replyBool: false,
-    removeBool: false
+    removeBool: false,
+    replyText: ""
   }),
-  computed: {},
-  mounted() {},
+  computed: {
+    getRepliesList() {
+      var temp = this.$store.state.replyList;
+      function compare(a, b) {
+        if (a.created_at.timestamp < b.created_at.timestamp) return 1;
+        if (a.created_at.timestamp > b.created_at.timestamp) return -1;
+        return 0;
+      }
+      return temp.sort(compare);
+    }
+  },
+  mounted() {
+    this.getReplies();
+  },
   methods: {
     likeCheck(num) {
       if (this.likeBool) {
@@ -121,6 +137,25 @@ export default {
     async removeQ(id) {
       await FirebaseService.deleteQuestion(this.docId, id.questionDocId);
       await QnAPage.getQuestions;
+    },
+    submitButton() {
+      var text = this.replyText;
+      this.replyText = "";
+      FirebaseService.addQuestionReply(
+        this.docId,
+        this.card.questionDocId,
+        text
+      );
+    },
+    async getReplies() {
+      var replies = FirebaseService.getRepliesFromQuestion(
+        this.docId,
+        this.card.questionDocId
+      );
+      var vueCard = this;
+      replies.then(function(now) {
+        vueCard.$store.dispatch("getReplyMutation", now);
+      });
     }
   },
   created() {}
@@ -171,7 +206,7 @@ export default {
 .textQnA {
   padding: 3% 0% 0% 1%;
   font-family: "Lexend Deca", sans-serif;
-  font-size: 1em;
+  font-size: 1.1em;
   color: midnightblue;
 }
 

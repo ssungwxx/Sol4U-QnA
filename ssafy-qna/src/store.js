@@ -18,9 +18,12 @@ export default new Vuex.Store({
     })
   ],
   state: {
-    // QnACard
+    // QnACard List
     cardList: [],
     haveCard: false,
+    // Reply List
+    replyList: [],
+    // Login
     isLogin: false,
     userData: {
       isAnonymous: null,
@@ -42,6 +45,9 @@ export default new Vuex.Store({
       state.haveCard = true;
       state.cardList = payload;
     },
+    getReplyCommit(state, payload) {
+      state.replyList = payload;
+    },
     setIsLogin(state, isLogin) {
       state.isLogin = isLogin;
     },
@@ -52,6 +58,9 @@ export default new Vuex.Store({
   actions: {
     getCardMutation(context, payload) {
       context.commit("getCardCommit", payload);
+    },
+    getReplyMutation(context, payload) {
+      context.commit("getReplyCommit", payload);
     },
     async setLoginInfo({ commit }) {
       console.log("dads");
