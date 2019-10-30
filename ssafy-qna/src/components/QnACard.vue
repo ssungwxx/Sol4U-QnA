@@ -56,14 +56,16 @@
           <v-btn dark color="rgb(51, 150, 244)" id="btnReply" @click="submitButton()">SUBMIT</v-btn>
           <v-spacer style="clear: both;"></v-spacer>
         </div>
-        <div id="QnACardReply" v-for="i in 0" :key="i.created_at.timestamp">
-          <!-- 답변에 대한 공간 -->
-          <div class="textReply">{{i.comment}}</div>
-          <p class="writeTimeText">
-            <v-icon small>access_time</v-icon>
-            {{i.created_at.timestamp}}
-          </p>
-        </div>
+        <template v-if="replyList.key===card.questionDocId">
+          <div class="QnACardReply" v-for="i in replyList.value" :key="i.created_at.string">
+            <!-- 답변에 대한 공간 -->
+            <div class="textReply">{{i.comment}}</div>
+            <p class="writeTimeText">
+              <v-icon small>access_time</v-icon>
+              {{i.created_at.string}}
+            </p>
+          </div>
+        </template>
       </v-card-text>
     </v-card>
   </v-flex>
@@ -84,7 +86,8 @@ export default {
     likeBool: false,
     replyBool: false,
     removeBool: false,
-    replyText: ""
+    replyText: "",
+    replyList: {}
   }),
   computed: {
     getRepliesList() {
@@ -94,7 +97,7 @@ export default {
         if (a.created_at.timestamp > b.created_at.timestamp) return -1;
         return 0;
       }
-      return temp.sort(compare);
+      return temp.value.sort(compare);
     }
   },
   mounted() {
@@ -153,8 +156,12 @@ export default {
         this.card.questionDocId
       );
       var vueCard = this;
-      replies.then(function(now) {
-        vueCard.$store.dispatch("getReplyMutation", now);
+      // console.log(this.card.questionDocId);
+      replies.then(function(value) {
+        vueCard.$store.dispatch("getReplyMutation", {
+          key: vueCard.card.questionDocId,
+          value: value
+        });
       });
     }
   },
@@ -176,7 +183,7 @@ export default {
   width: 100%;
 }
 
-#QnACardReply {
+.QnACardReply {
   margin-left: 2%;
 }
 

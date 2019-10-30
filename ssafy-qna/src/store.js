@@ -23,6 +23,7 @@ export default new Vuex.Store({
     haveCard: false,
     // Reply List
     replyList: [],
+    haveReply: false,
     // Login
     isLogin: false,
     userData: {
@@ -47,6 +48,7 @@ export default new Vuex.Store({
     },
     getReplyCommit(state, payload) {
       state.replyList = payload;
+      state.haveReply = true;
     },
     setIsLogin(state, isLogin) {
       state.isLogin = isLogin;
@@ -63,8 +65,6 @@ export default new Vuex.Store({
       context.commit("getReplyCommit", payload);
     },
     async setLoginInfo({ commit }) {
-      console.log("dads");
-
       const userData = await FirebaseService.checkUserIsLogin();
       console.log(userData);
 

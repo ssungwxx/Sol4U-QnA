@@ -129,10 +129,13 @@ export default Vue.extend({
     },
     setSortTag(tag) {
       this.sortTag = tag;
+    },
+    checkHaveList() {
+      return this.$store.state.haveCard;
     }
   },
   mounted() {
-    this.getQuestions();
+    // if (!this.checkHaveList()) this.getQuestions();
     this.setChannel();
   },
   created() {
