@@ -790,7 +790,10 @@ export default {
       return doc.data();
     });
 
-    if (user.uid == channelData.channel_owner.user_id) {
+    if (
+      user.uid == channelData.channel_owner.user_id &&
+      channelData.is_live == true
+    ) {
       const now_timestamp = new Date();
 
       channel.update({
@@ -812,8 +815,45 @@ export default {
             "초"
         }
       });
+    } else {
+      alert("잘못된 접근입니다.");
     }
   },
   // 채널 강제 열기 (접속 가능 상태)
-  openTheChannel(channelDocId, time) {}
+  async openTheChannel(channelDocId, closeTime) {
+    const user = firebase.auth().currentUser;
+
+    const channel = firestore.collection("QnAChannels").doc(channelDocId);
+
+    const channelData = await channel.get().then(doc => {
+      return doc.data();
+    });
+
+    if (
+      user.uid == channelData.channel_owner.user_id &&
+      channelData.is_live == false
+    ) {
+      channel.update({
+        is_live: true,
+        closed_at: {
+          timestamp: closeTime,
+          string:
+            closeTime.getFullYear() +
+            "년 " +
+            (closeTime.getMonth() + 1) +
+            "월 " +
+            closeTime.getDate() +
+            "일 " +
+            closeTime.getHours() +
+            "시 " +
+            closeTime.getMinutes() +
+            "분 " +
+            closeTime.getSeconds() +
+            "초"
+        }
+      });
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  }
 };

@@ -183,8 +183,11 @@ export default {
         async closeTheChannel() {
             await FirebaseService.closeTheChannel("X3Sj1fIod1Txi71cm0UP");
         },
-        openTheChannel() {
-            FirebaseService.openTheChannel("X3Sj1fIod1Txi71cm0UP");
+        async openTheChannel() {
+            await FirebaseService.openTheChannel(
+                "X3Sj1fIod1Txi71cm0UP",
+                new Date()
+            );
         }
     }
 };
