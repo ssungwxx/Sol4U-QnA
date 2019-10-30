@@ -54,9 +54,9 @@
           </a>
         </v-layout>
         <v-layout>
-          <v-btn text small class="logout" @click="logout">
-            <div class="RouterLink_p">Logout</div>
-          </v-btn>
+          <button text small class="logout RouterLink_p" @click="logout">
+            LOGOUT
+          </button>
         </v-layout>
     </div>
 </template>
@@ -132,6 +132,7 @@
   text-align: left;
   font-family: "Lexend Deca", sans-serif;
   margin-left:2vw;
+  margin-top: 1vw;
 }
 .RouterLink {
   width: 100%;
@@ -142,7 +143,7 @@
   margin-left:2vw;
 }
 .banner_dashboard {
-  margin-top: 4vw;
+  margin-top: 3vw;
 }
 .RouterLink_p {
   color: white;
@@ -157,12 +158,10 @@
 }
 .logout{
   width: 100%;
-  color: black;
-  text-decoration: None;
+  color: white;
   text-align: left;
-  font-family: "Lexend Deca", sans-serif;
   margin-top: 2vw;
-  
+  margin-left: 2vw;
   
 }
 </style>
