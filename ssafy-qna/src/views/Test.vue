@@ -22,6 +22,8 @@
         <v-btn small @click="getChannelDetail">get Channel Detail</v-btn>
         <v-btn small @click="getOwnedChannels">get Owned Channels</v-btn>
         <v-btn small @click="checkUserInHitList">check User In HitList</v-btn>
+        <v-btn small @click="closeTheChannel">close The Channel</v-btn>
+        <v-btn small @click="openTheChannel">open The Channel</v-btn>
     </div>
 </template>
 
@@ -150,10 +152,12 @@ export default {
                 "FSdpBiVY8LugdKg6GJQG"
             );
         },
-        getRepliesFromQuestion() {
-            FirebaseService.getRepliesFromQuestion(
-                "YBrlA3mK73iZyUHXqQb3",
-                "RnjDpysKwpwWrU3tPpbd"
+        async getRepliesFromQuestion() {
+            console.log(
+                await FirebaseService.getRepliesFromQuestion(
+                    "YBrlA3mK73iZyUHXqQb3",
+                    "F25Sz6qOYdeG9PEPcYcV"
+                )
             );
         },
         createVerifiedUserTable() {
@@ -175,6 +179,12 @@ export default {
                     "2UoI8wEHNHxZCbyaawgJ"
                 )
             );
+        },
+        async closeTheChannel() {
+            await FirebaseService.closeTheChannel("X3Sj1fIod1Txi71cm0UP");
+        },
+        openTheChannel() {
+            FirebaseService.openTheChannel("X3Sj1fIod1Txi71cm0UP");
         }
     }
 };
