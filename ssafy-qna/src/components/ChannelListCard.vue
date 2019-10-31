@@ -10,7 +10,8 @@
         <div class="channeInfo">
           <p class="channelTitle">채널이름 : {{CodeName}}</p>
 
-          <p class="channelDuetime">{{StartDay}} ~ {{EndDay}}</p>
+          <p class="channelDuetimeWeb">{{StartDay}} ~ {{EndDay}}</p>
+          <p class="channelDuetimeMobile">{{mobileStartDay}} ~ {{mobileEndDay}}</p>
         </div>
       </v-card-text>
       </div>
@@ -22,7 +23,7 @@
      <v-btn class="ma-2" tile outlined color="success" width="100%" @click="test">
       <v-icon left>mdi-pencil</v-icon> Edit
     </v-btn>
-    <v-btn class="ma-2" tile outlined color="error" width="100%" @click="test">
+    <v-btn class="ma-2" tile outlined color="error" width="100%" @click="channelDelete">
       <v-icon left>mdi-delete</v-icon>
       Del
     </v-btn>
@@ -31,7 +32,7 @@
   </v-layout>
     <div v-if="this.check === true" id="mobileMenu">
      <v-btn text small color="success" @click="test">Edit</v-btn>
-     <v-btn text small color="error" @click="test">Delete</v-btn>
+     <v-btn text small color="error" @click="channelDelete">Delete</v-btn>
     </div>
 </div>
 </template>
@@ -45,7 +46,9 @@ export default {
   props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor","ChannelDocId","ChannelOwner"],
   
   data: () => ({
-    check: false
+    check: false,
+    mobileStartDay: '',
+    mobileEndDay: ''
   }),
   methods: {
     test () {
@@ -56,16 +59,30 @@ export default {
     },
     checkOwner () {
       const vuexUserEmail = this.$store.getters.getUserData.userEmail
-      console.log("owner   "+this.ChannelOwner)
-      console.log(vuexUserEmail)
       if(vuexUserEmail === this.ChannelOwner){
         this.check = true
       }
-      console.log(this.check)
+    },
+    async channelDelete () {
+      await FirebaseService.deleteChannel(this.ChannelDocId);
+      alert("'"+this.CodeNumber+"' 채널을 삭제했습니다")
     }
   },
   mounted() {
     this.checkOwner();
+    this.mobileStartDay = this.StartDay.replace('년 ', '.')
+    this.mobileStartDay = this.mobileStartDay.replace('월 ', '.')
+    this.mobileStartDay = this.mobileStartDay.replace('일 ', '_')
+    this.mobileStartDay = this.mobileStartDay.replace('시 ', ':')
+    this.mobileStartDay = this.mobileStartDay.replace('분 ', ':')
+    this.mobileStartDay = this.mobileStartDay.replace('초', '')
+    
+    this.mobileEndDay = this.EndDay.replace('년 ', '.')
+    this.mobileEndDay = this.mobileEndDay.replace('월 ', '.')
+    this.mobileEndDay = this.mobileEndDay.replace('일 ', '_')
+    this.mobileEndDay = this.mobileEndDay.replace('시 ', ':')
+    this.mobileEndDay = this.mobileEndDay.replace('분 ', ':')
+    this.mobileEndDay = this.mobileEndDay.replace('초', '')
   }
 };
 </script>
@@ -78,10 +95,6 @@ export default {
 
 .channelTitle {
   font-size: 1em;
-}
-
-.channelDuetime {
-  font-size: 0.8em;
 }
 
 .codeTitle{
@@ -97,6 +110,17 @@ export default {
   display: none;
 }
 
+.channelDuetimeWeb{
+  display: block;
+  font-size: 1em;
+}
+
+.channelDuetimeMobile{
+  display: none;
+  font-size: 0.8em;
+}
+
+
 
 @media (max-width:1400px) {
   #channelWidth{
@@ -110,7 +134,13 @@ export default {
     display: block;
     margin-top:-5px;
     margin-bottom:-10px;
-
   }
+  .channelDuetimeWeb{
+  display: none;
+}
+
+.channelDuetimeMobile{
+  display: block;
+}
 }
 </style>
