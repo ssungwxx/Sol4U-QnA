@@ -12,7 +12,7 @@ export default new Vuex.Store({
     createPersistedState({
       storage: {
         getItem: key => ls.get(key),
-        setItem: (key, value) => ls.set(key, value),
+        setItem: (key, value) => ls.set(key, value.userData),
         removeItem: key => ls.remove(key)
       }
     })
@@ -44,12 +44,16 @@ export default new Vuex.Store({
   mutations: {
     getCardCommit(state, payload) {
       state.haveCard = true;
-      state.cardList = payload;
+      state.cardList.push(payload);
     },
     getRepliesCommit(state, payload) {
-      var temp = state.replyList;
-      temp.push(payload);
-      state.replyList = temp;
+      const docId = payload.questionDocId;
+
+      state.cardList.forEach(card => {
+        if (card.questionDocId === docId) {
+          card.replies.push(payload);
+        }
+      });
     },
     setIsLogin(state, isLogin) {
       state.isLogin = isLogin;

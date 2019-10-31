@@ -38,9 +38,9 @@
       </div>
 
       <v-container grid-list-lg fluid>
-        <v-layout v-if="haveList" row wrap id="cardMother">
+        <v-layout row wrap id="cardMother">
           <!-- 답글 예시 -->
-          <template v-for="i in getCardList">
+          <template v-for="i in getQuestionsInfo">
             <QnACard :card="i" :docId="code" :key="i.questionDocId"></QnACard>
           </template>
         </v-layout>
@@ -62,22 +62,27 @@ export default Vue.extend({
     },
     getCardList() {
       var temp = this.$store.state.cardList;
-
+      console.log(temp);
       if (this.sortTag === "favorite") {
         function compare(a, b) {
           if (a.likeCount < b.likeCount) return 1;
           if (a.likeCount > b.likeCount) return -1;
           return 0;
         }
-        return temp.sort(compare);
+        this.cardListArray = temp.sort(compare);
+        console.log(this.cardListArray);
       } else {
         function compare(a, b) {
           if (a.created_at.timestamp < b.created_at.timestamp) return 1;
           if (a.created_at.timestamp > b.created_at.timestamp) return -1;
           return 0;
         }
-        return temp.sort(compare);
+        this.cardListArray = temp.sort(compare);
+        console.log(this.cardListArray);
       }
+    },
+    getQuestionsInfo() {
+      return this.$store.state.cardList;
     }
   },
   components: {
@@ -91,7 +96,6 @@ export default Vue.extend({
     channelNum: "",
     closeAt: "---",
     // card list part
-    haveList: false,
     // button groups
     sortTag: "created"
   }),
@@ -105,7 +109,6 @@ export default Vue.extend({
     async getQuestions() {
       // 질문 리스트 (카드) 불러오기
       var temp = FirebaseService.getQuestionsByDocId(this.code);
-      this.haveList = true;
       var tt = this;
       temp.then(function(now) {
         tt.$store.dispatch("getCardMutation", now);
@@ -136,6 +139,7 @@ export default Vue.extend({
     }
   },
   mounted() {
+    // if (!this.checkHaveList()) this.getQuestions();
     this.setChannel();
   },
   created() {
@@ -153,19 +157,21 @@ export default Vue.extend({
           question: change.doc.data().question,
           created_at: change.doc.data().created_at,
           likeCount: change.doc.data().likeCount,
-          likeList: change.doc.data().likeList
+          likeList: change.doc.data().likeList,
+          questionDocId: change.doc.id,
+          replies: []
         };
 
         if (change.type === "added") {
-          vueInstance.getQuestions();
+          vueInstance.$store.dispatch("getCardMutation", data);
           console.log("실시간으로 추가했닷");
         }
         if (change.type === "modified") {
-          vueInstance.getQuestions();
+          cconsole.log(data);
           console.log("실시간으로 수정했닷");
         }
         if (change.type === "removed") {
-          vueInstance.getQuestions();
+          console.log(data);
           console.log("실시간으로 제거했닷");
         }
       });
