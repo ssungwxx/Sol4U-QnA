@@ -8,15 +8,15 @@ Vue.use(Vuex);
 const ls = new SecureLS({ isCompression: false });
 
 export default new Vuex.Store({
-  plugins: [
-    createPersistedState({
-      storage: {
-        getItem: key => ls.get(key),
-        setItem: (key, value) => ls.set(key, value),
-        removeItem: key => ls.remove(key)
-      }
-    })
-  ],
+  // plugins: [
+  //   createPersistedState({
+  //     storage: {
+  //       getItem: key => ls.get(key),
+  //       setItem: (key, value) => ls.set(key, value),
+  //       removeItem: key => ls.remove(key)
+  //     }
+  //   })
+  // ],
   state: {
     // QnACard List
     cardList: [],
@@ -44,12 +44,16 @@ export default new Vuex.Store({
   mutations: {
     getCardCommit(state, payload) {
       state.haveCard = true;
-      state.cardList = payload;
+      state.cardList.push(payload);
     },
     getRepliesCommit(state, payload) {
-      var temp = state.replyList;
-      temp.push(payload);
-      state.replyList = temp;
+      const docId = payload.questionDocId;
+
+      state.cardList.forEach(card => {
+        if (card.questionDocId === docId) {
+          card.replies.push(payload);
+        }
+      });
     },
     setIsLogin(state, isLogin) {
       state.isLogin = isLogin;
