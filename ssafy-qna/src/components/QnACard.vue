@@ -12,7 +12,7 @@
                         <div class="QnACardLikeAction">
                             <v-btn
                                 v-if="!likeBool"
-                                @click="likeCheck(card.hitCount)"
+                                @click="likeCheck(card.likeCount)"
                                 text
                                 icon
                                 color="#00000033"
@@ -21,7 +21,7 @@
                             </v-btn>
                             <v-btn
                                 v-else
-                                @click="likeCheck(card.hitCount)"
+                                @click="likeCheck(card.likeCount)"
                                 text
                                 icon
                                 color="#ff0000"
@@ -29,10 +29,10 @@
                                 <v-icon>thumb_up_alt</v-icon>
                             </v-btn>
                             <!-- 하트 개수 표시 영역 -->
-                            <template v-if="likeCount(card.hitCount)">
+                            <template v-if="likeCount(card.likeCount)">
                                 <v-icon color="#cd7f32" id="likeIcon">thumb_up_alt</v-icon>
                                 <!-- 하트 숫자 표시 -->
-                                <span id="likeCount">...{{card.hitCount}}</span>
+                                <span id="likeCount">...{{card.likeCount}}</span>
                             </template>
                         </div>
                         <v-btn icon small id="remove" @click="removeQ(card)">
@@ -129,7 +129,7 @@ export default {
             if (this.likeBool) {
                 this.likeBool = false;
                 // console.log(this.getCard[this.cardId].questionDocId);
-                FirebaseService.questionHit(
+                FirebaseService.questionLike(
                     this.docId,
                     this.card.questionDocId,
                     -1
@@ -137,7 +137,7 @@ export default {
                 // this.likeCnt = this.likeCnt == 0 ? 0 : this.likeCnt - 1;
             } else {
                 this.likeBool = true;
-                FirebaseService.questionHit(
+                FirebaseService.questionLike(
                     this.docId,
                     this.card.questionDocId,
                     1
