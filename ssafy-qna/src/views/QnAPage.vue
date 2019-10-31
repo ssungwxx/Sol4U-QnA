@@ -65,8 +65,8 @@ export default Vue.extend({
 
       if (this.sortTag === "favorite") {
         function compare(a, b) {
-          if (a.hitCount < b.hitCount) return 1;
-          if (a.hitCount > b.hitCount) return -1;
+          if (a.likeCount < b.likeCount) return 1;
+          if (a.likeCount > b.likeCount) return -1;
           return 0;
         }
         return temp.sort(compare);
@@ -110,6 +110,7 @@ export default Vue.extend({
       temp.then(function(now) {
         tt.$store.dispatch("getCardMutation", now);
       });
+      // console.log(temp);
       return temp;
     },
     setChannel() {
@@ -152,8 +153,8 @@ export default Vue.extend({
           questioner: change.doc.data().questioner,
           question: change.doc.data().question,
           created_at: change.doc.data().created_at,
-          hitCount: change.doc.data().hitCount,
-          hitList: change.doc.data().hitCount
+          likeCount: change.doc.data().likeCount,
+          likeList: change.doc.data().likeList
         };
 
         if (change.type === "added") {
