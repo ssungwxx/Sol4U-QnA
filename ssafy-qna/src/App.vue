@@ -74,17 +74,10 @@ body::-webkit-scrollbar {
 }
 
 #banner_mobile {
-<<<<<<< HEAD
     display: none;
     height: 50px;
-    background-color: white;
+    background-color: rgb(36, 40, 43);
     text-align: center;
-=======
-  display: none;
-  height: 50px;
-  background-color: rgb(36, 40, 43);
-  text-align: center;
->>>>>>> fbebb07335f6b311bdce926ecc2b8aaab28fa9e7
 }
 #content_background {
     position: absolute;
