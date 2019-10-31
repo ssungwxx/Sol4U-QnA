@@ -45,10 +45,11 @@ export default new Vuex.Store({
     getCardCommit(state, payload) {
       state.haveCard = true;
       state.cardList = payload;
-    },
-    getReplyCommit(state, payload) {
-      state.replyList = payload;
-      state.haveReply = true;
+      console.log(payload);
+      state.replyList = {
+        key: payload.questionDocId,
+        value: {}
+      };
     },
     setIsLogin(state, isLogin) {
       state.isLogin = isLogin;
@@ -60,9 +61,6 @@ export default new Vuex.Store({
   actions: {
     getCardMutation(context, payload) {
       context.commit("getCardCommit", payload);
-    },
-    getReplyMutation(context, payload) {
-      context.commit("getReplyCommit", payload);
     },
     async setLoginInfo({ commit }) {
       const userData = await FirebaseService.checkUserIsLogin();
