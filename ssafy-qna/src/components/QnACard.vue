@@ -10,17 +10,23 @@
           <!-- 하트 같은 아이콘으로 좋아요 개수 표시 -->
           <v-card-actions>
             <div class="QnACardLikeAction">
-              <v-btn v-if="!likeBool" @click="likeCheck(card.hitCount)" text icon color="#00000033">
+              <v-btn
+                v-if="!likeBool"
+                @click="likeCheck(card.likeCount)"
+                text
+                icon
+                color="#00000033"
+              >
                 <v-icon>thumb_up_alt</v-icon>
               </v-btn>
-              <v-btn v-else @click="likeCheck(card.hitCount)" text icon color="#ff0000">
+              <v-btn v-else @click="likeCheck(card.likeCount)" text icon color="#ff0000">
                 <v-icon>thumb_up_alt</v-icon>
               </v-btn>
               <!-- 하트 개수 표시 영역 -->
-              <template v-if="likeCount(card.hitCount)">
+              <template v-if="likeCount(card.likeCount)">
                 <v-icon color="#cd7f32" id="likeIcon">thumb_up_alt</v-icon>
                 <!-- 하트 숫자 표시 -->
-                <span id="likeCount">...{{card.hitCount}}</span>
+                <span id="likeCount">...{{card.likeCount}}</span>
               </template>
             </div>
             <v-btn icon small id="remove" @click="removeQ(card)">

@@ -538,8 +538,10 @@ export default {
             now_timestamp.getSeconds() +
             "초"
         },
-        hitCount: 0,
-        hitList: []
+        likeCount: 0,
+        likeList: [],
+        disLikeCount: 0,
+        disLikeList: []
       };
 
       firestore
@@ -597,8 +599,8 @@ export default {
     }
   },
 
-  // 특정 질문의 하트 수(hit) 증가/감소 (1,-1)
-  questionHit(docId, questionDocId, num) {
+  // 특정 질문의 하트 수(like) 증가/감소 (1,-1)
+  questionLike(docId, questionDocId, num) {
     var user = firebase.auth().currentUser;
 
     if (user) {
@@ -610,13 +612,13 @@ export default {
 
       if (num == 1) {
         questionDoc.update({
-          hitCount: firebase.firestore.FieldValue.increment(num),
-          hitList: firebase.firestore.FieldValue.arrayUnion(user.uid)
+          likeCount: firebase.firestore.FieldValue.increment(num),
+          likeList: firebase.firestore.FieldValue.arrayUnion(user.uid)
         });
       } else if (num == -1) {
         questionDoc.update({
-          hitCount: firebase.firestore.FieldValue.increment(num),
-          hitList: firebase.firestore.FieldValue.arrayRemove(user.uid)
+          likeCount: firebase.firestore.FieldValue.increment(num),
+          likeList: firebase.firestore.FieldValue.arrayRemove(user.uid)
         });
       } else {
         alert("잘못된 접근입니다.");
@@ -756,22 +758,22 @@ export default {
     }
   },
 
-  // 질문의 hitList에 현재 유저가 속해있는지 확인
-  async checkUserInHitList(channelDocId, questtionDocId) {
+  // 질문의 likeList에 현재 유저가 속해있는지 확인
+  async checkUserInLikeList(channelDocId, questtionDocId) {
     const user = firebase.auth().currentUser;
     let flag = false;
     if (user) {
-      const hitList = firestore
+      const likeList = firestore
         .collection("QnAChannels")
         .doc(channelDocId)
         .collection("Questions")
         .doc(questtionDocId);
 
-      const hitListData = await hitList.get().then(doc => {
+      const likeListData = await likeList.get().then(doc => {
         return doc.data();
       });
 
-      hitListData.hitList.forEach(userList => {
+      likeListData.likeList.forEach(userList => {
         if (userList == user.uid) {
           flag = true;
         }
@@ -855,5 +857,56 @@ export default {
     } else {
       alert("잘못된 접근입니다.");
     }
+  },
+  // 특정 질문의 싫어요 수(like) 증가/감소 (1,-1)
+  questionDisLike(docId, questionDocId, num) {
+    var user = firebase.auth().currentUser;
+
+    if (user) {
+      const questionDoc = firestore
+        .collection("QnAChannels")
+        .doc(docId)
+        .collection("Questions")
+        .doc(questionDocId);
+
+      if (num == 1) {
+        questionDoc.update({
+          disLikeCount: firebase.firestore.FieldValue.increment(num),
+          disLikeList: firebase.firestore.FieldValue.arrayUnion(user.uid)
+        });
+      } else if (num == -1) {
+        questionDoc.update({
+          disLikeCount: firebase.firestore.FieldValue.increment(num),
+          disLikeList: firebase.firestore.FieldValue.arrayRemove(user.uid)
+        });
+      } else {
+        alert("잘못된 접근입니다.");
+      }
+    } else {
+      console.log("로그인이 필요한 기능입니다.");
+    }
+  },
+  // 질문의 disLikeList에 현재 유저가 속해있는지 확인
+  async checkUserInDisLikeList(channelDocId, questtionDocId) {
+    const user = firebase.auth().currentUser;
+    let flag = false;
+    if (user) {
+      const disLikeList = firestore
+        .collection("QnAChannels")
+        .doc(channelDocId)
+        .collection("Questions")
+        .doc(questtionDocId);
+
+      const disLikeListData = await disLikeList.get().then(doc => {
+        return doc.data();
+      });
+
+      disLikeListData.disLikeList.forEach(userList => {
+        if (userList == user.uid) {
+          flag = true;
+        }
+      });
+    }
+    return flag;
   }
 };
