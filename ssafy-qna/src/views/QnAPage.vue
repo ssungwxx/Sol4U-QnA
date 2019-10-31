@@ -110,7 +110,6 @@ export default Vue.extend({
       temp.then(function(now) {
         tt.$store.dispatch("getCardMutation", now);
       });
-      // console.log(temp);
       return temp;
     },
     setChannel() {

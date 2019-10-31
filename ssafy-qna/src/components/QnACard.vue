@@ -62,7 +62,7 @@
           <v-btn dark color="rgb(51, 150, 244)" id="btnReply" @click="submitButton()">SUBMIT</v-btn>
           <v-spacer style="clear: both;"></v-spacer>
         </div>
-        <template v-for="i in 0">
+        <template v-for="i in replyList">
           <div class="QnACardReply" :key="i.created_at.string">
             <!-- 답변에 대한 공간 -->
             <div class="textReply">{{i.comment}}</div>
@@ -93,27 +93,44 @@ export default {
     replyBool: false,
     removeBool: false,
     replyText: "",
-    replyList: {}
+    replyList: []
   }),
   computed: {
     getRepliesList() {
-      // console.log(
-      //   FirebaseService.getRepliesFromQuestion(
-      //     this.docId,
-      //     this.card.questionDocId
-      //   )
-      // );
-      console.log("reply : " + this.$store.state.replyList);
+      function compare(a, b) {
+        if (a.created_at.timestamp > b.created_at.timestamp) return 1;
+        if (a.created_at.timestamp < b.created_at.timestamp) return -1;
+        return 0;
+      }
+      var list = this.$store.state.replyList;
+      for (var i in list) {
+        if (list[i].key === this.card.questionDocId) {
+          var temp = list[i].value;
+          this.replyList = temp.sort(compare);
+        }
+      }
     }
   },
   mounted() {},
   methods: {
+    async getReplies() {
+      var list = FirebaseService.getRepliesFromQuestion(
+        this.docId,
+        this.card.questionDocId
+      );
+      var tt = this;
+      list.then(function(now) {
+        tt.$store.dispatch("getRepliesMutation", {
+          key: tt.card.questionDocId,
+          value: now
+        });
+        tt.getRepliesList;
+      });
+    },
     likeCheck(num) {
       if (this.likeBool) {
         this.likeBool = false;
-        // console.log(this.getCard[this.cardId].questionDocId);
         FirebaseService.questionHit(this.docId, this.card.questionDocId, -1);
-        // this.likeCnt = this.likeCnt == 0 ? 0 : this.likeCnt - 1;
       } else {
         this.likeBool = true;
         FirebaseService.questionHit(this.docId, this.card.questionDocId, 1);
@@ -174,14 +191,16 @@ export default {
         };
 
         if (change.type === "added") {
-          console.log("실시간으로 추가했닷");
-          vueInstance.getRepliesList;
+          // console.log("실시간으로 추가했닷");
+          vueInstance.getReplies();
         }
         if (change.type === "modified") {
-          console.log("실시간으로 수정했닷");
+          // console.log("실시간으로 수정했닷");
+          vueInstance.getReplies();
         }
         if (change.type === "removed") {
-          console.log("실시간으로 제거했닷");
+          // console.log("실시간으로 제거했닷");
+          vueInstance.getReplies();
         }
       });
     });
