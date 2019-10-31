@@ -76,7 +76,7 @@ body::-webkit-scrollbar {
 #banner_mobile {
   display: none;
   height: 50px;
-  background-color: white;
+  background-color: rgb(36, 40, 43);
   text-align: center;
 }
 #content_background {
