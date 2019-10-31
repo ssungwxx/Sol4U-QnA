@@ -13,7 +13,7 @@
             @click.stop="drawer = !drawer"
             style="margin-right:20px;"
             color="white"
-          ></v-app-bar-nav-icon>SSAFY
+          ></v-app-bar-nav-icon><div style="color:white; font-family: 'Do Hyeon', sans-serif; font-size:1.4em;">SSAFY</div>
         </v-app-bar>
 
         <v-navigation-drawer
