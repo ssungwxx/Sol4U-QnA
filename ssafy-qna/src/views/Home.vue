@@ -99,12 +99,14 @@ export default {
     async loginWithGoogle() {
       await FirebaseService.loginWithGoogle();
       this.setLoginInfo();
+      await FirebaseService.createVerifiedUserTable();
       this.$router.push("/dashboard");
     },
     async loginWithAnonymous() {
       if (this.code == "") {
         await FirebaseService.loginWithAnonymous();
         this.setLoginInfo();
+        await FirebaseService.createVerifiedUserTable();
         alert("DashBoard로 이동합니다");
         this.$router.push("/dashboard");
       } else {
@@ -115,6 +117,7 @@ export default {
         } else {
           await FirebaseService.loginWithAnonymous();
           this.setLoginInfo();
+          await FirebaseService.createVerifiedUserTable();
           this.$router.push("/qna/" + docId); // 여기 vuex로 처리하기
         }
       }
