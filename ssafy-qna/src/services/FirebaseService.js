@@ -65,7 +65,7 @@ export default {
   async createVerifiedUserTable() {
     const user = firebase.auth().currentUser;
 
-    if (!user.isAnonymous) {
+    if (user) {
       const userTalbe = firestore.collection("VerifiedUserTable");
 
       let flag = false;
@@ -86,7 +86,6 @@ export default {
           joinned_channels: [],
           owned_channels: []
         };
-
         userTalbe.add(userInfo);
       }
     }
