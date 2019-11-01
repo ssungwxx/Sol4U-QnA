@@ -1,40 +1,39 @@
 <template>
-<div style="width:100%;">
-  <v-layout>
-  <v-flex sm12 ma-2>
-    <v-card :color="setColor">
-    <v-btn text width="100%" height="100%" @click="JoinDashBoard">
-      <div id="channelWidth">
-      <v-card-title class="codeTitle">Code : {{CodeNumber}}</v-card-title>
-      <v-card-text style="margin-top:10px;">
-        <div class="channeInfo">
-          <p class="channelTitle">채널이름 : {{CodeName}}</p>
+  <div style="width:100%;">
+    <v-layout>
+      <v-flex sm12 ma-2>
+        <v-card :color="setColor">
+          <v-btn text width="100%" height="100%" @click="JoinDashBoard">
+            <div id="channelWidth">
+              <v-card-title class="codeTitle">Code : {{CodeNumber}}</v-card-title>
+              <v-card-text style="margin-top:10px;">
+                <div class="channeInfo">
+                  <p class="channelTitle">채널이름 : {{CodeName}}</p>
 
-          <p class="channelDuetimeWeb">{{StartDay}} ~ {{EndDay}}</p>
-          <p class="channelDuetimeMobile">{{mobileStartDay}} ~ {{mobileEndDay}}</p>
+                  <p class="channelDuetimeWeb">{{StartDay}} ~ {{EndDay}}</p>
+                  <p class="channelDuetimeMobile">{{mobileStartDay}} ~ {{mobileEndDay}}</p>
+                </div>
+              </v-card-text>
+            </div>
+          </v-btn>
+        </v-card>
+      </v-flex>
+      <v-flex v-if="this.check === true" sm1 id="ChannelMenu">
+        <div>
+          <v-btn id="menuBtnEdit" tile outlined color="success" width="100%" @click="test">
+            <v-icon left>mdi-pencil</v-icon>Edit
+          </v-btn>
+          <v-btn id="menuBtnDel" tile outlined color="error" width="100%" @click="channelDelete">
+            <v-icon left>mdi-delete</v-icon>Del
+          </v-btn>
         </div>
-      </v-card-text>
-      </div>
-    </v-btn>
-    </v-card>
-  </v-flex>
-  <v-flex v-if="this.check === true" sm1 id="ChannelMenu">
-    <div>
-     <v-btn class="ma-2" tile outlined color="success" width="100%" @click="test">
-      <v-icon left>mdi-pencil</v-icon> Edit
-    </v-btn>
-    <v-btn class="ma-2" tile outlined color="error" width="100%" @click="channelDelete">
-      <v-icon left>mdi-delete</v-icon>
-      Del
-    </v-btn>
-    </div>
-  </v-flex>
-  </v-layout>
+      </v-flex>
+    </v-layout>
     <div v-if="this.check === true" id="mobileMenu">
-     <v-btn text small color="success" @click="test">Edit</v-btn>
-     <v-btn text small color="error" @click="channelDelete">Delete</v-btn>
+      <v-btn text small color="success" @click="test">Edit</v-btn>
+      <v-btn text small color="error" @click="channelDelete">Delete</v-btn>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -43,46 +42,54 @@ import FirebaseService from "../services/FirebaseService";
 import { mapActions } from "vuex";
 
 export default {
-  props: ["CodeNumber", "CodeName", "StartDay", "EndDay", "setColor","ChannelDocId","ChannelOwner"],
-  
+  props: [
+    "CodeNumber",
+    "CodeName",
+    "StartDay",
+    "EndDay",
+    "setColor",
+    "ChannelDocId",
+    "ChannelOwner"
+  ],
+
   data: () => ({
     check: false,
-    mobileStartDay: '',
-    mobileEndDay: ''
+    mobileStartDay: "",
+    mobileEndDay: ""
   }),
   methods: {
-    test () {
-      alert("아직 작업안했어요 제가 할겁니다 건들지마세요")
+    test() {
+      alert("아직 작업안했어요 제가 할겁니다 건들지마세요");
     },
-    JoinDashBoard () {
-      this.$router.push("/qna/"+this.ChannelDocId);
+    JoinDashBoard() {
+      this.$router.push("/qna/" + this.ChannelDocId);
     },
-    checkOwner () {
-      const vuexUserEmail = this.$store.getters.getUserData.userEmail
-      if(vuexUserEmail === this.ChannelOwner){
-        this.check = true
+    checkOwner() {
+      const vuexUserEmail = this.$store.getters.getUserData.userEmail;
+      if (vuexUserEmail === this.ChannelOwner) {
+        this.check = true;
       }
     },
-    async channelDelete () {
+    async channelDelete() {
       await FirebaseService.deleteChannel(this.ChannelDocId);
-      alert("'"+this.CodeNumber+"' 채널을 삭제했습니다")
+      alert("'" + this.CodeNumber + "' 채널을 삭제했습니다");
     }
   },
   mounted() {
     this.checkOwner();
-    this.mobileStartDay = this.StartDay.replace('년 ', '.')
-    this.mobileStartDay = this.mobileStartDay.replace('월 ', '.')
-    this.mobileStartDay = this.mobileStartDay.replace('일 ', '_')
-    this.mobileStartDay = this.mobileStartDay.replace('시 ', ':')
-    this.mobileStartDay = this.mobileStartDay.replace('분 ', ':')
-    this.mobileStartDay = this.mobileStartDay.replace('초', '')
-    
-    this.mobileEndDay = this.EndDay.replace('년 ', '.')
-    this.mobileEndDay = this.mobileEndDay.replace('월 ', '.')
-    this.mobileEndDay = this.mobileEndDay.replace('일 ', '_')
-    this.mobileEndDay = this.mobileEndDay.replace('시 ', ':')
-    this.mobileEndDay = this.mobileEndDay.replace('분 ', ':')
-    this.mobileEndDay = this.mobileEndDay.replace('초', '')
+    this.mobileStartDay = this.StartDay.replace("년 ", ".");
+    this.mobileStartDay = this.mobileStartDay.replace("월 ", ".");
+    this.mobileStartDay = this.mobileStartDay.replace("일 ", "_");
+    this.mobileStartDay = this.mobileStartDay.replace("시 ", ":");
+    this.mobileStartDay = this.mobileStartDay.replace("분 ", ":");
+    this.mobileStartDay = this.mobileStartDay.replace("초", "");
+
+    this.mobileEndDay = this.EndDay.replace("년 ", ".");
+    this.mobileEndDay = this.mobileEndDay.replace("월 ", ".");
+    this.mobileEndDay = this.mobileEndDay.replace("일 ", "_");
+    this.mobileEndDay = this.mobileEndDay.replace("시 ", ":");
+    this.mobileEndDay = this.mobileEndDay.replace("분 ", ":");
+    this.mobileEndDay = this.mobileEndDay.replace("초", "");
   }
 };
 </script>
@@ -91,56 +98,68 @@ export default {
 #ChannelMenu {
   top: 0;
   right: 0;
+  margin: 0.4vh 2vw;
+  padding: 0.3vw 0;
+}
+
+#menuBtnEdit {
+  top: 0px;
+  border: 0;
+  height: 50px !important;
+}
+
+#menuBtnDel {
+  bottom: 0px;
+  border: 0;
+  height: 50px !important;
 }
 
 .channelTitle {
   font-size: 1em;
 }
 
-.codeTitle{
+.codeTitle {
   font-size: 2em;
   display: inline;
 }
 
-#channelWidth{
+#channelWidth {
   display: contents;
-  padding-top : 0px;
+  padding-top: 0px;
 }
-#mobileMenu{
+#mobileMenu {
   display: none;
 }
 
-.channelDuetimeWeb{
+.channelDuetimeWeb {
   display: block;
   font-size: 1em;
 }
 
-.channelDuetimeMobile{
+.channelDuetimeMobile {
   display: none;
   font-size: 0.8em;
 }
 
-
-
-@media (max-width:1400px) {
-  #channelWidth{
+@media (max-width: 1200px) {
+  #channelWidth {
     display: block;
     padding-top: 20px;
   }
-  #ChannelMenu{
-    display:none;
+  #ChannelMenu {
+    display: none;
   }
-  #mobileMenu{
+  #mobileMenu {
     display: block;
-    margin-top:-5px;
-    margin-bottom:-10px;
+    margin-top: -5px;
+    margin-bottom: -10px;
   }
-  .channelDuetimeWeb{
-  display: none;
-}
+  .channelDuetimeWeb {
+    display: none;
+  }
 
-.channelDuetimeMobile{
-  display: block;
-}
+  .channelDuetimeMobile {
+    display: block;
+  }
 }
 </style>

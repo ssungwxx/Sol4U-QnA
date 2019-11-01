@@ -13,16 +13,16 @@
         <p>Channel List You Created.</p>
       </div>
 
-      <v-btn-toggle borderless style="margin-bottom: 10px">
-          <v-btn>
-            <span class="hidden-sm-and-down">Created</span>
-            <v-icon right>question_answer</v-icon>
-          </v-btn>
-          <v-btn>
-            <span class="hidden-sm-and-down">entered</span>
-            <v-icon right>input</v-icon>
-          </v-btn>
-        </v-btn-toggle>
+      <v-btn-toggle style="margin-bottom: 10px; padding: 7px;">
+        <v-btn>
+          <span class="hidden-sm-and-down">Created</span>
+          <v-icon right>question_answer</v-icon>
+        </v-btn>
+        <v-btn>
+          <span class="hidden-sm-and-down">entered</span>
+          <v-icon right>input</v-icon>
+        </v-btn>
+      </v-btn-toggle>
 
       <!-- 정렬-->
       <v-layout v-for="(i) in dashboards.length" :key="i" style="margin-bottom:8px;">
