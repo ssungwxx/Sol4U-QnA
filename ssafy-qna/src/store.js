@@ -30,16 +30,20 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    removeCardCommit(state, payload) {
+      var index = state.cardList.findIndex(
+        item => item.questionDocId === payload.questionDocId
+      );
+      state.cardList.splice(index, 1);
+    },
     editCardListCommit(state, payload) {
-      var list = state.cardList;
       var data = payload;
-      for (var i in list) {
-        if (list[i].questionDocId === data.questionDocId) {
-          list[i] = data;
-          break;
-        }
-      }
-      state.cardList = list;
+      var index = state.cardList.findIndex(
+        item => item.questionDocId === data.questionDocId
+      );
+      data.replies = state.cardList[index].replies;
+      state.cardList.splice(index, 1);
+      state.cardList.push(data);
     },
     refreshCardCommit(state) {
       state.cardList = [];
@@ -66,6 +70,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    removeCardMutation(context, payload) {
+      context.commit("removeCardCommit", payload);
+    },
     editCardListMutation(context, payload) {
       context.commit("editCardListCommit", payload);
     },
