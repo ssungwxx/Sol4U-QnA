@@ -142,6 +142,7 @@ export default {
         this.card.questionDocId,
         text
       );
+      this.replyBool = false;
     }
   },
   created() {

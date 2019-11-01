@@ -54,6 +54,7 @@ export default new Vuex.Store({
       state.cardList.forEach(card => {
         if (card.questionDocId === docId) {
           card.replies.push(payload);
+          return;
         }
       });
     },
