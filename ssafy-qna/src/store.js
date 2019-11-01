@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import FirebaseService from './services/FirebaseService';
+import Vue from "vue";
+import Vuex from "vuex";
+import FirebaseService from "./services/FirebaseService";
 
 Vue.use(Vuex);
 
@@ -33,11 +33,18 @@ export default new Vuex.Store({
     editCardListCommit(state, payload) {
       var list = state.cardList;
       var data = payload;
+      for (var i in list) {
+        if (list[i].questionDocId === data.questionDocId) {
+          list[i] = data;
+          break;
+        }
+      }
+      state.cardList = list;
     },
     refreshCardCommit(state) {
       state.cardList = [];
     },
-    getCardCommit(state, payload) {
+    addCardCommit(state, payload) {
       state.haveCard = true;
       state.cardList.push(payload);
     },
@@ -47,6 +54,7 @@ export default new Vuex.Store({
       state.cardList.forEach(card => {
         if (card.questionDocId === docId) {
           card.replies.push(payload);
+          return;
         }
       });
     },
@@ -59,16 +67,16 @@ export default new Vuex.Store({
   },
   actions: {
     editCardListMutation(context, payload) {
-      context.commit('editCardListCommit', payload);
+      context.commit("editCardListCommit", payload);
     },
     refreshCardMutation(context) {
-      context.commit('refreshCardCommit');
+      context.commit("refreshCardCommit");
     },
-    getCardMutation(context, payload) {
-      context.commit('getCardCommit', payload);
+    addCardMutation(context, payload) {
+      context.commit("addCardCommit", payload);
     },
     getRepliesMutation(context, payload) {
-      context.commit('getRepliesCommit', payload);
+      context.commit("getRepliesCommit", payload);
     },
     async setLoginInfo({ commit }) {
       await FirebaseService.firebase.auth().onAuthStateChanged(function(user) {
@@ -81,8 +89,8 @@ export default new Vuex.Store({
             userEmail: user.email
           };
 
-          commit('setIsLogin', true);
-          commit('setUserData', userData);
+          commit("setIsLogin", true);
+          commit("setUserData", userData);
         } else {
           // User is signed out
           const userData = {
@@ -91,8 +99,8 @@ export default new Vuex.Store({
             userEmailVerified: null,
             userEmail: null
           };
-          commit('setIsLogin', false);
-          commit('setUserData', userData);
+          commit("setIsLogin", false);
+          commit("setUserData", userData);
         }
       });
     },
@@ -103,8 +111,8 @@ export default new Vuex.Store({
         userEmailVerified: null,
         userEmail: null
       };
-      commit('setIsLogin', false);
-      commit('setUserData', userData);
+      commit("setIsLogin", false);
+      commit("setUserData", userData);
     }
   }
 });
