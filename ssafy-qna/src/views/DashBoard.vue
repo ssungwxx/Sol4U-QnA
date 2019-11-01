@@ -10,17 +10,17 @@
       </div>
       <div id="pageHeader">
         <h1>Channel List</h1>
-        <p>Channel List You Created.</p>
+        <p>정렬 버튼 작동안한다 이것들아. 고쳐 놓거라</p>
       </div>
 
-      <v-btn-toggle style="margin-bottom: 10px; padding: 7px;">
+      <v-btn-toggle style="margin-bottom: 10px;">
         <v-btn>
-          <span class="hidden-sm-and-down">Created</span>
-          <v-icon right>question_answer</v-icon>
+          <span class="hidden-sm-and-down">ALL ROOMS</span>
+          <v-icon right>list_alt</v-icon>
         </v-btn>
         <v-btn>
-          <span class="hidden-sm-and-down">entered</span>
-          <v-icon right>input</v-icon>
+          <span class="hidden-sm-and-down">CREATED</span>
+          <v-icon right>add_circle</v-icon>
         </v-btn>
       </v-btn-toggle>
 
@@ -103,14 +103,19 @@ export default {
 
 <style>
 #pageTitle {
-  height: 6%;
   background-color: rgb(51, 150, 244);
-  padding: 2%;
+  padding: 1%;
   font-size: 1.1em;
 }
 #create {
   float: right;
   margin-top: 70px;
   margin-right: 10px;
+}
+
+@media (max-width: 1200px) {
+  #pageTitle {
+    display: none;
+  }
 }
 </style>

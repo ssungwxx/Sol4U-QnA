@@ -1,17 +1,17 @@
 <template>
   <div style="width:100%;">
     <v-layout>
-      <v-flex sm12 ma-2>
+      <v-flex sm12>
         <v-card :color="setColor">
           <v-btn text width="100%" height="100%" @click="JoinDashBoard">
             <div id="channelWidth">
               <v-card-title class="codeTitle">Code : {{CodeNumber}}</v-card-title>
               <v-card-text style="margin-top:10px;">
                 <div class="channeInfo">
-                  <p class="channelTitle">채널이름 : {{CodeName}}</p>
+                  <p class="channelTitle">{{CodeName}}</p>
 
-                  <p class="channelDuetimeWeb">{{StartDay}} ~ {{EndDay}}</p>
-                  <p class="channelDuetimeMobile">{{mobileStartDay}} ~ {{mobileEndDay}}</p>
+                  <p class="channelDuetimeWeb">[{{StartDay}} ~ {{EndDay}}]</p>
+                  <p class="channelDuetimeMobile">[{{mobileStartDay}} ~ {{mobileEndDay}}]</p>
                 </div>
               </v-card-text>
             </div>
@@ -102,25 +102,33 @@ export default {
   padding: 0.3vw 0;
 }
 
+.channeInfo {
+  padding: 0.5vw;
+}
+
 #menuBtnEdit {
   top: 0px;
   border: 0;
-  height: 50px !important;
+  height: 10vh !important;
 }
 
 #menuBtnDel {
   bottom: 0px;
   border: 0;
-  height: 50px !important;
+  height: 10vh !important;
 }
 
 .channelTitle {
   font-size: 1em;
+  color: rgb(51, 150, 244);
+  margin-top: 3vh;
+  font-family: "Lexend Deca", sans-serif;
 }
 
 .codeTitle {
   font-size: 2em;
   display: inline;
+  font-family: "Lexend Deca", sans-serif;
 }
 
 #channelWidth {
@@ -133,12 +141,16 @@ export default {
 
 .channelDuetimeWeb {
   display: block;
-  font-size: 1em;
+  font-size: 0.9em;
+  color: brown;
+  font-family: "Lexend Deca", sans-serif;
 }
 
 .channelDuetimeMobile {
   display: none;
-  font-size: 0.8em;
+  color: brown;
+  font-family: "Lexend Deca", sans-serif;
+  font-size: 0.7em;
 }
 
 @media (max-width: 1200px) {
