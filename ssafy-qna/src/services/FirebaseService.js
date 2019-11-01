@@ -319,7 +319,7 @@ export default {
   async joinTheChannel(channelDocId) {
     var user = firebase.auth().currentUser;
 
-    if (user) {
+    if (user && user.isAnonymous == false) {
       const channel = firestore.collection("QnAChannels").doc(channelDocId);
       const userTable = firestore.collection("VerifiedUserTable");
 
