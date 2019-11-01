@@ -139,7 +139,6 @@ export default Vue.extend({
     }
   },
   mounted() {
-    // if (!this.checkHaveList()) this.getQuestions();
     this.setChannel();
   },
   created() {
