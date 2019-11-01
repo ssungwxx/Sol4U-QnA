@@ -84,7 +84,13 @@ export default {
         const userInfo = {
           user_id: user.uid,
           joinned_channels: [],
-          owned_channels: []
+          owned_channels: [],
+          user_info: {
+            user_id: user.uid,
+            user_name: user.displayName,
+            user_email_verified: user.emailVerified,
+            user_email: user.email
+          }
         };
         userTalbe.add(userInfo);
       }
@@ -465,11 +471,31 @@ export default {
     }
   },
 
-  // 소유한 채널 삭제 ( 트랙잭션을 사용하여 본래의 컬렉션에서 다른 컬렉션으로 이동시켜 보관 )
+  // 소유한 채널 삭제 ( 본래의 컬렉션에서 다른 컬렉션으로 이동시켜 보관 )
   async deleteChannel(channelDocId) {
     const user = firebase.auth().currentUser;
 
     const qnaChannel = firestore.collection("QnAChannels").doc(channelDocId);
+    const userTable = firestore.collection("VerifiedUserTable");
+
+    const userTableDoc = await userTable
+      .where("user_id", "==", user.uid)
+      .get()
+      .then(data => {
+        return data;
+      });
+
+    let userTableDocId;
+
+    await userTableDoc.forEach(doc => {
+      userTableDocId = doc.id;
+    });
+
+    console.log(userTableDocId);
+
+    userTable.doc(userTableDocId).update({
+      owned_channels: firebase.firestore.FieldValue.arrayRemove(channelDocId)
+    });
 
     const channelData = await qnaChannel.get().then(doc => {
       return doc.data();
