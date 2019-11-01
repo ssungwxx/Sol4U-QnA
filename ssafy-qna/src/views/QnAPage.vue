@@ -143,7 +143,7 @@ export default Vue.extend({
   },
   created() {
     var vueInstance = this;
-
+    vueInstance.$store.dispatch("refreshCardMutation");
     const channelDoc = FirebaseService.firestore
       .collection("QnAChannels")
       .doc(this.code)

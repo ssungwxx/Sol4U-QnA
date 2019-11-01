@@ -109,13 +109,14 @@ export default {
 #menuBtnEdit {
   top: 0px;
   border: 0;
-  height: 10vh !important;
+  margin-bottom: 1.13vh;
+  height: 8vh !important;
 }
 
 #menuBtnDel {
   bottom: 0px;
   border: 0;
-  height: 10vh !important;
+  height: 8vh !important;
 }
 
 .channelTitle {

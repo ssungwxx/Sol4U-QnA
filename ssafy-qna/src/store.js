@@ -42,6 +42,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    refreshCardCommit(state) {
+      state.cardList = [];
+    },
     getCardCommit(state, payload) {
       state.haveCard = true;
       state.cardList.push(payload);
@@ -63,6 +66,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    refreshCardMutation(context) {
+      context.commit("refreshCardCommit");
+    },
     getCardMutation(context, payload) {
       context.commit("getCardCommit", payload);
     },
