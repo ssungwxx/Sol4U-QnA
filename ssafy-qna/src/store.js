@@ -8,15 +8,15 @@ Vue.use(Vuex);
 const ls = new SecureLS({ isCompression: false });
 
 export default new Vuex.Store({
-  plugins: [
-    createPersistedState({
-      storage: {
-        getItem: key => ls.get(key),
-        setItem: (key, value) => ls.set(key, value.userData),
-        removeItem: key => ls.remove(key)
-      }
-    })
-  ],
+  // plugins: [
+  //   createPersistedState({
+  //     storage: {
+  //       getItem: key => ls.get(key),
+  //       setItem: (key, value) => ls.set(key, value.userData),
+  //       removeItem: key => ls.remove(key)
+  //     }
+  //   })
+  // ],
   state: {
     // QnACard List
     cardList: [],
