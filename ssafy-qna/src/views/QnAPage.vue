@@ -67,7 +67,6 @@ export default Vue.extend({
     },
     getCardList() {
       var temp = this.$store.state.cardList;
-      console.log(temp);
       if (this.sortTag === "favorite") {
         function compare(a, b) {
           if (a.likeCount < b.likeCount) return 1;
@@ -154,17 +153,14 @@ export default Vue.extend({
 
         if (change.type === "added") {
           vueInstance.$store.dispatch("addCardMutation", data);
-          console.log("실시간으로 추가했닷");
         }
         if (change.type === "modified") {
-          console.log(data);
           console.log("실시간으로 수정했닷");
           vueInstance.$store.dispatch("editCardListMutation", data);
-          console.log(vueInstance.$store.state.cardList);
         }
         if (change.type === "removed") {
-          console.log(data);
           console.log("실시간으로 제거했닷");
+          vueInstance.$store.dispatch("removeCardMutation", data);
         }
       });
     });
