@@ -29,7 +29,8 @@
                 <span id="likeCount">...{{card.likeCount}}</span>
               </template>
             </div>
-            <v-btn icon small id="remove" @click="removeQ(card)">
+            <v-btn small id="remove" @click="removeQ(card)">
+              질문 삭제하기
               <v-icon small color="red">delete_forever</v-icon>
             </v-btn>
           </v-card-actions>
@@ -130,10 +131,10 @@ export default {
     likeCheck(num) {
       if (this.likeBool) {
         this.likeBool = false;
-        FirebaseService.questionHit(this.docId, this.card.questionDocId, -1);
+        FirebaseService.questionLike(this.docId, this.card.questionDocId, -1);
       } else {
         this.likeBool = true;
-        FirebaseService.questionHit(this.docId, this.card.questionDocId, 1);
+        FirebaseService.questionLike(this.docId, this.card.questionDocId, 1);
       }
       if (num >= 1 && num < 7) {
         document.getElementById("likeIcon").style.color = "#cd7f32";
@@ -211,6 +212,11 @@ export default {
 
 <style>
 .cardChild {
+}
+
+#remove {
+  color: red;
+  font-family: "Lexend Deca", sans-serif;
 }
 
 #btnReply {
