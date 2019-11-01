@@ -96,38 +96,9 @@ export default {
     replyText: "",
     replyList: []
   }),
-  computed: {
-    getRepliesList() {
-      function compare(a, b) {
-        if (a.created_at.timestamp > b.created_at.timestamp) return 1;
-        if (a.created_at.timestamp < b.created_at.timestamp) return -1;
-        return 0;
-      }
-      var list = this.$store.state.replyList;
-      for (var i in list) {
-        if (list[i].key === this.card.questionDocId) {
-          var temp = list[i].value;
-          this.replyList = temp.sort(compare);
-        }
-      }
-    }
-  },
+  computed: {},
   mounted() {},
   methods: {
-    async getReplies() {
-      var list = FirebaseService.getRepliesFromQuestion(
-        this.docId,
-        this.card.questionDocId
-      );
-      var tt = this;
-      list.then(function(now) {
-        tt.$store.dispatch("getRepliesMutation", {
-          key: tt.card.questionDocId,
-          value: now
-        });
-        tt.getRepliesList;
-      });
-    },
     likeCheck(num) {
       if (this.likeBool) {
         this.likeBool = false;
@@ -197,7 +168,7 @@ export default {
           vueInstance.$store.dispatch("getRepliesMutation", data);
         }
         if (change.type === "modified") {
-          console.log(data);
+          //   console.log(data);
           console.log("Card 실시간으로 수정했닷");
         }
         if (change.type === "removed") {

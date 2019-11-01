@@ -45,12 +45,18 @@ export default new Vuex.Store({
     editCardListCommit(state, payload) {
       var list = state.cardList;
       var data = payload;
-      console.log(data);
+      for (var i in list) {
+        if (list[i].questionDocId === data.questionDocId) {
+          list[i] = data;
+          break;
+        }
+      }
+      state.cardList = list;
     },
     refreshCardCommit(state) {
       state.cardList = [];
     },
-    getCardCommit(state, payload) {
+    addCardCommit(state, payload) {
       state.haveCard = true;
       state.cardList.push(payload);
     },
@@ -77,8 +83,8 @@ export default new Vuex.Store({
     refreshCardMutation(context) {
       context.commit("refreshCardCommit");
     },
-    getCardMutation(context, payload) {
-      context.commit("getCardCommit", payload);
+    addCardMutation(context, payload) {
+      context.commit("addCardCommit", payload);
     },
     getRepliesMutation(context, payload) {
       context.commit("getRepliesCommit", payload);
