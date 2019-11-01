@@ -46,6 +46,10 @@
         </v-layout>
       </v-container>
     </div>
+    <go-top
+      v-bind:max-width="200"
+      style="background-color: rgb(51, 150, 244); width: 50px; height: 50px;"
+    ></go-top>
   </v-app>
 </template>
 
@@ -54,6 +58,7 @@ import Vue from "vue";
 import QnACard from "../components/QnACard";
 import FirebaseService from "../services/FirebaseService";
 import { log } from "util";
+import GoTop from "@inotom/vue-go-top";
 
 export default Vue.extend({
   computed: {
@@ -86,7 +91,8 @@ export default Vue.extend({
     }
   },
   components: {
-    QnACard
+    QnACard,
+    GoTop
   },
   data: () => ({
     // channel detail part
@@ -166,8 +172,9 @@ export default Vue.extend({
           console.log("실시간으로 추가했닷");
         }
         if (change.type === "modified") {
-          cconsole.log(data);
+          console.log(data);
           console.log("실시간으로 수정했닷");
+          vueInstance.$store.dispatch("editCardListMutation", data);
         }
         if (change.type === "removed") {
           console.log(data);
