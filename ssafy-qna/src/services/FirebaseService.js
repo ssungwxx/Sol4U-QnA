@@ -491,8 +491,6 @@ export default {
       userTableDocId = doc.id;
     });
 
-    console.log(userTableDocId);
-
     userTable.doc(userTableDocId).update({
       owned_channels: firebase.firestore.FieldValue.arrayRemove(channelDocId)
     });
@@ -507,6 +505,12 @@ export default {
       deletedChannel.add(channelData);
 
       qnaChannel.delete();
+
+      channelData.channel_entry.forEach(docId => {
+        userTable.doc(docId).update({
+          joined_channels: firebase.firestore.FieldValue.arrayRemove(user.uid)
+        });
+      });
     } else {
       alert("잘못된 접근입니다.");
     }
