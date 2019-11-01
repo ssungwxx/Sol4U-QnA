@@ -708,8 +708,6 @@ export default {
       .doc(questionDocId)
       .collection("Replies");
 
-    let replyData = [];
-
     await replies.get().then(docs => {
       docs.forEach(doc => {
         replyData.push(doc.data());
