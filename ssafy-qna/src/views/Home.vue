@@ -116,6 +116,7 @@ export default {
           var errorMessage = error.message;
         });
       await this.setLoginInfo();
+      await FirebaseService.createVerifiedUserTable();
       this.$router.push("/dashboard");
     },
     async loginWithAnonymous() {
