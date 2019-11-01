@@ -44,6 +44,8 @@ export default new Vuex.Store({
   mutations: {
     editCardListCommit(state, payload) {
       var list = state.cardList;
+      var data = payload;
+      console.log(data);
     },
     refreshCardCommit(state) {
       state.cardList = [];
