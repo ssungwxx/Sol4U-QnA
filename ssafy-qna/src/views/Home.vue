@@ -74,6 +74,7 @@ import ImageBanner from "../components/ImageBanner";
 import SignUp from "../components/SignUp";
 import FirebaseService from "../services/FirebaseService";
 import { mapActions } from "vuex";
+import firebase from "firebase";
 
 export default {
   components: {
@@ -83,8 +84,8 @@ export default {
   data: () => ({
     code: ""
   }),
-  mounted() {
-    //this.setLoginInfo();
+  async mounted() {
+    await this.setLoginInfo();
   },
   computed: {
     getIsLogin: function() {
@@ -98,8 +99,23 @@ export default {
     ...mapActions(["setLoginInfo", "setLogout"]),
     async loginWithGoogle() {
       await FirebaseService.loginWithGoogle();
-      this.setLoginInfo();
-      await FirebaseService.createVerifiedUserTable();
+      firebase
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        .then(function() {
+          // Existing and future Auth states are now persisted in the current
+          // session only. Closing the window would clear any existing state even
+          // if a user forgets to sign out.
+          // ...
+          // New sign-in will be persisted with session persistence.
+          return firebase.auth().signInWithEmailAndPassword(email, password);
+        })
+        .catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+        });
+      await this.setLoginInfo();
       this.$router.push("/dashboard");
     },
     async loginWithAnonymous() {
@@ -115,15 +131,14 @@ export default {
           alert("채널정보가 없습니다. 다시 확인해주세요");
         } else {
           await FirebaseService.loginWithAnonymous();
-          this.setLoginInfo();
+          await this.setLoginInfo();
           this.$router.push("/qna/" + docId); // 여기 vuex로 처리하기
         }
       }
     },
     async logout() {
       await FirebaseService.logout();
-
-      this.setLogout();
+      await this.setLogout();
     },
     dashboard() {
       this.$router.push("/dashboard");
