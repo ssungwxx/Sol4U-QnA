@@ -46,10 +46,6 @@
         </v-layout>
       </v-container>
     </div>
-    <go-top
-      v-bind:max-width="200"
-      style="background-color: rgb(51, 150, 244); width: 50px; height: 50px;"
-    ></go-top>
   </v-app>
 </template>
 
@@ -58,7 +54,7 @@ import Vue from "vue";
 import QnACard from "../components/QnACard";
 import FirebaseService from "../services/FirebaseService";
 import { log } from "util";
-import GoTop from "@inotom/vue-go-top";
+
 import { mapActions } from "vuex";
 
 export default Vue.extend({
@@ -92,8 +88,7 @@ export default Vue.extend({
     }
   },
   components: {
-    QnACard,
-    GoTop
+    QnACard
   },
   data: () => ({
     // channel detail part
