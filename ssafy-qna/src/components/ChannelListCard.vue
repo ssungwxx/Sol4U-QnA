@@ -73,7 +73,7 @@ export default {
     async channelDelete() {
       await FirebaseService.deleteChannel(this.ChannelDocId);
       alert("'" + this.CodeNumber + "' 채널을 삭제했습니다");
-      this.$router.push("/dashboard/");
+      await location.reload();
     }
   },
   mounted() {
