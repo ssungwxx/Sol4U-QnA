@@ -94,7 +94,7 @@ export default {
         if (a.closed_at.timestamp > b.closed_at.timestamp) return -1;
         return 0;
       }
-      
+      /*
       if(this.getchannel =="allrooms"){
         this.getdata = await FirebaseService.getOwnedChannels();
          this.getdata.owned_channels.forEach(element => {
@@ -108,8 +108,8 @@ export default {
          this.getdata.owned_channels.forEach(element => {
            this.dashboards.push(element);
          }); 
-      }
-
+      }*/
+      this.dashboards = await FirebaseService.getAllChannels();
       this.dashboards.sort(compare);
       this.currentTimestamp = parseInt(new Date().getTime() / 1000);
     },
@@ -119,6 +119,9 @@ export default {
     setlist(channel){
       this.getchannel = channel;
       console.log(this.getchannel)
+    },
+    mounted(){
+      this.getdashboard();
     }
   }
 };
