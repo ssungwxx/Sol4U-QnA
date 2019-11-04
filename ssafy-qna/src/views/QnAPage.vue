@@ -66,28 +66,24 @@ import { log } from "util";
 import GoTop from "@inotom/vue-go-top";
 
 export default Vue.extend({
-    computed: {
-        code: function() {
-            return this.$route.params.code;
-        },
-        getCardList() {
-            return this.$store.state.cardList;
-            // console.log(temp);
-            // if (this.sortTag === "favorite") {
-            //   function compare(a, b) {
-            //     if (a.likeCount < b.likeCount) return 1;
-            //     if (a.likeCount > b.likeCount) return -1;
-            //     return 0;
-            //   }
-            //   return temp.sort(compare);
-            // } else {
-            //   function compare(a, b) {
-            //     if (a.created_at.timestamp < b.created_at.timestamp) return 1;
-            //     if (a.created_at.timestamp > b.created_at.timestamp) return -1;
-            //     return 0;
-            //   }
-            //   return temp.sort(compare);
-            // }
+  computed: {
+    code: function() {
+      return this.$route.params.code;
+    },
+    getCardList() {
+      var temp = this.$store.state.cardList;
+      if (this.sortTag === "favorite") {
+        function compare(a, b) {
+          if (a.likeCount < b.likeCount) return 1;
+          if (a.likeCount > b.likeCount) return -1;
+          return 0;
+        }
+        return temp.sort(compare);
+      } else {
+        function compare(a, b) {
+          if (a.created_at.timestamp < b.created_at.timestamp) return 1;
+          if (a.created_at.timestamp > b.created_at.timestamp) return -1;
+          return 0;
         }
     },
     components: {
@@ -178,6 +174,48 @@ export default Vue.extend({
             doc.forEach(snapshots => {});
         });
     }
+  },
+  mounted() {
+    this.setChannel();
+  },
+  created() {
+    var vueInstance = this;
+    vueInstance.$store.dispatch("refreshCardMutation");
+    const channelDoc = FirebaseService.firestore
+      .collection("QnAChannels")
+      .doc(this.code)
+      .collection("Questions");
+
+    channelDoc.onSnapshot(snapshots => {
+      snapshots.docChanges().forEach(change => {
+        const data = {
+          questioner: change.doc.data().questioner,
+          question: change.doc.data().question,
+          created_at: change.doc.data().created_at,
+          likeCount: change.doc.data().likeCount,
+          likeList: change.doc.data().likeList,
+          questionDocId: change.doc.id,
+          replies: []
+        };
+
+        if (change.type === "added") {
+          vueInstance.$store.dispatch("addCardMutation", data);
+        }
+        if (change.type === "modified") {
+          console.log("실시간으로 수정했닷");
+          vueInstance.$store.dispatch("editCardListMutation", data);
+        }
+        if (change.type === "removed") {
+          console.log("실시간으로 제거했닷");
+          vueInstance.$store.dispatch("removeCardMutation", data);
+        }
+      });
+    });
+
+    channelDoc.get().then(doc => {
+      doc.forEach(snapshots => {});
+    });
+  }
 });
 </script>
 

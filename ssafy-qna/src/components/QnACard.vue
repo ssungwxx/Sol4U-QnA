@@ -10,21 +10,15 @@
           <!-- 하트 같은 아이콘으로 좋아요 개수 표시 -->
           <v-card-actions>
             <div class="QnACardLikeAction">
-              <v-btn
-                v-if="!likeBool"
-                @click="likeCheck(card.likeCount)"
-                text
-                icon
-                color="#00000033"
-              >
+              <v-btn v-if="!likeBool" @click="likeCheck()" text icon color="#00000033">
                 <v-icon>thumb_up_alt</v-icon>
               </v-btn>
-              <v-btn v-else @click="likeCheck(card.likeCount)" text icon color="#ff0000">
+              <v-btn v-else @click="likeCheck()" text icon color="#ff0000">
                 <v-icon>thumb_up_alt</v-icon>
               </v-btn>
               <!-- 하트 개수 표시 영역 -->
               <template v-if="likeCount(card.likeCount)">
-                <v-icon color="#cd7f32" id="likeIcon">thumb_up_alt</v-icon>
+                <v-icon color="#ffd700" id="likeIcon">thumb_up_alt</v-icon>
                 <!-- 하트 숫자 표시 -->
                 <span id="likeCount">...{{card.likeCount}}</span>
               </template>
@@ -99,23 +93,13 @@ export default {
   computed: {},
   mounted() {},
   methods: {
-    likeCheck(num) {
+    likeCheck() {
       if (this.likeBool) {
         this.likeBool = false;
         FirebaseService.questionLike(this.docId, this.card.questionDocId, -1);
       } else {
         this.likeBool = true;
         FirebaseService.questionLike(this.docId, this.card.questionDocId, 1);
-      }
-      if (num >= 1 && num < 7) {
-        document.getElementById("likeIcon").style.color = "#cd7f32";
-        document.getElementById("likeCount").style.fontSize = "0.9em";
-      } else if (num >= 7 && num < 15) {
-        document.getElementById("likeIcon").style.color = "#c0c0c0";
-        document.getElementById("likeCount").style.fontSize = "1.0em";
-      } else if (num >= 15) {
-        document.getElementById("likeIcon").style.color = "#ffd700";
-        document.getElementById("likeCount").style.fontSize = "1.2em";
       }
     },
     likeCount(num) {
@@ -203,6 +187,7 @@ export default {
 
 .QnACardReply {
   margin-left: 2%;
+  margin: 1vw;
 }
 
 #QnACardLike {
@@ -226,20 +211,21 @@ export default {
   bottom: 0px;
   font-family: "Lexend Deca", sans-serif;
   font-size: 0.7em;
+  color: brown;
 }
 
 .textQnA {
   padding: 3% 0% 0% 1%;
   font-family: "Lexend Deca", sans-serif;
   font-size: 1.1em;
-  color: midnightblue;
+  color: navy;
 }
 
 .textReply {
   font-family: "Lexend Deca", sans-serif;
-  font-size: 0.9em;
-  margin-bottom: 1%;
-  color: cadetblue;
+  font-size: 1em;
+  margin-bottom: 0.1vh;
+  color: mediumslateblue;
 }
 
 #replyBtn {
