@@ -72,6 +72,7 @@ export default Vue.extend({
         alert("채널정보가 없습니다. 다시 확인해주세요");
       } else {
         this.$router.push("/qna/" + docId);
+        await FirebaseService.joinTheChannel(docId);
       }
     },
     async logout() {

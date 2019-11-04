@@ -760,7 +760,7 @@ export default {
   async getOwnedChannels() {
     const user = firebase.auth().currentUser;
 
-    if (user) {
+    if (user && !user.isAnonymous) {
       const userTable = firestore.collection("VerifiedUserTable");
 
       let docId;
@@ -782,6 +782,7 @@ export default {
         });
 
       console.log(userTableChannelData);
+      return userTableChannelData;
     }
   },
 
