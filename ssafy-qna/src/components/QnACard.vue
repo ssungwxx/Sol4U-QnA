@@ -88,9 +88,15 @@ export default {
     replyBool: false,
     removeBool: false,
     replyText: "",
-    replyList: []
+    replyList: [],
+    listenerReply: null
   }),
-  computed: {},
+  computed: {
+    getLikeList() {
+      var whoami = this.$store.getters.getUserData;
+      console.log(whoami);
+    }
+  },
   mounted() {},
   methods: {
     likeCheck() {
@@ -131,7 +137,7 @@ export default {
   },
   created() {
     const vueInstance = this;
-
+    this.getLikeList;
     const questionDoc = FirebaseService.firestore
       .collection("QnAChannels")
       .doc(vueInstance.docId)
@@ -139,7 +145,7 @@ export default {
       .doc(vueInstance.card.questionDocId)
       .collection("Replies");
 
-    questionDoc.onSnapshot(snapshots => {
+    vueInstance.listenerReply = questionDoc.onSnapshot(snapshots => {
       snapshots.docChanges().forEach(change => {
         const data = {
           comment: change.doc.data().comment,
@@ -162,6 +168,9 @@ export default {
         }
       });
     });
+  },
+  destroyed() {
+    this.listenerReply();
   }
 };
 </script>
