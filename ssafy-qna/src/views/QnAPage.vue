@@ -104,7 +104,8 @@ export default Vue.extend({
     closeAt: "---",
     // card list part
     // button groups
-    sortTag: "created"
+    sortTag: "created",
+    listener: null
   }),
   async mounted() {
     await this.setLoginInfo();
@@ -150,7 +151,7 @@ export default Vue.extend({
       .doc(this.code)
       .collection("Questions");
 
-    channelDoc.onSnapshot(snapshots => {
+    vueInstance.listener = channelDoc.onSnapshot(snapshots => {
       snapshots.docChanges().forEach(change => {
         const data = {
           questioner: change.doc.data().questioner,
@@ -175,10 +176,9 @@ export default Vue.extend({
         }
       });
     });
-
-    channelDoc.get().then(doc => {
-      doc.forEach(snapshots => {});
-    });
+  },
+  destroyed() {
+    this.listener();
   }
 });
 </script>
