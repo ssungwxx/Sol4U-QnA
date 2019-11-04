@@ -40,7 +40,7 @@
       <v-container grid-list-lg fluid>
         <v-layout row wrap id="cardMother">
           <!-- 답글 예시 -->
-          <template v-for="i in getQuestionsInfo">
+          <template v-for="i in getCardList">
             <QnACard :card="i" :docId="code" :key="i.questionDocId"></QnACard>
           </template>
         </v-layout>
@@ -59,35 +59,36 @@ import QnACard from "../components/QnACard";
 import FirebaseService from "../services/FirebaseService";
 import { log } from "util";
 import GoTop from "@inotom/vue-go-top";
+import { mapActions } from "vuex";
 
 export default Vue.extend({
   computed: {
+    getIsLogin: function() {
+      return this.$store.getters.getIsLogin;
+    },
+    getUserData: function() {
+      return this.$store.getters.getUserData;
+    },
     code: function() {
       return this.$route.params.code;
     },
     getCardList() {
       var temp = this.$store.state.cardList;
-      console.log(temp);
       if (this.sortTag === "favorite") {
         function compare(a, b) {
           if (a.likeCount < b.likeCount) return 1;
           if (a.likeCount > b.likeCount) return -1;
           return 0;
         }
-        this.cardListArray = temp.sort(compare);
-        console.log(this.cardListArray);
+        return temp.sort(compare);
       } else {
         function compare(a, b) {
           if (a.created_at.timestamp < b.created_at.timestamp) return 1;
           if (a.created_at.timestamp > b.created_at.timestamp) return -1;
           return 0;
         }
-        this.cardListArray = temp.sort(compare);
-        console.log(this.cardListArray);
+        return temp.sort(compare);
       }
-    },
-    getQuestionsInfo() {
-      return this.$store.state.cardList;
     }
   },
   components: {
@@ -105,22 +106,16 @@ export default Vue.extend({
     // button groups
     sortTag: "created"
   }),
+  async mounted() {
+    await this.setLoginInfo();
+  },
   methods: {
+    ...mapActions(["setLoginInfo", "setLogout"]),
     submitButton() {
       // 질문 작성 제출 버튼 클릭 이벤트
       var temp = this.qnaText;
       this.qnaText = "";
       FirebaseService.addQuestion(this.code, temp);
-    },
-    async getQuestions() {
-      // 질문 리스트 (카드) 불러오기
-      var temp = FirebaseService.getQuestionsByDocId(this.code);
-      var tt = this;
-      temp.then(function(now) {
-        tt.$store.dispatch("getCardMutation", now);
-      });
-      // console.log(temp);
-      return temp;
     },
     setChannel() {
       // 채널 디테일 정보 받아오기
@@ -168,17 +163,15 @@ export default Vue.extend({
         };
 
         if (change.type === "added") {
-          vueInstance.$store.dispatch("getCardMutation", data);
-          console.log("실시간으로 추가했닷");
+          vueInstance.$store.dispatch("addCardMutation", data);
         }
         if (change.type === "modified") {
-          console.log(data);
           console.log("실시간으로 수정했닷");
           vueInstance.$store.dispatch("editCardListMutation", data);
         }
         if (change.type === "removed") {
-          console.log(data);
           console.log("실시간으로 제거했닷");
+          vueInstance.$store.dispatch("removeCardMutation", data);
         }
       });
     });

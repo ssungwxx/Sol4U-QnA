@@ -74,6 +74,10 @@ export default {
     currentTimestamp: "",
     getchannel: "allrooms"
   }),
+  async mounted() {
+    await this.setLoginInfo();
+    this.getdashboard();
+  },
   computed: {
     getIsLogin: function() {
       return this.$store.getters.getIsLogin;
@@ -83,6 +87,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["setLoginInfo", "setLogout"]),
     async getdashboard() {
       function compare(a, b) {
         if (a.closed_at.timestamp < b.closed_at.timestamp) return 1;
@@ -115,9 +120,6 @@ export default {
       this.getchannel = channel;
       console.log(this.getchannel)
     }
-  },
-  mounted() {
-    this.getdashboard();
   }
 };
 </script>
