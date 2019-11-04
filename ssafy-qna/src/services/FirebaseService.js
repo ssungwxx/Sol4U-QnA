@@ -517,7 +517,7 @@ export default {
   },
 
   // 채널 상세 내용 수정
-  async changChannelDetail(channelDocId, title, description) {
+  async changChannelDetail(channelDocId, title, description, startDay, endDay) {
     const user = firebase.auth().currentUser;
 
     const channelDoc = firestore.collection("QnAChannels").doc(channelDocId);
@@ -529,7 +529,39 @@ export default {
     if (user && user.uid == channelData.channel_owner.user_id) {
       channelDoc.update({
         channel_name: title,
-        channel_description: description
+        channel_description: description,
+        created_at: {
+          timestamp: startDay,
+          string:
+          startDay.getFullYear() +
+            "년 " +
+            (startDay.getMonth() + 1) +
+            "월 " +
+            startDay.getDate() +
+            "일 " +
+            startDay.getHours() +
+            "시 " +
+            startDay.getMinutes() +
+            "분 " +
+            startDay.getSeconds() +
+            "초"
+        },
+        closed_at: {
+          timestamp: endDay,
+          string:
+          endDay.getFullYear() +
+            "년 " +
+            (endDay.getMonth() + 1) +
+            "월 " +
+            endDay.getDate() +
+            "일 " +
+            endDay.getHours() +
+            "시 " +
+            endDay.getMinutes() +
+            "분 " +
+            endDay.getSeconds() +
+            "초"
+        }
       });
     } else {
       alert("잘못된 접근입니다.");
