@@ -49,7 +49,9 @@ export default {
     "EndDay",
     "setColor",
     "ChannelDocId",
-    "ChannelOwner"
+    "ChannelOwner",
+    "TimeStampStartDay",
+    "TimeStampEndDay"
   ],
 
   data: () => ({
