@@ -23,7 +23,13 @@
                 <span id="likeCount">...{{card.likeCount}}</span>
               </template>
             </div>
-            <v-btn small id="remove" @click="removeQ(card)">
+            <v-btn
+              class="deleteBtn"
+              v-if="checkUserWhoami"
+              small
+              id="remove"
+              @click="removeQ(card)"
+            >
               질문 삭제하기
               <v-icon small color="red">delete_forever</v-icon>
             </v-btn>
@@ -64,6 +70,9 @@
             <p class="writeTimeText">
               <v-icon small>access_time</v-icon>
               {{i.created_at.string}}
+              <v-btn class="deleteBtn" v-if="isReplyer(i.replyer.user_id)" x-small icon color="red">
+                <v-icon>delete_outline</v-icon>
+              </v-btn>
             </p>
           </div>
         </template>
@@ -92,15 +101,38 @@ export default {
     listenerReply: null
   }),
   computed: {
-    getLikeList() {
-      var whoami = this.$store.getters.getUserData;
-      console.log(whoami);
+    checkUserWhoami() {
+      let user = FirebaseService.firebase.auth().currentUser.uid;
+      let id = this.card.questioner.user_id;
+      if (user === id) {
+        return true;
+      } else return false;
+    },
+    checkUserInLike() {
+      var flag = FirebaseService.checkUserInLikeList(
+        this.docId,
+        this.card.questionDocId
+      );
+      var bool = this;
+      flag.then(function(item) {
+        bool.likeBool = item;
+      });
+      return this.likeBool;
     }
   },
-  mounted() {},
+  mounted() {
+    this.checkUserInLike;
+  },
   methods: {
+    isReplyer(id) {
+      // 삭제 버튼 활성화? 비활성화?
+      let user = FirebaseService.firebase.auth().currentUser.uid;
+      if (user === id) {
+        return true;
+      } else return false;
+    },
     likeCheck() {
-      if (this.likeBool) {
+      if (this.checkUserInLike) {
         this.likeBool = false;
         FirebaseService.questionLike(this.docId, this.card.questionDocId, -1);
       } else {
@@ -177,6 +209,13 @@ export default {
 
 <style>
 .cardChild {
+}
+
+.deleteBtn {
+  right: 0px;
+  margin-left: 1vw;
+  color: red;
+  font-family: "Lexend Deca", sans-serif;
 }
 
 #remove {
