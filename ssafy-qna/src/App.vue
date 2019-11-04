@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-layout>
-            <v-flex sm3 id="banner_background">
+            <v-flex sm3 id="banner_background" :style="{display: loading}">
                 <HeaderWeb />
             </v-flex>
             <v-flex sm9 id="content_background">
@@ -23,7 +23,7 @@ import HeaderWeb from "../src/components/HeaderWeb";
 export default {
     name: "App",
     data: () => ({
-        //
+        loading: 'none'
     }),
     watch: {
         $route(to, from) {
@@ -34,7 +34,13 @@ export default {
     components: {
         HeaderMobile,
         HeaderWeb
-    }
+    },
+    mounted() {
+    // 21500 으로 바꾸면 됨
+    setTimeout(() => (this.loading = "block"), 2000)
+    window.addEventListener('scroll', this.onScroll)
+  },
+
 };
 
 var agent = navigator.userAgent.toLowerCase();
