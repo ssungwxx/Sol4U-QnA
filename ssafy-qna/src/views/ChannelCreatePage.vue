@@ -141,7 +141,7 @@ export default {
           endtime
         );
         const DocId = await FirebaseService.getDocByChannelCode(this.code);
-        this.$router.push("/qna/" + DocId);
+        await this.$router.push("/qna/" + DocId);
       }
     }
   },
