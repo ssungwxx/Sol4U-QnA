@@ -197,6 +197,8 @@ export default {
 .QnACardReply {
   margin-left: 2%;
   margin: 1vw;
+  background-color: aliceblue;
+  padding: 1vw;
 }
 
 #QnACardLike {
