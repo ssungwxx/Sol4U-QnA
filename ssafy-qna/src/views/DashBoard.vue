@@ -72,6 +72,10 @@ export default {
     dashboards: [],
     currentTimestamp: ""
   }),
+  async mounted() {
+    await this.setLoginInfo();
+    this.getdashboard();
+  },
   computed: {
     getIsLogin: function() {
       return this.$store.getters.getIsLogin;
@@ -81,6 +85,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["setLoginInfo", "setLogout"]),
     async getdashboard() {
       function compare(a, b) {
         if (a.closed_at.timestamp < b.closed_at.timestamp) return 1;
@@ -94,9 +99,6 @@ export default {
     create() {
       this.$router.push("/channel/create");
     }
-  },
-  mounted() {
-    this.getdashboard();
   }
 };
 </script>

@@ -59,9 +59,16 @@ import QnACard from "../components/QnACard";
 import FirebaseService from "../services/FirebaseService";
 import { log } from "util";
 import GoTop from "@inotom/vue-go-top";
+import { mapActions } from "vuex";
 
 export default Vue.extend({
   computed: {
+    getIsLogin: function() {
+      return this.$store.getters.getIsLogin;
+    },
+    getUserData: function() {
+      return this.$store.getters.getUserData;
+    },
     code: function() {
       return this.$route.params.code;
     },
@@ -100,7 +107,11 @@ export default Vue.extend({
     sortTag: "created",
     listener: null
   }),
+  async mounted() {
+    await this.setLoginInfo();
+  },
   methods: {
+    ...mapActions(["setLoginInfo", "setLogout"]),
     submitButton() {
       // 질문 작성 제출 버튼 클릭 이벤트
       var temp = this.qnaText;

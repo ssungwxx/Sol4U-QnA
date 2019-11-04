@@ -2,135 +2,146 @@
   <v-app>
     <div id="pageTitle">Create Channel</div>
     <v-container grid-list-lg fluid>
-        <v-layout row wrap>
-        <h1 class="head" >Create New Channel</h1>
-        </v-layout>
+      <v-layout row wrap>
+        <h1 class="head">Create New Channel</h1>
+      </v-layout>
     </v-container>
-      <v-container grid-list-lg fluid>
-        <v-layout row wrap>
-          <v-flex xs12 ma-5>
-              <v-card>
-                <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-col cols="12" sm="12">
-                        <label>Code</label>
-                        <v-text-field v-model="code" type="number"
-                        :counter=10
-                        :rules="codeRules"
-                        solo
-                        label="Code"
-                        required
-                        clearable
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="12">
-                        <label>Title</label>
-                        <v-text-field v-model="title"
-                        :counter="20"
-                        :rules="titleRules"
-                        solo
-                        label="title"
-                        required
-                        clearable
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="12">
-                        <label>Description</label>
-                        <v-textarea v-model="description"
-                        :counter="200"
-                        :rules="descriptionRules"
-                        solo
-                        label="discription"
-                        required
-                        clearable
-                        ></v-textarea>
-                    </v-col>
-                    <v-row style="margin:2px;">
-                      <v-col cols="12" sm="6" >
-                          <label>Using time</label>
-                          <v-select v-model="end"
-                            :items="items"
-                            label="using time"
-
-                            solo
-                          ></v-select>
-                      </v-col>
-                      <v-col cols="12" sm="6" style="margin-top:15px;">
-                          <div v-if= "end==='기타'">
-                            <v-text-field v-model="end2" type="number"
-                            :counter=5
-                            label="only type number"
-                            clearable
-                            />
-                          </div>
-                      </v-col>
-                    </v-row>
-                    <v-card-actions>
-                        <v-btn class="ma-2" outlined color="indigo" @click="createChannel()">Create</v-btn>
-                    </v-card-actions>
-                </v-form>
-              </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
+    <v-container grid-list-lg fluid>
+      <v-layout row wrap>
+        <v-flex xs12 ma-5>
+          <v-card>
+            <v-form ref="form" v-model="valid" lazy-validation>
+              <v-col cols="12" sm="12">
+                <label>Code</label>
+                <v-text-field
+                  v-model="code"
+                  type="number"
+                  :counter="10"
+                  :rules="codeRules"
+                  solo
+                  label="Code"
+                  required
+                  clearable
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="12">
+                <label>Title</label>
+                <v-text-field
+                  v-model="title"
+                  :counter="20"
+                  :rules="titleRules"
+                  solo
+                  label="title"
+                  required
+                  clearable
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="12">
+                <label>Description</label>
+                <v-textarea
+                  v-model="description"
+                  :counter="200"
+                  :rules="descriptionRules"
+                  solo
+                  label="discription"
+                  required
+                  clearable
+                ></v-textarea>
+              </v-col>
+              <v-row style="margin:2px;">
+                <v-col cols="12" sm="6">
+                  <label>Using time</label>
+                  <v-select v-model="end" :items="items" label="using time" solo></v-select>
+                </v-col>
+                <v-col cols="12" sm="6" style="margin-top:15px;">
+                  <div v-if="end==='기타'">
+                    <v-text-field
+                      v-model="end2"
+                      type="number"
+                      :counter="5"
+                      label="only type number"
+                      clearable
+                    />
+                  </div>
+                </v-col>
+              </v-row>
+              <v-card-actions>
+                <v-btn class="ma-2" outlined color="indigo" @click="createChannel()">Create</v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
   </v-app>
 </template>
 
 <script>
 import Vue from "vue";
 import FirebaseService from "../services/FirebaseService";
+import { mapActions } from "vuex";
+
 export default {
-  components: {
-  },
-  data(){
-    return{
+  components: {},
+  data() {
+    return {
       valid: true,
       code: "",
-      title:"",
-      description:"",
-      end:"",
-      end2:"",
-      codeRules: [
-        v => !!v || "Code is required"
-      ],
-      titleRules:[
+      title: "",
+      description: "",
+      end: "",
+      end2: "",
+      codeRules: [v => !!v || "Code is required"],
+      titleRules: [
         v => !!v || "title is required",
-        v =>
-        (v && v.length >=4)|| "title is too short",
-        v =>
-        (v && v.length <=30)|| "title is to long"
+        v => (v && v.length >= 4) || "title is too short",
+        v => (v && v.length <= 30) || "title is to long"
       ],
-      descriptionRules:[
-         v =>
-        (v && v.length >=10)|| "description is too short",
+      descriptionRules: [
+        v => (v && v.length >= 10) || "description is too short"
       ],
-      items: ['+ 1hours', '+ 2hours', '+ 3hours', '+ 4hours','기타'],
-      
+      items: ["+ 1hours", "+ 2hours", "+ 3hours", "+ 4hours", "기타"]
     };
   },
-  methods:{
+  async mounted() {
+    await this.setLoginInfo();
+  },
+  computed: {
+    getIsLogin: function() {
+      return this.$store.getters.getIsLogin;
+    },
+    getUserData: function() {
+      return this.$store.getters.getUserData;
+    }
+  },
+  methods: {
     async createChannel() {
-      
-      let plustime ="";
+      let plustime = "";
       let endtime = new Date();
-      if(this.end=="+ 1hours"){
-        plustime=1;
-      }else if(this.end=="+ 2hours"){
-        plustime=2;
-      }else if(this.end=="+ 3hours"){
-        plustime=3;
-      }else if(this.end=="+ 4hours"){
-        plustime=4;
-      }else{
-        plustime=this.end2;
+      if (this.end == "+ 1hours") {
+        plustime = 1;
+      } else if (this.end == "+ 2hours") {
+        plustime = 2;
+      } else if (this.end == "+ 3hours") {
+        plustime = 3;
+      } else if (this.end == "+ 4hours") {
+        plustime = 4;
+      } else {
+        plustime = this.end2;
       }
 
-      endtime.setHours(endtime.getHours()+plustime);
+      endtime.setHours(endtime.getHours() + plustime);
       console.log(endtime);
       console.log(endtime.getHours());
       if (this.$refs.form.validate()) {
-        await FirebaseService.createChannel(this.code, this.title,this.description, endtime);
+        await FirebaseService.createChannel(
+          this.code,
+          this.title,
+          this.description,
+          endtime
+        );
         const DocId = await FirebaseService.getDocByChannelCode(this.code);
-        this.$router.push('/qna/'+DocId);
+        this.$router.push("/qna/" + DocId);
       }
     }
   },
@@ -141,7 +152,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style>
