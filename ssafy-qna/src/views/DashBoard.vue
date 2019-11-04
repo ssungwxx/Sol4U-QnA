@@ -14,11 +14,11 @@
       </div>
 
       <v-btn-toggle style="margin-bottom: 10px;">
-        <v-btn>
+        <v-btn @click="setlist('allrooms')">
           <span class="hidden-sm-and-down">ALL ROOMS</span>
           <v-icon right>list_alt</v-icon>
         </v-btn>
-        <v-btn>
+        <v-btn @click="setlist('cerate')">
           <span class="hidden-sm-and-down">CREATED</span>
           <v-icon right>add_circle</v-icon>
         </v-btn>
@@ -70,7 +70,9 @@ export default {
   },
   data: () => ({
     dashboards: [],
-    currentTimestamp: ""
+    getdata: [],
+    currentTimestamp: "",
+    getchannel: "allrooms"
   }),
   async mounted() {
     await this.setLoginInfo();
@@ -92,12 +94,31 @@ export default {
         if (a.closed_at.timestamp > b.closed_at.timestamp) return -1;
         return 0;
       }
-      this.dashboards = await FirebaseService.getAllChannels();
+      
+      if(this.getchannel =="allrooms"){
+        this.getdata = await FirebaseService.getOwnedChannels();
+         this.getdata.owned_channels.forEach(element => {
+           this.dashboards.push(element);
+         }); 
+         this.getdata.joined_channels.forEach(element=>{
+           this.dashboards.push(element);
+         });
+      }else if(this.getchannel == "create"){
+        this.getdata = await FirebaseService.getOwnedChannels();
+         this.getdata.owned_channels.forEach(element => {
+           this.dashboards.push(element);
+         }); 
+      }
+
       this.dashboards.sort(compare);
       this.currentTimestamp = parseInt(new Date().getTime() / 1000);
     },
     create() {
       this.$router.push("/channel/create");
+    },
+    setlist(channel){
+      this.getchannel = channel;
+      console.log(this.getchannel)
     }
   }
 };

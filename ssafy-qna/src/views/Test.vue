@@ -170,7 +170,8 @@ export default {
             console.log(temp);
         },
         async getOwnedChannels() {
-            await FirebaseService.getOwnedChannels();
+            let temp = await FirebaseService.getOwnedChannels();
+            console.log(temp)
         },
         async checkUserInHitList() {
             console.log(

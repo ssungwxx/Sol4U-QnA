@@ -19,6 +19,18 @@ export default new Vuex.Store({
       userDisplayName: null,
       userEmailVerified: null,
       userEmail: null
+    },
+    // dashboard
+    userTableChannelData: {
+      joined_channels: [],
+      owned_channels: [],
+      user_id: null,
+      userinfo: {
+        user_email: null,
+        user_email_verified: false,
+        user_id: null,
+        user_name: null
+      }
     }
   },
   getters: {
