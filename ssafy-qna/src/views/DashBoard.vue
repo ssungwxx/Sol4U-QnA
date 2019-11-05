@@ -4,7 +4,25 @@
     <div id="pageTitle">DashBoard</div>
 
     <!-- body -->
-    <div id="pageBody">
+    <div v-if="getUserData.isAnonymous" style="padding: 30% 10%;">
+      <v-layout class="banner_search">
+        <v-flex sm1></v-flex>
+        <v-flex sm9>
+          <v-text-field label="Code" height="20px" solo v-model="routercode"></v-text-field>
+        </v-flex>
+        <v-flex sm2></v-flex>
+      </v-layout>
+      <v-layout class="banner_search_icon">
+        <v-flex sm1></v-flex>
+        <v-flex sm9>
+          <v-btn style="width:100%;" outlined @click="checkChannel">
+            <v-icon color="rgb(36, 40, 43)">fa-search</v-icon>
+          </v-btn>
+        </v-flex>
+        <v-flex sm2></v-flex>
+      </v-layout>
+    </div>
+    <div id="pageBody" v-else>
       <div v-if="getIsLogin&&!getUserData.isAnonymous" id="create">
         <v-btn @click="create">create</v-btn>
       </div>
@@ -74,7 +92,8 @@ export default {
     currentTimestamp: "",
     getChannel: "allrooms",
     list: [],
-    listBool: false
+    listBool: false,
+    routercode: ""
   }),
   created() {
     this.$store.state.userTableChannelData = [];
@@ -98,6 +117,15 @@ export default {
     }
   },
   methods: {
+    async checkChannel() {
+      const docId = await FirebaseService.getDocByChannelCode(this.routercode);
+      if (docId == false) {
+        alert("채널정보가 없습니다. 다시 확인해주세요");
+      } else {
+        await FirebaseService.joinTheChannel(docId);
+        this.$router.push("/qna/" + docId);
+      }
+    },
     setLoginInfo() {
       this.$store.dispatch("setLoginInfo", "dashboard");
     },
@@ -129,6 +157,14 @@ export default {
   float: right;
   margin-top: 70px;
   margin-right: 10px;
+}
+
+.banner_search {
+  text-align: center;
+}
+.banner_search_icon {
+  color: rgb(36, 40, 43) !important;
+  text-align: center;
 }
 
 @media (max-width: 1200px) {

@@ -134,7 +134,7 @@ export default new Vuex.Store({
 
           commit("setIsLogin", true);
           commit("setUserData", userData);
-          if (payload === "dashboard") {
+          if (payload === "dashboard" && !user.isAnonymous) {
             commit("setChannelList");
           }
         } else {
