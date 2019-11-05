@@ -18,7 +18,7 @@
           </v-btn>
         </v-card>
       </v-flex>
-      <v-flex v-if="this.check === true" sm1 id="ChannelMenu">
+      <v-flex v-if="check" sm1 id="ChannelMenu">
         <div>
           <v-btn id="menuBtnEdit" tile outlined color="success" width="100%" @click="modifyPage">
             <v-icon left>mdi-pencil</v-icon>Edit
@@ -62,8 +62,16 @@ export default {
   }),
   methods: {
     modifyPage() {
-      alert("수정페이지로 넘어갑니다.")
-      this.$router.push({name:"modifychannel", params: {"code": this.CodeNumber, "title": this.CodeName, "description": this.description, "docId": this.ChannelDocId}})
+      alert("수정페이지로 넘어갑니다.");
+      this.$router.push({
+        name: "modifychannel",
+        params: {
+          code: this.CodeNumber,
+          title: this.CodeName,
+          description: this.description,
+          docId: this.ChannelDocId
+        }
+      });
     },
     async JoinDashBoard() {
       await FirebaseService.joinTheChannel(this.ChannelDocId);
@@ -113,8 +121,8 @@ export default {
 }
 
 #menuBtnEdit {
-  margin-top:17px;
-  margin-bottom:17px;
+  margin-top: 17px;
+  margin-bottom: 17px;
   border: 0;
 }
 

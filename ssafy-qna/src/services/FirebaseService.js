@@ -362,7 +362,7 @@ export default {
 
         doc.forEach(data => {
           userTableDocId = data.id;
-          return
+          return;
         });
 
         const userTableDoc = userTable.doc(userTableDocId);
@@ -380,15 +380,14 @@ export default {
             console.log("joinTheChannel Method Error", err);
           });
 
-         if(joinedChannels.joined_channels.length > 0){
+        if (joinedChannels.joined_channels.length > 0) {
           joinedChannels.joined_channels.forEach(data => {
             if (data == channelDocId) {
               //alert("이미 입장한 채널입니다.");
-              return
+              return;
             }
           });
-         }
-
+        }
 
         userTableDoc.update({
           joined_channels: firebase.firestore.FieldValue.arrayUnion(
@@ -787,9 +786,10 @@ export default {
   // 채널 상세정보 가져오기
   getChannelDetail(channelDocId) {
     const channelDoc = firestore.collection("QnAChannels").doc(channelDocId);
-
     return channelDoc.get().then(doc => {
-      return doc.data();
+      let channelData = doc.data();
+      channelData.channel_doc_id = doc.id;
+      return channelData;
     });
   },
 
