@@ -8,7 +8,7 @@
     </v-container>
     <v-container grid-list-lg fluid>
       <v-layout row wrap>
-        <v-flex xs12 ma-5>
+        <v-flex xs12>
           <v-card>
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-col cols="12" sm="12">
@@ -18,8 +18,7 @@
                   type="number"
                   :counter="10"
                   :rules="codeRules"
-                  solo
-                  label="Code"
+                  label="코드를 입력하세요."
                   required
                   clearable
                 ></v-text-field>
@@ -27,11 +26,10 @@
               <v-col cols="12" sm="12">
                 <label>Title</label>
                 <v-text-field
-                  v-model="title"
+                  v-model="Title"
                   :counter="20"
                   :rules="titleRules"
-                  solo
-                  label="title"
+                  label="방 제목을 입력하세요."
                   required
                   clearable
                 ></v-text-field>
@@ -42,8 +40,7 @@
                   v-model="description"
                   :counter="200"
                   :rules="descriptionRules"
-                  solo
-                  label="discription"
+                  label="질문방 설명을 적어주세요.(10글자 이상)"
                   required
                   clearable
                 ></v-textarea>
@@ -51,21 +48,22 @@
               <v-row style="margin:2px;">
                 <v-col cols="12" sm="6">
                   <label>Using time</label>
-                  <v-select v-model="end" :items="items" label="using time" solo></v-select>
+                  <v-select v-model="end" :items="items" label="언제까지 질문방을 열 것인지 설정해주세요."></v-select>
                 </v-col>
-                <v-col cols="12" sm="6" style="margin-top:15px;">
+                <v-col cols="12" sm="6">
                   <div v-if="end==='기타'">
+                    <label>Only Type Number</label>
                     <v-text-field
                       v-model="end2"
                       type="number"
                       :counter="5"
-                      label="only type number"
+                      label="자유롭게 입력하세요.(hours 기준)"
                       clearable
                     />
                   </div>
                 </v-col>
               </v-row>
-              <v-card-actions>
+              <v-card-actions id="submitBtn">
                 <v-btn class="ma-2" outlined color="indigo" @click="createChannel()">Create</v-btn>
               </v-card-actions>
             </v-form>
@@ -100,7 +98,7 @@ export default {
       descriptionRules: [
         v => (v && v.length >= 10) || "description is too short"
       ],
-      items: ["+ 1hours", "+ 2hours", "+ 3hours", "+ 4hours", "기타"]
+      items: ["+ 1 hours", "+ 2 hours", "+ 3 hours", "+ 4 hours", "기타"]
     };
   },
   async mounted() {
@@ -161,5 +159,9 @@ export default {
   background-color: rgb(51, 150, 244);
   padding: 2%;
   font-size: 1.1em;
+}
+
+#submitBtn {
+  text-align: right !important;
 }
 </style>
