@@ -129,7 +129,6 @@ export default Vue.extend({
       // 채널 디테일 정보 받아오기
       const channel = FirebaseService.getChannelDetail(this.code);
       var temp = this;
-      console.log(channel);
       channel.then(data => {
         temp.qnaTitle = data.channel_name;
         temp.qnaDes = data.channel_description;
