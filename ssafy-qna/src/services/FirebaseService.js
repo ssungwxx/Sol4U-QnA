@@ -783,9 +783,10 @@ export default {
   // 채널 상세정보 가져오기
   getChannelDetail(channelDocId) {
     const channelDoc = firestore.collection("QnAChannels").doc(channelDocId);
-
     return channelDoc.get().then(doc => {
-      return doc.data();
+      let channelData = doc.data();
+      channelData.channel_doc_id = doc.id;
+      return channelData;
     });
   },
 

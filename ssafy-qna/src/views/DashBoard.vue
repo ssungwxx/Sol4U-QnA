@@ -13,18 +13,18 @@
       </div>
 
       <v-btn-toggle style="margin-bottom: 10px;">
-        <v-btn @click="setlist('ALLROOMS')">
+        <v-btn @click="setlist('allrooms')">
           <span class="hidden-sm-and-down">ALL ROOMS</span>
           <v-icon right>list_alt</v-icon>
         </v-btn>
-        <v-btn @click="setlist('CREATE')">
+        <v-btn @click="setlist('create')">
           <span class="hidden-sm-and-down">CREATED</span>
           <v-icon right>add_circle</v-icon>
         </v-btn>
       </v-btn-toggle>
 
       <!-- 정렬-->
-      <v-layout v-for="i in getChannelList" :key="i" style="margin-bottom:8px;">
+      <v-layout v-for="i in getChannelList" style="margin-bottom:8px;">
         <!-- channel list-->
         <!-- vuex에 저장해야함 -->
         <ChannelCard
@@ -64,6 +64,7 @@ import Vue from "vue";
 import ChannelCard from "../components/ChannelListCard";
 import FirebaseService from "../services/FirebaseService";
 import { mapActions } from "vuex";
+import { async } from "q";
 
 export default {
   components: {
@@ -71,20 +72,34 @@ export default {
   },
   data: () => ({
     currentTimestamp: "",
-    getChannel: "ALLROOMS"
+    getChannel: "allrooms",
+    list: [],
+    listBool: false
   }),
+  created() {
+    this.$store.state.userTableChannelData = [];
+    this.$store.state.createChannelData = [];
+    this.$store.state.allMyChannelData = [];
+  },
   mounted() {
     this.setLoginInfo();
   },
   computed: {
     getChannelList: function() {
-      var getData = this.$store.state.userTableChannelData;
-      var joined = getData.joined_channels;
-      var owned = getData.owned_channels;
-      if (this.getChannel === "CREATE") {
-        return owned;
+      this.currentTimestamp = parseInt(new Date().getTime() / 1000);
+
+      function compare(a, b) {
+        if (a.closed_at.timestamp < b.closed_at.timestamp) return 1;
+        if (a.closed_at.timestamp > b.closed_at.timestamp) return -1;
+        return 0;
+      }
+
+      if (this.getChannel === "allrooms") {
+        var temp = this.$store.state.allMyChannelData;
+        return temp.sort(compare);
       } else {
-        return joined;
+        var temp = this.$store.state.createChannelData;
+        return temp.sort(compare);
       }
     },
     getIsLogin: function() {

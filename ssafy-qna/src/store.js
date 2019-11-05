@@ -21,17 +21,9 @@ export default new Vuex.Store({
       userEmail: null
     },
     // dashboard
-    userTableChannelData: {
-      joined_channels: [],
-      owned_channels: [],
-      user_id: null,
-      userinfo: {
-        user_email: null,
-        user_email_verified: false,
-        user_id: null,
-        user_name: null
-      }
-    }
+    userTableChannelData: [],
+    createChannelData: [],
+    allMyChannelData: []
   },
   getters: {
     getIsLogin: state => {
@@ -84,6 +76,23 @@ export default new Vuex.Store({
       var list = FirebaseService.getOwnedChannels();
       list.then(function(now) {
         state.userTableChannelData = now;
+        var joined = now.joined_channels;
+        var owned = now.owned_channels;
+
+        for (var i in joined) {
+          var temp = FirebaseService.getChannelDetail(joined[i]);
+          temp.then(function(now) {
+            state.allMyChannelData.push(now);
+          });
+        }
+
+        for (var i in owned) {
+          var temp = FirebaseService.getChannelDetail(owned[i]);
+          temp.then(function(now) {
+            state.allMyChannelData.push(now);
+            state.createChannelData.push(now);
+          });
+        }
       });
     }
   },
