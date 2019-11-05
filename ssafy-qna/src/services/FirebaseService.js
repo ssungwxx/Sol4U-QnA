@@ -770,7 +770,9 @@ export default {
 
     await replies.get().then(docs => {
       docs.forEach(doc => {
-        replyData.push(doc.data());
+        let replyData = doc.data();
+        replyData.reply_doc_id = doc.id;
+        replyData.push(replyData);
       });
     });
 
