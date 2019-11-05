@@ -155,7 +155,9 @@ export default Vue.extend({
           likeCount: change.doc.data().likeCount,
           likeList: change.doc.data().likeList,
           questionDocId: change.doc.id,
-          replies: []
+          replies: [],
+          disLikeCount: change.doc.data().disLikeCount,
+          disLikeList: change.doc.data().disLikeList
         };
 
         if (change.type === "added") {
