@@ -36,6 +36,7 @@
           :EndDay="dashboards[i-1].closed_at.string"
           :TimeStampStartDay="dashboards[i-1].created_at.timestamp"
           :TimeStampEndDay="dashboards[i-1].closed_at.timestamp"
+          :description="dashboards[i-1].channel_description"
           :ChannelDocId="dashboards[i-1].channel_doc_id"
           :ChannelOwner="dashboards[i-1].channel_owner.user_email"
           setColor
@@ -49,6 +50,7 @@
           :EndDay="dashboards[i-1].closed_at.string"
           :TimeStampStartDay="dashboards[i-1].created_at.timestamp"
           :TimeStampEndDay="dashboards[i-1].closed_at.timestamp"
+          :description="dashboards[i-1].channel_description"
           :ChannelDocId="dashboards[i-1].channel_doc_id"
           :ChannelOwner="dashboards[i-1].channel_owner.user_email"
           setColor="#d9d9d9"
@@ -110,6 +112,7 @@ export default {
          }); 
       }*/
       this.dashboards = await FirebaseService.getAllChannels();
+      console.log(this.dashboards)
       this.dashboards.sort(compare);
       this.currentTimestamp = parseInt(new Date().getTime() / 1000);
     },

@@ -42,7 +42,7 @@ export default {
   },
   mounted() {
     // 21500 으로 바꾸면 됨
-    setTimeout(() => (this.loading = "block"), 2000);
+    setTimeout(() => (this.loading = "block"), 1000);
     window.addEventListener("scroll", this.onScroll);
   }
 };

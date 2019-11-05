@@ -46,6 +46,7 @@ export default {
     "CodeNumber",
     "CodeName",
     "StartDay",
+    "description",
     "EndDay",
     "setColor",
     "ChannelDocId",
@@ -62,6 +63,7 @@ export default {
   methods: {
     test() {
       alert("아직 작업안했어요 제가 할겁니다 건들지마세요");
+      this.$router.push({name:"modifychannel", params: {"code": this.CodeNumber, "title": this.CodeName, "description": this.description, "docId": this.ChannelDocId}})
     },
     JoinDashBoard() {
       this.$router.push("/qna/" + this.ChannelDocId);

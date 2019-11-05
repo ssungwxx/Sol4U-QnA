@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import QnA from './views/QnAPage.vue'
 import createchannel from './views/ChannelCreatePage.vue'
+import modifychannel from './views/ChannelModifyPage.vue'
 import Test from "./views/Test.vue"
 import DashBoard from './views/DashBoard.vue';
 
@@ -30,6 +31,12 @@ export default new Router({
       path: '/channel/create',
       name: 'createchannel',
       component: createchannel
+    },
+    {
+      path:'/channel/modify',
+      name: 'modifychannel',
+      component: modifychannel,
+      props: true
     },
     {
       path:"/dashboard",
