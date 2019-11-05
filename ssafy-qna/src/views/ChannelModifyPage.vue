@@ -22,6 +22,7 @@
                   label="Code"
                   required
                   clearable
+                  disabled
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="12">
@@ -31,7 +32,7 @@
                   :counter="20"
                   :rules="titleRules"
                   solo
-                  label="title"
+                  label="수정할 방 제목을 입력하세요."
                   required
                   clearable
                 ></v-text-field>
@@ -43,7 +44,7 @@
                   :counter="200"
                   :rules="descriptionRules"
                   solo
-                  label="discription"
+                  label="수정할 질문방 설명을 적어주세요.(10글자 이상)"
                   required
                   clearable
                 ></v-textarea>
@@ -51,7 +52,7 @@
               <v-row style="margin:2px;">
                 <v-col cols="12" sm="6">
                   <label>Using time</label>
-                  <v-select v-model="end" :items="items" label="using time" solo></v-select>
+                  <v-select v-model="end" :items="items" label="현재 시간 기준으로 수정할 시간 정해주세요" solo></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" style="margin-top:15px;">
                   <div v-if="end==='기타'">
@@ -66,7 +67,7 @@
                 </v-col>
               </v-row>
               <v-card-actions>
-                <v-btn class="ma-2" outlined color="indigo" @click="createChannel()">Create</v-btn>
+                <v-btn class="ma-2" outlined color="indigo" @click="modifyChannel()">수정</v-btn>
               </v-card-actions>
             </v-form>
           </v-card>
@@ -91,6 +92,7 @@ export default {
       description: "",
       end: "",
       end2: "",
+      docId: "",
       codeRules: [v => !!v || "Code is required"],
       titleRules: [
         v => !!v || "title is required",
@@ -104,11 +106,10 @@ export default {
     };
   },
   async mounted() {
-    await this.setLoginInfo();
     this.code = this.$route.params.code;
     this.title = this.$route.params.title;
     this.description = this.$route.params.description;
-    this.
+    this.docId = this.$route.params.docId;
   },
   computed: {
     getIsLogin: function() {
@@ -119,7 +120,7 @@ export default {
     }
   },
   methods: {
-    async createChannel() {
+    async modifyChannel() {
       let plustime = "";
       let endtime = new Date();
       if (this.end == "+ 1hours") {
@@ -135,13 +136,12 @@ export default {
       }
 
       endtime.setHours(endtime.getHours() + plustime);
-      console.log(endtime);
-      console.log(endtime.getHours());
       if (this.$refs.form.validate()) {
-        await FirebaseService.createChannel(
-          this.code,
+        await FirebaseService.changChannelDetail(
+          this.docId,
           this.title,
           this.description,
+          new Date(),
           endtime
         );
         const DocId = await FirebaseService.getDocByChannelCode(this.code);
