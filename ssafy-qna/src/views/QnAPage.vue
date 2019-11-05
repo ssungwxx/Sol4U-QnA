@@ -1,11 +1,19 @@
 <template>
   <v-app>
     <!-- title -->
-    <div id="pageTitle">DashBoard.Channel "{{channelNum}}"</div>
+    <div id="pageTitle">DashBoard.Channel "{{channelNum}}"
+      
+    </div>
+    
     <!-- page on qna page -->
     <div id="pageBody">
       <!-- header on qna page -->
       <!-- add qna point -->
+      <div style="text-align:right">
+        <v-btn style="margin-top:30px;" color="error" @click="closeChannel()">
+          Close Channel
+        </v-btn>
+      </div>
       <div id="pageHeader">
         <p id="channelNumber">@{{channelNum}}</p>
         <p id="channelTitle">{{qnaTitle}}</p>
@@ -133,6 +141,10 @@ export default Vue.extend({
     },
     checkHaveList() {
       return this.$store.state.haveCard;
+    },
+    closeChannel(){
+      FirebaseService.closeTheChannel(this.$route.params.code)
+      alert("채널이 닫혔습니다.")
     }
   },
   mounted() {
