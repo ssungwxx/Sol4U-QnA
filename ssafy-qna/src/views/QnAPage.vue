@@ -153,7 +153,8 @@ export default Vue.extend({
     },
     async closeChannel(){
       await FirebaseService.closeTheChannel(this.$route.params.code)
-      await alert("채널이 닫혔습니다.")
+      alert("채널이 닫혔습니다.")
+      await location.reload();
     },
     checkCloseChannel(){
       const vuexUserEmail = this.$store.getters.getUserData.userEmail;
