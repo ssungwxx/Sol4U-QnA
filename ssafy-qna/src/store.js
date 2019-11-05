@@ -9,9 +9,6 @@ export default new Vuex.Store({
     // QnACard List
     cardList: [],
     haveCard: false,
-    // Reply List
-    replyList: [],
-    haveReply: false,
     // Login
     isLogin: false,
     userData: {
@@ -34,6 +31,15 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    removeReplyCommit(state, payload) {
+      var index = state.cardList.findIndex(
+        item => item.questionDocId === payload.questionDocId
+      );
+      var reIndex = state.cardList[index].replies.findIndex(
+        item => item.reply_doc_id === payload.reply_doc_id
+      );
+      state.cardList[index].replies.splice(reIndex, 1);
+    },
     removeCardCommit(state, payload) {
       var index = state.cardList.findIndex(
         item => item.questionDocId === payload.questionDocId
@@ -97,6 +103,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    removeReplyMutation(context, payload) {
+      context.commit("removeReplyCommit", payload);
+    },
     removeCardMutation(context, payload) {
       context.commit("removeCardCommit", payload);
     },
