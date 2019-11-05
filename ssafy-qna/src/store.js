@@ -88,15 +88,18 @@ export default new Vuex.Store({
         for (var i in joined) {
           var temp = FirebaseService.getChannelDetail(joined[i]);
           temp.then(function(now) {
-            state.allMyChannelData.push(now);
+            if (state.allMyChannelData.indexOf(now) === -1)
+              state.allMyChannelData.push(now);
           });
         }
 
         for (var i in owned) {
           var temp = FirebaseService.getChannelDetail(owned[i]);
           temp.then(function(now) {
-            state.allMyChannelData.push(now);
-            state.createChannelData.push(now);
+            if (state.allMyChannelData.indexOf(now) === -1)
+              state.allMyChannelData.push(now);
+            if (state.createChannelData.indexOf(now) === -1)
+              state.createChannelData.push(now);
           });
         }
       });

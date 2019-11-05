@@ -96,12 +96,12 @@ export default {
     routercode: ""
   }),
   created() {
+    this.setLoginInfo();
     this.$store.state.userTableChannelData = [];
     this.$store.state.createChannelData = [];
     this.$store.state.allMyChannelData = [];
   },
   mounted() {
-    this.setLoginInfo();
     this.getChannelList;
   },
   computed: {
