@@ -335,11 +335,11 @@ export default {
         });
 
       if (channelData.channel_owner.user_id == user.uid) {
-        alert("채널 소유자 입니다");
+        //alert("채널 소유자 입니다");
       } else{
         channelData.channel_entry.forEach(entry => {
           if (entry == user.uid) {
-            alert("이미 채널에 참가한 사용자 입니다.");
+            //alert("이미 채널에 참가한 사용자 입니다.");
             return;
           }
         });
