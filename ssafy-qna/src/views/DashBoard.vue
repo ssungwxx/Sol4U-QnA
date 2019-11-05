@@ -112,7 +112,6 @@ export default {
          }); 
       }*/
       this.dashboards = await FirebaseService.getAllChannels();
-      console.log(this.dashboards)
       this.dashboards.sort(compare);
       this.currentTimestamp = parseInt(new Date().getTime() / 1000);
     },
@@ -121,7 +120,6 @@ export default {
     },
     setlist(channel){
       this.getchannel = channel;
-      console.log(this.getchannel)
     },
     mounted(){
       this.getdashboard();

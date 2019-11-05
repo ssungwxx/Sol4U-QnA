@@ -20,7 +20,7 @@
       </v-flex>
       <v-flex v-if="this.check === true" sm1 id="ChannelMenu">
         <div>
-          <v-btn id="menuBtnEdit" tile outlined color="success" width="100%" @click="test">
+          <v-btn id="menuBtnEdit" tile outlined color="success" width="100%" @click="modifyPage">
             <v-icon left>mdi-pencil</v-icon>Edit
           </v-btn>
           <v-btn id="menuBtnDel" tile outlined color="error" width="100%" @click="channelDelete">
@@ -30,7 +30,7 @@
       </v-flex>
     </v-layout>
     <div v-if="this.check === true" id="mobileMenu">
-      <v-btn text small color="success" @click="test">Edit</v-btn>
+      <v-btn text small color="success" @click="modifyPage">Edit</v-btn>
       <v-btn text small color="error" @click="channelDelete">Delete</v-btn>
     </div>
   </div>
@@ -61,8 +61,8 @@ export default {
     mobileEndDay: ""
   }),
   methods: {
-    test() {
-      alert("아직 작업안했어요 제가 할겁니다 건들지마세요");
+    modifyPage() {
+      alert("수정페이지로 넘어갑니다.")
       this.$router.push({name:"modifychannel", params: {"code": this.CodeNumber, "title": this.CodeName, "description": this.description, "docId": this.ChannelDocId}})
     },
     JoinDashBoard() {

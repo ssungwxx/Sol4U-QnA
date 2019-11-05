@@ -526,6 +526,7 @@ export default {
 
     if (user && user.uid == channelData.channel_owner.user_id) {
       channelDoc.update({
+        is_live: true,
         channel_name: title,
         channel_description: description,
         created_at: {
