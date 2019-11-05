@@ -32,10 +32,19 @@
           </div>
 
           <v-list nav dense>
-            <div style="display:inline-block; margin-bottom:70px;">
-              <v-img src="../assets/Icon.png" style="height:40px; width:40px;" />
+            <div style="display:inline-block; ">
+              <v-img src="../assets/Icon.png" style="height:50px; width:50px;" />
             </div>
-            <span class="code_banner">SSAFY</span>
+            <div class="code_banner">SSAFY</div>
+
+            <v-layout v-if="getIsLogin" class="googleloginid">
+              <router-link v-if="!getUserData.isAnonymous" to="/dashboard" class="RouterLink_google">
+                <p class="RouterLink_p_google">{{getUserData.userDisplayName}}&nbsp;님</p>
+              </router-link>
+              <div v-else class="RouterLink_google">
+                <p class="RouterLink_p_google">익명 로그인입니다</p>
+              </div>
+            </v-layout>
             <v-layout>
               <router-link to="/dashboard" class="RouterLink">
                 <v-btn text @click="btnBackClicked()">
@@ -49,6 +58,10 @@
                   <div class="RouterLink_p">Gitlab</div>
                 </v-btn>
               </a>
+            </v-layout>
+            
+            <v-layout>
+              <button style="margin-left: 18px; margin-top:10px;" text small class="logout RouterLink_p" @click="logout">LOGOUT</button>
             </v-layout>
             <v-layout class="banner_search">
               <v-flex sm10>
@@ -79,6 +92,7 @@
 <script lang="ts">
 import Vue from "vue";
 import FirebaseService from "../services/FirebaseService";
+import { mapActions } from "vuex";
 
 export default Vue.extend({
   props: ["maxheight"],
@@ -94,6 +108,7 @@ export default Vue.extend({
     }
   },
   methods: {
+    ...mapActions(["setLoginInfo", "setLogout"]),
     btnBackClicked() {
       if (this.drawer) {
         this.drawer = false;
@@ -113,12 +128,44 @@ export default Vue.extend({
       } else {
         this.$router.push("/qna/" + docId);
       }
+    },
+    async logout() {
+      await FirebaseService.logout();
+      this.setLogout();
+      this.$router.push("/");
+    }
+  },
+  computed: {
+    getIsLogin: function() {
+      return this.$store.getters.getIsLogin;
+    },
+    getUserData: function() {
+      return this.$store.getters.getUserData;
     }
   }
 });
 </script>
 
 <style scoped>
+.googleloginid {
+  width: 100%;
+  color: black;
+  text-align: center;
+  font-family: "Lexend Deca", sans-serif;
+}
+.RouterLink_google {
+  width: 100%;
+  color: black;
+  text-decoration: underline;
+  text-align: left;
+  font-family: "Lexend Deca", sans-serif;
+  margin-left: 15px;
+}
+.RouterLink_p_google {
+  color: black;
+  font-family: "Do Hyeon", sans-serif;
+  font-size: 27px;
+}
 #drawers {
   position: fixed;
   z-index: 30;
@@ -139,6 +186,7 @@ export default Vue.extend({
 .code_banner {
   font-size: 30px;
   font-family: "Do Hyeon", sans-serif;
+  margin-bottom:50px;
 }
 .RouterLink {
   width: 100%;
@@ -161,7 +209,7 @@ export default Vue.extend({
 }
 .banner_search {
   text-align: center;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 .banner_search_icon {
   margin-left: -10px;

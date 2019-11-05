@@ -10,7 +10,6 @@
       </div>
       <div id="pageHeader">
         <h1>Channel List</h1>
-        <p>정렬 버튼 작동안한다 이것들아. 고쳐 놓거라</p>
       </div>
 
       <v-btn-toggle style="margin-bottom: 10px;">

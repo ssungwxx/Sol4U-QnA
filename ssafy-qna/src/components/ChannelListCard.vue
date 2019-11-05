@@ -29,9 +29,9 @@
         </div>
       </v-flex>
     </v-layout>
-    <div v-if="this.check === true" id="mobileMenu">
-      <v-btn text small color="success" @click="modifyPage">Edit</v-btn>
-      <v-btn text small color="error" @click="channelDelete">Delete</v-btn>
+    <div v-if="this.check === true" id="mobileMenu" style="height:45px; padding-top:10px;">
+      <v-btn style="width:49%; margin-right:2%;" small color="success" @click="modifyPage">Edit</v-btn>
+      <v-btn style="width:49%;" small color="error" @click="channelDelete">Delete</v-btn>
     </div>
   </div>
 </template>
@@ -112,16 +112,13 @@ export default {
 }
 
 #menuBtnEdit {
-  top: 0px;
+  margin-top:17px;
+  margin-bottom:17px;
   border: 0;
-  margin-bottom: 1.13vh;
-  height: 8vh !important;
 }
 
 #menuBtnDel {
-  bottom: 0px;
   border: 0;
-  height: 8vh !important;
 }
 
 .channelTitle {

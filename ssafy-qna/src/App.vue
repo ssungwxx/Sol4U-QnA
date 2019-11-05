@@ -41,9 +41,10 @@ export default {
     GoTop
   },
   mounted() {
-    // 21500 으로 바꾸면 됨
-    setTimeout(() => (this.loading = "block"), 1000);
     window.addEventListener("scroll", this.onScroll);
+  },
+  created() {
+    setTimeout(() => (this.loading = "block"), 1000);
   }
 };
 
@@ -99,6 +100,8 @@ body::-webkit-scrollbar {
   #banner_background {
     display: none;
     position: relative;
+    width: 1px;
+    height: 1px;
   }
   #banner_mobile {
     display: block;
