@@ -105,6 +105,7 @@ export default {
       this.$router.push("/channel/create");
     },
     setlist(channel) {
+      this.list = [];
       this.getChannel = channel;
       if (channel === "allrooms") {
         var temp = this.$store.state.allMyChannelData;
