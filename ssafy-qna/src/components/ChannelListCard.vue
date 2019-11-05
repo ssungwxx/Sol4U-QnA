@@ -81,8 +81,8 @@ export default {
       });
     },
     async JoinDashBoard() {
-      this.$router.push("/qna/" + this.ChannelDocId);
       await FirebaseService.joinTheChannel(this.ChannelDocId);
+      this.$router.push("/qna/" + this.ChannelDocId);
     },
     async channelDelete() {
       await FirebaseService.deleteChannel(this.ChannelDocId);
