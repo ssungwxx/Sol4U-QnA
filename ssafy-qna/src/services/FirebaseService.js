@@ -306,8 +306,6 @@ export default {
         .update({
           owned_channels: firebase.firestore.FieldValue.arrayUnion(new_channel)
         });
-
-      console.log(new_channel);
     } else if (isLive) {
       alert("채널 코드가 중복되었습니다.");
     } else {
@@ -337,11 +335,11 @@ export default {
         });
 
       if (channelData.channel_owner.user_id == user.uid) {
-        alert("채널 소유자 입니다");
+        //alert("채널 소유자 입니다");
       } else {
         channelData.channel_entry.forEach(entry => {
           if (entry == user.uid) {
-            alert("이미 채널에 참가한 사용자 입니다.");
+            //alert("이미 채널에 참가한 사용자 입니다.");
             return;
           }
         });
@@ -383,7 +381,7 @@ export default {
 
         joinedChannels.joined_channels.forEach(data => {
           if (data == channelDocId) {
-            alert("이미 입장한 채널입니다.");
+            //alert("이미 입장한 채널입니다.");
             return;
           }
         });
@@ -533,7 +531,7 @@ export default {
         created_at: {
           timestamp: startDay,
           string:
-          startDay.getFullYear() +
+            startDay.getFullYear() +
             "년 " +
             (startDay.getMonth() + 1) +
             "월 " +
@@ -549,7 +547,7 @@ export default {
         closed_at: {
           timestamp: endDay,
           string:
-          endDay.getFullYear() +
+            endDay.getFullYear() +
             "년 " +
             (endDay.getMonth() + 1) +
             "월 " +
@@ -813,7 +811,6 @@ export default {
           return doc.data();
         });
 
-      console.log(userTableChannelData);
       return userTableChannelData;
     }
   },
