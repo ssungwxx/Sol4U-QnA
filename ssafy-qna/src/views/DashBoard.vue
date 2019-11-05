@@ -42,7 +42,7 @@
       </v-btn-toggle>
 
       <!-- 정렬-->
-      <v-layout v-for="i in list" style="margin-bottom:8px;">
+      <v-layout v-for="i in list" :key="i.channel_doc_id" style="margin-bottom:8px;">
         <!-- channel list-->
         <!-- vuex에 저장해야함 -->
         <ChannelCard
@@ -96,12 +96,12 @@ export default {
     routercode: ""
   }),
   created() {
-    this.setLoginInfo();
     this.$store.state.userTableChannelData = [];
     this.$store.state.createChannelData = [];
     this.$store.state.allMyChannelData = [];
   },
   mounted() {
+    this.setLoginInfo();
     this.getChannelList;
   },
   computed: {
