@@ -79,6 +79,12 @@ export default new Vuex.Store({
     },
     setUserData(state, userData) {
       state.userData = userData;
+    },
+    setChannelList(state) {
+      var list = FirebaseService.getOwnedChannels();
+      list.then(function(now) {
+        state.userTableChannelData = now;
+      });
     }
   },
   actions: {
@@ -97,7 +103,7 @@ export default new Vuex.Store({
     getRepliesMutation(context, payload) {
       context.commit("getRepliesCommit", payload);
     },
-    async setLoginInfo({ commit }) {
+    async setLoginInfo({ commit }, payload) {
       await FirebaseService.firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           // User is signed in
@@ -110,6 +116,9 @@ export default new Vuex.Store({
 
           commit("setIsLogin", true);
           commit("setUserData", userData);
+          if (payload === "dashboard") {
+            commit("setChannelList");
+          }
         } else {
           // User is signed out
           const userData = {

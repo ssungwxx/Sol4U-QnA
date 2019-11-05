@@ -14,45 +14,45 @@
       </div>
 
       <v-btn-toggle style="margin-bottom: 10px;">
-        <v-btn @click="setlist('allrooms')">
+        <v-btn @click="setlist('ALLROOMS')">
           <span class="hidden-sm-and-down">ALL ROOMS</span>
           <v-icon right>list_alt</v-icon>
         </v-btn>
-        <v-btn @click="setlist('cerate')">
+        <v-btn @click="setlist('CREATE')">
           <span class="hidden-sm-and-down">CREATED</span>
           <v-icon right>add_circle</v-icon>
         </v-btn>
       </v-btn-toggle>
 
       <!-- 정렬-->
-      <v-layout v-for="(i) in dashboards.length" :key="i" style="margin-bottom:8px;">
+      <v-layout v-for="i in getChannelList" :key="i" style="margin-bottom:8px;">
         <!-- channel list-->
         <!-- vuex에 저장해야함 -->
         <ChannelCard
-          v-if="dashboards[i-1].closed_at.timestamp.seconds > currentTimestamp"
-          :CodeNumber="dashboards[i-1].channel_code"
-          :CodeName="dashboards[i-1].channel_name"
-          :StartDay="dashboards[i-1].created_at.string"
-          :EndDay="dashboards[i-1].closed_at.string"
-          :TimeStampStartDay="dashboards[i-1].created_at.timestamp"
-          :TimeStampEndDay="dashboards[i-1].closed_at.timestamp"
-          :description="dashboards[i-1].channel_description"
-          :ChannelDocId="dashboards[i-1].channel_doc_id"
-          :ChannelOwner="dashboards[i-1].channel_owner.user_email"
+          v-if="i.closed_at.timestamp.seconds > currentTimestamp"
+          :CodeNumber="i.channel_code"
+          :CodeName="i.channel_name"
+          :StartDay="i.created_at.string"
+          :EndDay="i.closed_at.string"
+          :TimeStampStartDay="i.created_at.timestamp"
+          :TimeStampEndDay="i.closed_at.timestamp"
+          :description="i.channel_description"
+          :ChannelDocId="i.channel_doc_id"
+          :ChannelOwner="i.channel_owner.user_email"
           setColor
         />
 
         <ChannelCard
           v-else
-          :CodeNumber="dashboards[i-1].channel_code"
-          :CodeName="dashboards[i-1].channel_name"
-          :StartDay="dashboards[i-1].created_at.string"
-          :EndDay="dashboards[i-1].closed_at.string"
-          :TimeStampStartDay="dashboards[i-1].created_at.timestamp"
-          :TimeStampEndDay="dashboards[i-1].closed_at.timestamp"
-          :description="dashboards[i-1].channel_description"
-          :ChannelDocId="dashboards[i-1].channel_doc_id"
-          :ChannelOwner="dashboards[i-1].channel_owner.user_email"
+          :CodeNumber="i.channel_code"
+          :CodeName="i.channel_name"
+          :StartDay="i.created_at.string"
+          :EndDay="i.closed_at.string"
+          :TimeStampStartDay="i.created_at.timestamp"
+          :TimeStampEndDay="i.closed_at.timestamp"
+          :description="i.channel_description"
+          :ChannelDocId="i.channel_doc_id"
+          :ChannelOwner="i.channel_owner.user_email"
           setColor="#d9d9d9"
         />
       </v-layout>
@@ -71,16 +71,23 @@ export default {
     ChannelCard
   },
   data: () => ({
-    dashboards: [],
-    getdata: [],
     currentTimestamp: "",
-    getchannel: "allrooms"
+    getChannel: "ALLROOMS"
   }),
-  async mounted() {
-    await this.setLoginInfo();
-    this.getdashboard();
+  mounted() {
+    this.setLoginInfo();
   },
   computed: {
+    getChannelList: function() {
+      var getData = this.$store.state.userTableChannelData;
+      var joined = getData.joined_channels;
+      var owned = getData.owned_channels;
+      if (this.getChannel === "CREATE") {
+        return owned;
+      } else {
+        return joined;
+      }
+    },
     getIsLogin: function() {
       return this.$store.getters.getIsLogin;
     },
@@ -89,40 +96,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["setLoginInfo", "setLogout"]),
-    async getdashboard() {
-      function compare(a, b) {
-        if (a.closed_at.timestamp < b.closed_at.timestamp) return 1;
-        if (a.closed_at.timestamp > b.closed_at.timestamp) return -1;
-        return 0;
-      }
-      /*
-      if(this.getchannel =="allrooms"){
-        this.getdata = await FirebaseService.getOwnedChannels();
-         this.getdata.owned_channels.forEach(element => {
-           this.dashboards.push(element);
-         }); 
-         this.getdata.joined_channels.forEach(element=>{
-           this.dashboards.push(element);
-         });
-      }else if(this.getchannel == "create"){
-        this.getdata = await FirebaseService.getOwnedChannels();
-         this.getdata.owned_channels.forEach(element => {
-           this.dashboards.push(element);
-         }); 
-      }*/
-      this.dashboards = await FirebaseService.getAllChannels();
-      this.dashboards.sort(compare);
-      this.currentTimestamp = parseInt(new Date().getTime() / 1000);
+    setLoginInfo() {
+      this.$store.dispatch("setLoginInfo", "dashboard");
     },
     create() {
       this.$router.push("/channel/create");
     },
-    setlist(channel){
-      this.getchannel = channel;
-    },
-    mounted(){
-      this.getdashboard();
+    setlist(channel) {
+      this.getChannel = channel;
     }
   }
 };
