@@ -83,7 +83,7 @@ export default {
       } else {
         const userInfo = {
           user_id: user.uid,
-          joinned_channels: [],
+          joined_channels: [],
           owned_channels: [],
           user_info: {
             user_id: user.uid,
@@ -335,11 +335,11 @@ export default {
         });
 
       if (channelData.channel_owner.user_id == user.uid) {
-        //alert("채널 소유자 입니다");
-      } else {
+        alert("채널 소유자 입니다");
+      } else{
         channelData.channel_entry.forEach(entry => {
           if (entry == user.uid) {
-            //alert("이미 채널에 참가한 사용자 입니다.");
+            alert("이미 채널에 참가한 사용자 입니다.");
             return;
           }
         });
@@ -362,6 +362,7 @@ export default {
 
         doc.forEach(data => {
           userTableDocId = data.id;
+          return
         });
 
         const userTableDoc = userTable.doc(userTableDocId);
@@ -379,12 +380,15 @@ export default {
             console.log("joinTheChannel Method Error", err);
           });
 
-        joinedChannels.joined_channels.forEach(data => {
-          if (data == channelDocId) {
-            //alert("이미 입장한 채널입니다.");
-            return;
-          }
-        });
+         if(joinedChannels.joined_channels.length > 0){
+          joinedChannels.joined_channels.forEach(data => {
+            if (data == channelDocId) {
+              //alert("이미 입장한 채널입니다.");
+              return
+            }
+          });
+         }
+
 
         userTableDoc.update({
           joined_channels: firebase.firestore.FieldValue.arrayUnion(

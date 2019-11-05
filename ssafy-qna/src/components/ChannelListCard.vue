@@ -65,8 +65,9 @@ export default {
       alert("수정페이지로 넘어갑니다.")
       this.$router.push({name:"modifychannel", params: {"code": this.CodeNumber, "title": this.CodeName, "description": this.description, "docId": this.ChannelDocId}})
     },
-    JoinDashBoard() {
+    async JoinDashBoard() {
       this.$router.push("/qna/" + this.ChannelDocId);
+      await FirebaseService.joinTheChannel(this.ChannelDocId)
     },
     checkOwner() {
       const vuexUserEmail = this.$store.getters.getUserData.userEmail;
