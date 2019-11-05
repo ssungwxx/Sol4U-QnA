@@ -9,7 +9,7 @@
     <div id="pageBody">
       <!-- header on qna page -->
       <!-- add qna point -->
-      <div style="text-align:right">
+      <div id = "closeChannelId" :style="{display: closeChannelDisplay}">
         <v-btn style="margin-top:30px;" color="error" @click="closeChannel()">
           Close Channel
         </v-btn>
@@ -20,7 +20,7 @@
         <p id="channelDes">{{qnaDes}}</p>
         <p id="channelClose">[{{closeAt}}에 종료 됩니다.]</p>
 
-        <div v-if="checkChannelIsLive()" style="width:100%;">
+        <div style="width:100%;" :style="{display: qnaDisplay}">
           <v-textarea
             outlined
             name="input-7-4"
@@ -41,7 +41,7 @@
             <v-icon right>thumb_up_alt</v-icon>
           </v-btn>
         </v-btn-toggle>
-        <v-btn color="rgb(51, 150, 244)" dark id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
+        <v-btn :style="{display: qnaDisplay}" color="rgb(51, 150, 244)" dark id="btnQuestion" @click="submitButton()">SUBMIT</v-btn>
         <v-spacer style="clear: both;"></v-spacer>
       </div>
 
@@ -108,7 +108,11 @@ export default Vue.extend({
     // card list part
     // button groups
     sortTag: "created",
-    listener: null
+    listener: null,
+    closeChannelDisplay: "none",
+    owner: "",
+    closeTimestamp: '',
+    qnaDisplay: "block"
   }),
   async mounted() {
     await this.setLoginInfo();
@@ -124,12 +128,18 @@ export default Vue.extend({
     setChannel() {
       // 채널 디테일 정보 받아오기
       const channel = FirebaseService.getChannelDetail(this.code);
+      var temp = this;
+      console.log(channel);
       channel.then(data => {
-        this.qnaTitle = data.channel_name;
-        this.qnaDes = data.channel_description;
-        this.closeAt = data.closed_at.string;
-        this.channelNum = data.channel_code;
+        temp.qnaTitle = data.channel_name;
+        temp.qnaDes = data.channel_description;
+        temp.closeAt = data.closed_at.string;
+        temp.channelNum = data.channel_code;
+        temp.owner = data.channel_owner.user_email;
+        temp.closeTimestamp = data.closed_at.timestamp;
+        temp.checkCloseChannel();
       });
+      
     },
     async checkChannelIsLive() {
       if (this.code != "")
@@ -142,9 +152,19 @@ export default Vue.extend({
     checkHaveList() {
       return this.$store.state.haveCard;
     },
-    closeChannel(){
-      FirebaseService.closeTheChannel(this.$route.params.code)
-      alert("채널이 닫혔습니다.")
+    async closeChannel(){
+      await FirebaseService.closeTheChannel(this.$route.params.code)
+      await alert("채널이 닫혔습니다.")
+    },
+    checkCloseChannel(){
+      const vuexUserEmail = this.$store.getters.getUserData.userEmail;
+      if (vuexUserEmail === this.owner) {
+        this.closeChannelDisplay = "block";
+      }
+      if (this.closeTimestamp.seconds < parseInt(new Date().getTime()/1000) ){
+        this.closeChannelDisplay = "none";
+        this.qnaDisplay = "none";
+      }
     }
   },
   mounted() {
@@ -214,7 +234,7 @@ export default Vue.extend({
 
 #pageHeader {
   padding: 12px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 #pageBody {
@@ -249,5 +269,9 @@ export default Vue.extend({
   font-size: 0.7em;
   color: brown;
   font-family: "Lexend Deca", sans-serif;
+}
+
+#closeChannelId{
+  text-align: right;
 }
 </style>

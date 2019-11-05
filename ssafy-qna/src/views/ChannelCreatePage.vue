@@ -124,23 +124,21 @@ export default {
             let endtime = new Date();
             if (this.end == "+ 1hours") {
                 plustime = 1;
-            } else if (this.end == "+ 2hours") {
+            } else if (this.end == "+ 2 hours") {
                 plustime = 2;
-            } else if (this.end == "+ 3hours") {
+            } else if (this.end == "+ 3 hours") {
                 plustime = 3;
-            } else if (this.end == "+ 4hours") {
+            } else if (this.end == "+ 4 hours") {
                 plustime = 4;
             } else {
                 plustime = this.end2;
             }
 
             endtime.setHours(endtime.getHours() + plustime);
-            console.log(endtime);
-            console.log(endtime.getHours());
             if (this.$refs.form.validate()) {
                 await FirebaseService.createChannel(
                     this.code,
-                    this.title,
+                    this.Title,
                     this.description,
                     endtime
                 );
