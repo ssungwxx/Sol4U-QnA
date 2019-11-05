@@ -187,6 +187,9 @@ export default {
       } else {
         this.likeBool = true;
         FirebaseService.questionLike(this.docId, this.card.questionDocId, 1);
+        if (this.disLikeBool) {
+          this.disLikeCheck();
+        }
       }
     },
     likeCount(num) {
@@ -205,6 +208,9 @@ export default {
       } else {
         this.disLikeBool = true;
         FirebaseService.questionDisLike(this.docId, this.card.questionDocId, 1);
+        if (this.likeBool) {
+          this.likeCheck();
+        }
       }
     },
     disLikeCount(num) {
