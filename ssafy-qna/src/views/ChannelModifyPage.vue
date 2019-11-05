@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <div id="pageTitle">Create Channel</div>
+    <div id="pageTitle">Modify Channel</div>
     <v-container grid-list-lg fluid>
       <v-layout row wrap>
-        <h1 class="head">Create New Channel</h1>
+        <h1 class="head">Modify Channel</h1>
       </v-layout>
     </v-container>
     <v-container grid-list-lg fluid>
@@ -105,6 +105,10 @@ export default {
   },
   async mounted() {
     await this.setLoginInfo();
+    this.code = this.$route.params.code;
+    this.title = this.$route.params.title;
+    this.description = this.$route.params.description;
+    this.
   },
   computed: {
     getIsLogin: function() {
