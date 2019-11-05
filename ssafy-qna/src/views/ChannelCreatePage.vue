@@ -103,9 +103,6 @@ export default {
       items: ["+ 1hours", "+ 2hours", "+ 3hours", "+ 4hours", "기타"]
     };
   },
-  async mounted() {
-    await this.setLoginInfo();
-  },
   computed: {
     getIsLogin: function() {
       return this.$store.getters.getIsLogin;
