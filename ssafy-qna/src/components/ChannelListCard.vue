@@ -18,7 +18,7 @@
           </v-btn>
         </v-card>
       </v-flex>
-      <v-flex v-if="check" sm1 id="ChannelMenu">
+      <v-flex v-if="checkOwner" sm1 id="ChannelMenu">
         <div>
           <v-btn id="menuBtnEdit" tile outlined color="success" width="100%" @click="modifyPage">
             <v-icon left>mdi-pencil</v-icon>Edit
@@ -29,7 +29,7 @@
         </div>
       </v-flex>
     </v-layout>
-    <div v-if="this.check === true" id="mobileMenu" style="height:45px; padding-top:10px;">
+    <div v-if="checkOwner" id="mobileMenu" style="height:45px; padding-top:10px;">
       <v-btn style="width:49%; margin-right:2%;" small color="success" @click="modifyPage">Edit</v-btn>
       <v-btn style="width:49%;" small color="error" @click="channelDelete">Delete</v-btn>
     </div>
@@ -56,10 +56,17 @@ export default {
   ],
 
   data: () => ({
-    check: false,
     mobileStartDay: "",
     mobileEndDay: ""
   }),
+  computed: {
+    checkOwner: function() {
+      const vuexUserEmail = this.$store.getters.getUserData.userEmail;
+      if (vuexUserEmail === this.ChannelOwner) {
+        return true;
+      } else return false;
+    }
+  },
   methods: {
     modifyPage() {
       alert("수정페이지로 넘어갑니다.");
@@ -77,12 +84,6 @@ export default {
       this.$router.push("/qna/" + this.ChannelDocId);
       await FirebaseService.joinTheChannel(this.ChannelDocId);
     },
-    checkOwner() {
-      const vuexUserEmail = this.$store.getters.getUserData.userEmail;
-      if (vuexUserEmail === this.ChannelOwner) {
-        this.check = true;
-      }
-    },
     async channelDelete() {
       await FirebaseService.deleteChannel(this.ChannelDocId);
       alert("'" + this.CodeNumber + "' 채널을 삭제했습니다");
@@ -90,7 +91,6 @@ export default {
     }
   },
   mounted() {
-    this.checkOwner();
     this.mobileStartDay = this.StartDay.replace("년 ", ".");
     this.mobileStartDay = this.mobileStartDay.replace("월 ", ".");
     this.mobileStartDay = this.mobileStartDay.replace("일 ", "_");

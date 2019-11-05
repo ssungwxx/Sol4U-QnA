@@ -24,7 +24,7 @@
       </v-btn-toggle>
 
       <!-- 정렬-->
-      <v-layout v-for="i in getChannelList" style="margin-bottom:8px;">
+      <v-layout v-for="i in list" style="margin-bottom:8px;">
         <!-- channel list-->
         <!-- vuex에 저장해야함 -->
         <ChannelCard
@@ -83,24 +83,12 @@ export default {
   },
   mounted() {
     this.setLoginInfo();
+    this.getChannelList;
   },
   computed: {
     getChannelList: function() {
       this.currentTimestamp = parseInt(new Date().getTime() / 1000);
-
-      function compare(a, b) {
-        if (a.closed_at.timestamp < b.closed_at.timestamp) return 1;
-        if (a.closed_at.timestamp > b.closed_at.timestamp) return -1;
-        return 0;
-      }
-
-      if (this.getChannel === "allrooms") {
-        var temp = this.$store.state.allMyChannelData;
-        return temp.sort(compare);
-      } else {
-        var temp = this.$store.state.createChannelData;
-        return temp.sort(compare);
-      }
+      this.setlist(this.getChannel);
     },
     getIsLogin: function() {
       return this.$store.getters.getIsLogin;
@@ -118,6 +106,13 @@ export default {
     },
     setlist(channel) {
       this.getChannel = channel;
+      if (channel === "allrooms") {
+        var temp = this.$store.state.allMyChannelData;
+        this.list = temp;
+      } else {
+        var temp = this.$store.state.createChannelData;
+        this.list = temp;
+      }
     }
   }
 };
