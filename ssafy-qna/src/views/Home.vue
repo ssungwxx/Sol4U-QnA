@@ -118,22 +118,9 @@ export default {
       this.$router.push("/dashboard");
     },
     async loginWithAnonymous() {
-      if (this.code == "") {
         await FirebaseService.loginWithAnonymous();
         this.setLoginInfo();
-        alert("DashBoard로 이동합니다");
         this.$router.push("/dashboard");
-      } else {
-        const docId = await FirebaseService.getDocByChannelCode(this.code);
-        FirebaseService.joinTheChannel(docId);
-        if (docId == false) {
-          alert("채널정보가 없습니다. 다시 확인해주세요");
-        } else {
-          await FirebaseService.loginWithAnonymous();
-          await this.setLoginInfo();
-          this.$router.push("/qna/" + docId); // 여기 vuex로 처리하기
-        }
-      }
     },
     async logout() {
       await FirebaseService.logout();
