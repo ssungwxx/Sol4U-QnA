@@ -11,8 +11,7 @@
     <div id="contentField">
       <v-row id="rowField">
         <v-col sm="6" cols="12">
-          <v-text-field v-model="code" label="Code Number" id="inputCode"></v-text-field>
-          <!-- 여기에 vuex에 Guest아이디로 넘겨주는 기능 추가하면됨 -->
+          
           <v-btn
             v-if="!getIsLogin"
             class="ma-2 btnHome"
@@ -82,7 +81,6 @@ export default {
     SignUp
   },
   data: () => ({
-    code: ""
   }),
   async mounted() {
     await this.setLoginInfo();

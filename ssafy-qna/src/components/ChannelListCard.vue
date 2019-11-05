@@ -77,7 +77,6 @@ export default {
     async channelDelete() {
       await FirebaseService.deleteChannel(this.ChannelDocId);
       alert("'" + this.CodeNumber + "' 채널을 삭제했습니다");
-      await location.reload();
     }
   },
   mounted() {
@@ -112,16 +111,13 @@ export default {
 }
 
 #menuBtnEdit {
-  top: 0px;
+  margin-top:17px;
+  margin-bottom:17px;
   border: 0;
-  margin-bottom: 1.13vh;
-  height: 8vh !important;
 }
 
 #menuBtnDel {
-  bottom: 0px;
   border: 0;
-  height: 8vh !important;
 }
 
 .channelTitle {
