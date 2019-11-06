@@ -13,17 +13,12 @@
         </transition>
       </v-flex>
     </v-layout>
-    <go-top
-      v-bind:max-width="200"
-      style="background-color: rgb(51, 150, 244); width: 50px; height: 50px;"
-    ></go-top>
   </v-app>
 </template>
 
 <script>
 import HeaderMobile from "../src/components/HeaderMobile";
 import HeaderWeb from "../src/components/HeaderWeb";
-import GoTop from "@inotom/vue-go-top";
 export default {
   name: "App",
   data: () => ({
@@ -37,8 +32,7 @@ export default {
   },
   components: {
     HeaderMobile,
-    HeaderWeb,
-    GoTop
+    HeaderWeb
   },
   mounted() {
     window.addEventListener("scroll", this.onScroll);

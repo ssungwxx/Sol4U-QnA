@@ -9,11 +9,8 @@
         color="rgba(0,0,0,0)"
       >
         <v-app-bar class="bar_design">
-          <v-app-bar-nav-icon
-            @click.stop="drawer = !drawer"
-            style="margin-right:20px;"
-            color="white"
-          ></v-app-bar-nav-icon><div style="color:white; font-family: 'Do Hyeon', sans-serif; font-size:1.4em;">SSAFY</div>
+          <v-app-bar-nav-icon @click.stop="clickNavBar()" style="margin-right:20px;" color="white"></v-app-bar-nav-icon>
+          <div style="color:white; font-family: 'Do Hyeon', sans-serif; font-size:1.4em;">SSAFY</div>
         </v-app-bar>
 
         <v-navigation-drawer
@@ -38,7 +35,11 @@
             <div class="code_banner">SSAFY</div>
 
             <v-layout v-if="getIsLogin" class="googleloginid">
-              <router-link v-if="!getUserData.isAnonymous" to="/dashboard" class="RouterLink_google">
+              <router-link
+                v-if="!getUserData.isAnonymous"
+                to="/dashboard"
+                class="RouterLink_google"
+              >
                 <p class="RouterLink_p_google">{{getUserData.userDisplayName}}&nbsp;님</p>
               </router-link>
               <div v-else class="RouterLink_google">
@@ -59,9 +60,15 @@
                 </v-btn>
               </a>
             </v-layout>
-            
+
             <v-layout>
-              <button style="margin-left: 18px; margin-top:10px;" text small class="logout RouterLink_p" @click="logout">LOGOUT</button>
+              <button
+                style="margin-left: 18px; margin-top:10px;"
+                text
+                small
+                class="logout RouterLink_p"
+                @click="logout"
+              >LOGOUT</button>
             </v-layout>
             <v-layout class="banner_search">
               <v-flex sm10>
@@ -109,6 +116,13 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions(["setLoginInfo", "setLogout"]),
+    clickNavBar() {
+      if (this.drawer) {
+        this.drawer = false;
+      } else {
+        this.drawer = true;
+      }
+    },
     btnBackClicked() {
       if (this.drawer) {
         this.drawer = false;
@@ -171,6 +185,7 @@ export default Vue.extend({
 #drawers {
   position: fixed;
   z-index: 30;
+  overflow: hidden;
 }
 
 .banner_mobile_font {
@@ -188,7 +203,7 @@ export default Vue.extend({
 .code_banner {
   font-size: 30px;
   font-family: "Do Hyeon", sans-serif;
-  margin-bottom:50px;
+  margin-bottom: 50px;
 }
 .RouterLink {
   width: 100%;
