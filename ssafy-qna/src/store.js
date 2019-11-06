@@ -19,7 +19,8 @@ export default new Vuex.Store({
     },
     // dashboard
     userTableChannelData: [],
-    createChannelData: [],
+    createdChannelData: [],
+    joinedChannelData: [],
     allMyChannelData: []
   },
   getters: {
@@ -90,6 +91,8 @@ export default new Vuex.Store({
           temp.then(function(now) {
             if (state.allMyChannelData.indexOf(now) === -1)
               state.allMyChannelData.push(now);
+            if (state.joinedChannelData.indexOf(now) === -1)
+              state.joinedChannelData.push(now);
           });
         }
 
@@ -98,11 +101,16 @@ export default new Vuex.Store({
           temp.then(function(now) {
             if (state.allMyChannelData.indexOf(now) === -1)
               state.allMyChannelData.push(now);
-            if (state.createChannelData.indexOf(now) === -1)
-              state.createChannelData.push(now);
+            if (state.createdChannelData.indexOf(now) === -1)
+              state.createdChannelData.push(now);
           });
         }
       });
+    },
+    refreshMyChannelList(state) {
+      state.allMyChannelData = [];
+      state.createdChannelData = [];
+      state.joinedChannelData = [];
     }
   },
   actions: {
@@ -125,33 +133,37 @@ export default new Vuex.Store({
       context.commit("getRepliesCommit", payload);
     },
     async setLoginInfo({ commit }, payload) {
-      await FirebaseService.firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          // User is signed in
-          const userData = {
-            isAnonymous: user.isAnonymous,
-            userDisplayName: user.displayName,
-            userEmailVerified: user.emailVerified,
-            userEmail: user.email
-          };
+      let loginFunction = await FirebaseService.firebase
+        .auth()
+        .onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in
+            const userData = {
+              isAnonymous: user.isAnonymous,
+              userDisplayName: user.displayName,
+              userEmailVerified: user.emailVerified,
+              userEmail: user.email
+            };
 
-          commit("setIsLogin", true);
-          commit("setUserData", userData);
-          if (payload === "dashboard" && !user.isAnonymous) {
-            commit("setChannelList");
+            commit("setIsLogin", true);
+            commit("setUserData", userData);
+            if (payload === "dashboard" && !user.isAnonymous) {
+              commit("setChannelList");
+            }
+          } else {
+            // User is signed out
+            const userData = {
+              isAnonymous: null,
+              userDisplayName: null,
+              userEmailVerified: null,
+              userEmail: null
+            };
+            commit("setIsLogin", false);
+            commit("setUserData", userData);
           }
-        } else {
-          // User is signed out
-          const userData = {
-            isAnonymous: null,
-            userDisplayName: null,
-            userEmailVerified: null,
-            userEmail: null
-          };
-          commit("setIsLogin", false);
-          commit("setUserData", userData);
-        }
-      });
+        });
+
+      loginFunction();
     },
     setLogout({ commit }) {
       const userData = {
@@ -162,6 +174,7 @@ export default new Vuex.Store({
       };
       commit("setIsLogin", false);
       commit("setUserData", userData);
+      commit("refreshMyChannelList");
     }
   }
 });
