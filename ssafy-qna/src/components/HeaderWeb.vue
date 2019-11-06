@@ -3,7 +3,7 @@
     <div style="display:inline-block; margin-top:2vw; margin-bottom:5vw; margin-left: -4vw;">
       <v-img src="../assets/Icon.png" style="height:4vw; width:4vw;" />
     </div>
-    <router-link to="/" class="RouterLink">
+    <router-link to="/dashboard" class="RouterLink">
       <span class="code_banner">SSAFY</span>
     </router-link>
 

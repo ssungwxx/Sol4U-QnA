@@ -9,9 +9,6 @@ export default new Vuex.Store({
     // QnACard List
     cardList: [],
     haveCard: false,
-    // Reply List
-    replyList: [],
-    haveReply: false,
     // Login
     isLogin: false,
     userData: {
@@ -22,7 +19,8 @@ export default new Vuex.Store({
     },
     // dashboard
     userTableChannelData: [],
-    createChannelData: [],
+    createdChannelData: [],
+    joinedChannelData: [],
     allMyChannelData: []
   },
   getters: {
@@ -34,6 +32,15 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    removeReplyCommit(state, payload) {
+      var index = state.cardList.findIndex(
+        item => item.questionDocId === payload.questionDocId
+      );
+      var reIndex = state.cardList[index].replies.findIndex(
+        item => item.reply_doc_id === payload.reply_doc_id
+      );
+      state.cardList[index].replies.splice(reIndex, 1);
+    },
     removeCardCommit(state, payload) {
       var index = state.cardList.findIndex(
         item => item.questionDocId === payload.questionDocId
@@ -82,21 +89,34 @@ export default new Vuex.Store({
         for (var i in joined) {
           var temp = FirebaseService.getChannelDetail(joined[i]);
           temp.then(function(now) {
-            state.allMyChannelData.push(now);
+            if (state.allMyChannelData.indexOf(now) === -1)
+              state.allMyChannelData.push(now);
+            if (state.joinedChannelData.indexOf(now) === -1)
+              state.joinedChannelData.push(now);
           });
         }
 
         for (var i in owned) {
           var temp = FirebaseService.getChannelDetail(owned[i]);
           temp.then(function(now) {
-            state.allMyChannelData.push(now);
-            state.createChannelData.push(now);
+            if (state.allMyChannelData.indexOf(now) === -1)
+              state.allMyChannelData.push(now);
+            if (state.createdChannelData.indexOf(now) === -1)
+              state.createdChannelData.push(now);
           });
         }
       });
+    },
+    refreshMyChannelList(state) {
+      state.allMyChannelData = [];
+      state.createdChannelData = [];
+      state.joinedChannelData = [];
     }
   },
   actions: {
+    removeReplyMutation(context, payload) {
+      context.commit("removeReplyCommit", payload);
+    },
     removeCardMutation(context, payload) {
       context.commit("removeCardCommit", payload);
     },
@@ -113,33 +133,37 @@ export default new Vuex.Store({
       context.commit("getRepliesCommit", payload);
     },
     async setLoginInfo({ commit }, payload) {
-      await FirebaseService.firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          // User is signed in
-          const userData = {
-            isAnonymous: user.isAnonymous,
-            userDisplayName: user.displayName,
-            userEmailVerified: user.emailVerified,
-            userEmail: user.email
-          };
+      let loginFunction = await FirebaseService.firebase
+        .auth()
+        .onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in
+            const userData = {
+              isAnonymous: user.isAnonymous,
+              userDisplayName: user.displayName,
+              userEmailVerified: user.emailVerified,
+              userEmail: user.email
+            };
 
-          commit("setIsLogin", true);
-          commit("setUserData", userData);
-          if (payload === "dashboard") {
-            commit("setChannelList");
+            commit("setIsLogin", true);
+            commit("setUserData", userData);
+            if (payload === "dashboard" && !user.isAnonymous) {
+              commit("setChannelList");
+            }
+          } else {
+            // User is signed out
+            const userData = {
+              isAnonymous: null,
+              userDisplayName: null,
+              userEmailVerified: null,
+              userEmail: null
+            };
+            commit("setIsLogin", false);
+            commit("setUserData", userData);
           }
-        } else {
-          // User is signed out
-          const userData = {
-            isAnonymous: null,
-            userDisplayName: null,
-            userEmailVerified: null,
-            userEmail: null
-          };
-          commit("setIsLogin", false);
-          commit("setUserData", userData);
-        }
-      });
+        });
+
+      loginFunction();
     },
     setLogout({ commit }) {
       const userData = {
@@ -150,6 +174,7 @@ export default new Vuex.Store({
       };
       commit("setIsLogin", false);
       commit("setUserData", userData);
+      commit("refreshMyChannelList");
     }
   }
 });

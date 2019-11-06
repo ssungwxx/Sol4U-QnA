@@ -11,7 +11,6 @@
     <div id="contentField">
       <v-row id="rowField">
         <v-col sm="6" cols="12">
-          
           <v-btn
             v-if="!getIsLogin"
             class="ma-2 btnHome"
@@ -81,6 +80,7 @@ export default {
     SignUp
   },
   data: () => ({
+    clicked: false
   }),
   async mounted() {
     await this.setLoginInfo();
@@ -96,8 +96,10 @@ export default {
   methods: {
     ...mapActions(["setLoginInfo", "setLogout"]),
     async loginWithGoogle() {
+      if (this.clicked) return;
+      this.clicked = true;
       await FirebaseService.loginWithGoogle();
-      firebase
+      await firebase
         .auth()
         .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(function() {
@@ -118,15 +120,20 @@ export default {
       this.$router.push("/dashboard");
     },
     async loginWithAnonymous() {
-        await FirebaseService.loginWithAnonymous();
-        this.setLoginInfo();
-        this.$router.push("/dashboard");
+      if (this.clicked) return;
+      this.clicked = true;
+      await FirebaseService.loginWithAnonymous();
+      await this.setLoginInfo();
+      this.$router.push("/dashboard");
     },
     async logout() {
+      this.clicked = false;
       await FirebaseService.logout();
       await this.setLogout();
     },
     dashboard() {
+      if (this.clicked) return;
+      this.clicked = true;
       this.$router.push("/dashboard");
     }
   }

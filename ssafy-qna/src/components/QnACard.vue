@@ -92,7 +92,14 @@
             <p class="writeTimeText">
               <v-icon small>access_time</v-icon>
               {{i.created_at.string}}
-              <v-btn class="deleteBtn" v-if="isReplyer(i.replyer.user_id)" x-small icon color="red">
+              <v-btn
+                @click="deleteReply(i)"
+                class="deleteBtn"
+                v-if="isReplyer(i.replyer.user_id)"
+                x-small
+                icon
+                color="red"
+              >
                 <v-icon>delete_outline</v-icon>
               </v-btn>
             </p>
@@ -168,6 +175,13 @@ export default {
     this.checkUserInDisLike;
   },
   methods: {
+    deleteReply(data) {
+      FirebaseService.deleteQuestionReply(
+        this.docId,
+        data.questionDocId,
+        data.reply_doc_id
+      );
+    },
     viewTextBlind() {
       if (this.blindTextBool) {
         this.blindTextBool = false;
@@ -256,7 +270,8 @@ export default {
           comment: change.doc.data().comment,
           created_at: change.doc.data().created_at,
           replyer: change.doc.data().replyer,
-          questionDocId: vueInstance.card.questionDocId
+          questionDocId: vueInstance.card.questionDocId,
+          reply_doc_id: change.doc.id
         };
 
         if (change.type === "added") {
@@ -264,12 +279,11 @@ export default {
           vueInstance.$store.dispatch("getRepliesMutation", data);
         }
         if (change.type === "modified") {
-          //   console.log(data);
           console.log("Card 실시간으로 수정했닷");
         }
         if (change.type === "removed") {
-          console.log(data);
           console.log("Card 실시간으로 제거했닷");
+          vueInstance.$store.dispatch("removeReplyMutation", data);
         }
       });
     });
